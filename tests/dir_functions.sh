@@ -1,5 +1,6 @@
 #!/bin/sh
 
+make -C ../libft
 clang -Wall -Werror -Wextra dir_functions.c -I ../libft/includes -L ../libft \
 	-lft -o a.out
 rm /tmp/a.out
