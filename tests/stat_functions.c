@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 17:25:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/03/29 18:50:03 by amulin           ###   ########.fr       */
+/*   Updated: 2016/03/30 13:58:44 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,17 @@
 #include <grp.h>
 //#include <uuid/uuid.h>
 
+
+
 int	main(int argc, char **argv)
 {
 	struct stat		buf;
 	struct passwd	*pass;
 	struct group	*grp;
+
+#ifndef _DARWIN_FEATURE_64_BIT_INODE
+	ft_printf("_DARWIN_FEATURE_64_BIT_INODE is not defined\n");
+#endif
 
 	if (argc != 2)
 	{
@@ -38,18 +44,28 @@ int	main(int argc, char **argv)
 			ft_printf("\033[31mERROR\033[0m : could not stat() file named %s (%s)\n", argv[1], strerror(errno));
 		else
 		{
+			ft_printf("\nStat() succeeded on \033[32m%s\033[0m\n", argv[1]);
+			ft_putstr("Here is the raw stat structure:\n");
+			ft_print_memory(&buf, sizeof(struct stat));
+			ft_putchar('\n');
+			
 			ft_printf("ID of device containing file: \033[33m%d\033[0m\n", buf.st_dev);
 			ft_printf("Device ID: \033[33m%d\033[0m\n", buf.st_rdev);
 			ft_printf("Inode: \033[33m%d\033[0m\n", buf.st_ino);
 			ft_printf("Mode: \033[33m%d\033[0m\n", buf.st_mode);
+			ft_printf("Mode (bin): \033[33m%b\033[0m\n", buf.st_mode);
 			ft_printf("# of hard links: \033[33m%d\033[0m\n", buf.st_nlink);
 
 
 			ft_printf("File UID: \033[33m%d\033[0m\n", buf.st_uid);
 			if (!(pass = getpwuid(buf.st_uid)))
 				ft_putstr("ERROR: could not resolve user name\n");
-			ft_printf("File owner: \033[33m%s\033[0m\n", pass->pw_name);
-			
+			ft_printf("File owner: \033[33m%s\033[0m\n", pass->pw_name);	
+			ft_printf("File owner's encryptedf pw: \033[33m%s\033[0m\n", pass->pw_passwd);
+			ft_putstr("Here is the raw passwd structure:\n");
+			ft_print_memory(pass, sizeof(struct passwd));
+			ft_putchar('\n');
+
 			
 			ft_printf("File GID: \033[33m%d\033[0m\n", buf.st_gid);
 			if (!(grp = getgrgid(buf.st_gid)))
