@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 17:25:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/03/30 13:58:44 by amulin           ###   ########.fr       */
+/*   Updated: 2016/03/31 15:38:02 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 
 #include <stdio.h>
 
+#include <sys/xattr.h>
+
 void	exit_on_error(char *progname, char *arg, int errnum)
 {
 	ft_printf("%s: %s: %s\n", progname, arg, strerror(errnum));
@@ -40,9 +42,13 @@ int	main(int argc, char **argv)
 	struct passwd	*passbuf;
 	struct group	*groupbuf;
 	char			*namebuf;
+	char			*xattrnamebuf;
+	int				xattrnamebuflen;
 	char			*time;
 	char			*buf;
 
+	xattrnamebuflen = 512;
+	xattrnamebuf = ft_strnew(xattrnamebuflen);
 #ifndef _DARWIN_FEATURE_64_BIT_INODE
 	ft_printf("_DARWIN_FEATURE_64_BIT_INODE is not defined\n");
 #endif
@@ -63,17 +69,21 @@ int	main(int argc, char **argv)
 				namebuf = ft_strjoin(namebuf, dirent->d_name);
 				if (stat(namebuf, &statbuf))
 					exit_on_error(argv[0], namebuf, errno);
-				if (ft_strcmp(".", dirent->d_name)
-						&& ft_strcmp("..", dirent->d_name))
+				if (dirent->d_name[0] != '.')
 				{
+					if (listxattr(namebuf, xattrnamebuf,
+								xattrnamebuflen, XATTR_NOFOLLOW) > 0)
+						ft_putstr("\033[32m@\033[0m ");
+					else
+						ft_putstr("  ");
 					buf = ctime(&(statbuf.st_mtime));
 					buf = ft_strsub(buf, 0, ft_strlen(buf) - 9);
 					time = ft_strsub(buf, 4, ft_strlen(buf));
 					passbuf = getpwuid(statbuf.st_uid);
 					groupbuf = getgrgid(statbuf.st_gid);
 					ft_printf("%d ", statbuf.st_nlink);
-					ft_printf("%s %s ", passbuf->pw_name, groupbuf->gr_name);
-					ft_printf("%d ", statbuf.st_size);
+					ft_printf("%s\t%s\t", passbuf->pw_name, groupbuf->gr_name);
+					ft_printf("%5d ", statbuf.st_size);
 					ft_printf("%s ", time);
 					ft_printf("%s\n", dirent->d_name);
 				}
