@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 17:25:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/03/31 15:38:02 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/01 15:45:58 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 #include <stdio.h>
 
 #include <sys/xattr.h>
+
+#include <sys/acl.h>
 
 void	exit_on_error(char *progname, char *arg, int errnum)
 {
@@ -74,6 +76,8 @@ int	main(int argc, char **argv)
 					if (listxattr(namebuf, xattrnamebuf,
 								xattrnamebuflen, XATTR_NOFOLLOW) > 0)
 						ft_putstr("\033[32m@\033[0m ");
+					else if (acl_get_file(namebuf, ACL_TYPE_EXTENDED))
+						ft_putstr("\033[35m+\033[0m ");
 					else
 						ft_putstr("  ");
 					buf = ctime(&(statbuf.st_mtime));
