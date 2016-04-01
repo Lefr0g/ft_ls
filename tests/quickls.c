@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 17:25:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/01 15:45:58 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/01 18:47:34 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,14 @@ int	main(int argc, char **argv)
 					exit_on_error(argv[0], namebuf, errno);
 				if (dirent->d_name[0] != '.')
 				{
+//					if (dirent->d_type == 4)
+//					if (statbuf.st_mode == )
+//						ft_putstr("\033[31md\033[0m ");
+//					else
+//						ft_putstr("- ");
+					ft_putbin(statbuf.st_mode, sizeof(statbuf.st_mode));
+					ft_putchar(' ');
+//					ft_printf("dirent->d_type = %d ", dirent->d_type);
 					if (listxattr(namebuf, xattrnamebuf,
 								xattrnamebuflen, XATTR_NOFOLLOW) > 0)
 						ft_putstr("\033[32m@\033[0m ");
