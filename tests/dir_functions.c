@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 17:48:53 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/05 16:24:42 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/05 18:25:39 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	main(int argc, char **argv)
 			d = readdir(dir);
 			while (d)
 			{
-				ft_printf("%d (inode %d) : \033[33m%s\033[0m (%d)",
-						i, d->d_ino, d->d_name, d->d_namlen);
+				ft_printf("%d (ino %d) : \033[33m%s\033[0m (namelen %d, reclen %d)",
+						i, d->d_ino, d->d_name, d->d_namlen, d->d_reclen);
 				if (!d->d_type)
 					ft_putstr(" (type unknown)");
 				else if (d->d_type == DT_DIR)
@@ -46,7 +46,7 @@ int	main(int argc, char **argv)
 					ft_putstr(" (link)");
 				else if (d->d_type == DT_REG)
 					ft_putstr(" (regular file)");
-				ft_printf(" (d_type = %d)", d->d_type);
+				ft_printf(" (type %d)", d->d_type);
 				ft_putchar('\n');
 				d = readdir(dir);
 				i++;
