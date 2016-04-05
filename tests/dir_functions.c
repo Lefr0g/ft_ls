@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 17:48:53 by amulin            #+#    #+#             */
-/*   Updated: 2016/03/29 14:24:27 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/05 16:24:42 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int argc, char **argv)
 					ft_putstr(" (link)");
 				else if (d->d_type == DT_REG)
 					ft_putstr(" (regular file)");
+				ft_printf(" (d_type = %d)", d->d_type);
 				ft_putchar('\n');
 				d = readdir(dir);
 				i++;

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 17:25:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/02 19:00:06 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/05 17:37:53 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,17 @@ static void	ftls_decode_type(mode_t st_mode, char *out)
 static void	ftls_decode_access_rights(mode_t st_mode, char *out)
 {
 	int		i;
-	mode_t	read_mask;
-	mode_t	write_mask;
-	mode_t	exec_mask;
+	mode_t	mask;
 
-	read_mask = S_IRUSR;
-	write_mask = S_IWUSR;
-	exec_mask = S_IXUSR;
+	mask = S_IRUSR;
 	i = 0;
 	while (i <= 6)
 	{
-		out[1 + i] = st_mode & read_mask ? 'r' : '-';
-		out[2 + i] = st_mode & write_mask ? 'w' : '-';
-		out[3 + i] = st_mode & exec_mask ? 'x' : '-';
+		out[1 + i] = st_mode & mask ? 'r' : '-';
+		out[2 + i] = st_mode & (mask >> 1) ? 'w' : '-';
+		out[3 + i] = st_mode & (mask >> 2) ? 'x' : '-';
+		mask >>= 3;
 		i += 3;
-		read_mask >>= 3;
-		write_mask >>= 3;
-		exec_mask >>= 3;
 	}
 }
 
@@ -103,7 +97,7 @@ int	main(int argc, char **argv)
 	struct stat		statbuf;
 	struct passwd	*passbuf;
 	struct group	*groupbuf;
-	char			*namebuf;
+	char			*path;
 	char			*xattrnamebuf;
 	int				xattrnamebuflen;
 	char			*time;
@@ -134,9 +128,7 @@ int	main(int argc, char **argv)
 #endif
 
 	if (argc < 2)
-	{
 		ft_printf("usage: %s file_name\n", argv[0]);
-	}
 	else
 	{
 		if (!(dir = opendir(argv[1])))
@@ -145,20 +137,20 @@ int	main(int argc, char **argv)
 		{
 			while ((dirent = readdir(dir)))
 			{
-				namebuf = ft_strjoin(argv[1], "/");
-				namebuf = ft_strjoin(namebuf, dirent->d_name);
-				if (lstat(namebuf, &statbuf))
-					exit_on_error(argv[0], namebuf, errno);
+				path = ft_strjoin(argv[1], "/");
+				path = ft_strjoin(path, dirent->d_name);
+				if (lstat(path, &statbuf))
+					exit_on_error(argv[0], path, errno);
 				if (dirent->d_name[0] != '.')
 				{
 					ftls_decode_mode(statbuf.st_mode);
 
 //					ft_printf("dirent->d_type = %d ", dirent->d_type);
 
-					if (listxattr(namebuf, xattrnamebuf,
+					if (listxattr(path, xattrnamebuf,
 								xattrnamebuflen, XATTR_NOFOLLOW) > 0)
 						ft_putstr("\033[32m@\033[0m ");
-					else if (acl_get_file(namebuf, ACL_TYPE_EXTENDED))
+					else if (acl_get_file(path, ACL_TYPE_EXTENDED))
 						ft_putstr("\033[35m+\033[0m ");
 					else
 						ft_putstr("  ");
