@@ -29,7 +29,7 @@ typedef struct	s_env
 {
 	char			*progname;
 	char			*options;
-	char			supported_options[7];
+	char			**supported_option;
 	int				args_nomore;
 }				t_env;
 
