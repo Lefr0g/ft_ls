@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/06 18:58:50 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/07 20:26:03 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	ftls_init_env(t_env *e, char *progname)
 {
-	if (!(e->progname = ft_strdup(progname)))
-		ftls_exit_on_error(e, NULL, errno);
+	(void)progname;
+//	if (!(e->progname = ft_strdup(progname)))
+//		ftls_exit_on_error(e, NULL, errno);
 	if (!(e->options = ft_strnew(10)))
 		return (1);
 	ft_bzero(e->options, 10);

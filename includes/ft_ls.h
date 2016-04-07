@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/06 19:10:57 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/07 20:21:42 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ int				ftls_free_all(t_env *e);
 /*
 ** main.c
 */
-void			ftls_parse_args(t_env *e, int argc, char **argv);
+void			ftls_parse_args(int ac, char **av, char **valid);
 void			ftls_exit_on_error(t_env *e, char *arg, int errnum);
-void			ftls_print_usage(t_env *e);
+void			ftls_print_usage_stderr(t_env *e);
+void			ftls_check_illegal_options(char **valid, char **tested, int qtity);
 
 #endif
