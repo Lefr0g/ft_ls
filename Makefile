@@ -6,7 +6,7 @@
 #    By: amulin <amulin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/06 11:02:43 by amulin            #+#    #+#              #
-#    Updated: 2016/04/06 18:07:42 by amulin           ###   ########.fr        #
+#    Updated: 2016/04/08 18:50:39 by amulin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,28 +46,33 @@ HEADERS = $(addprefix $(INCLUDIR), $(INCLUDES))
 
 LFT = libft.a
 
+LFT_REAL = libft_all.a
+
 LFTDIR = libft/
 
 LIBFT = $(addprefix $(LFTDIR), $(LFT))
 
+LIBFT_REAL = $(addprefix $(LFTDIR), $(LFT_REAL))
+
 LFTINCLUDIR = $(addprefix $(LFTDIR), includes/)
 
-.PHONY: all, clean, fclean, re
+.PHONY: all, clean, fclean, re, libft
 
-all: $(NAME)
+all: libft $(NAME)
+	@printf "$(UICEPTION)$(UIINFO) All fine for $(NAME)\n"
 	
-$(NAME): $(SOURCES) $(HEADERS) $(LIBFT)
+$(NAME): $(LIBFT_REAL) $(SOURCES) $(HEADERS)
 	@printf "$(UICEPTION)$(UIWAIT) Compiling $(NAME)"
 	@$(CC) $(FLAGS) -I $(INCLUDIR) -I $(LFTINCLUDIR) -L $(LFTDIR) \
 		-lft $(SOURCES) -o $(NAME)
 	@printf " $(UIOK)\n"
 
-libft: $(LIBFT)
+$(LIBFT_REAL): libft
 
-$(LIBFT):
+libft: 
 	@printf "$(UICEPTION)$(UIINFO) Calling make on libft\n"
 	@make -C libft
-	@printf "$(UICEPTION)$(UIINFO) $(LFT) compiled\n"
+#	@printf "$(UICEPTION)$(UIINFO) $(LFT) compiled\n"
 
 clean:
 	@printf "$(UICEPTION)$(UIINFO) Running clean\n"
