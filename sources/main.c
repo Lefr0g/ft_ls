@@ -41,7 +41,7 @@ void	ftls_print_usage_stderr(t_env *e)
 ** 'valid' contains all accepted options. The last element is filled with '\0'
 */
 
-void	ft_check_arg_options(int ac, char **av, char **valid)
+int		ft_check_arg_options(int ac, char **av, char **valid)
 {
 	int	i;
 	int	j;
@@ -80,11 +80,23 @@ int		main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 
-	ftls_init_env(&e, argv[0]);
-	ft_putstr("ft_putstr() CHECK\n");
-	ft_printf("ft_printf() CHECK\n");
+	int		readret;
+	char	*buf;
+
+	buf = ft_strnew(11);
+	ft_bzero(buf, 11);
+	if (argc == 1)
+	{
+	}
+	else
+	{
+	if (ftls_init_env(&e, argv[0]))
+		return (1);
+	ft_putstr("FT_PUTSTR\n");
+	ft_printf("FT_PRINTF\n");
 //	if (argc > 1)
 //		ftls_parse_args(argc, argv,);
 	ftls_free_all(&e);
+	}
 	return (0);
 }

@@ -21,11 +21,14 @@ int	ftls_init_env(t_env *e, char *progname)
 //		ftls_exit_on_error(e, NULL, errno);
 	if (!(e->options = ft_strnew(10)))
 		return (1);
+	ft_printf("Check\n");
 	ft_bzero(e->options, 10);
-	ft_bzero(e->supported_option, 7);
+	ft_printf("Check\n");
 //	ft_strcpy(e->supported_options, "lRart");
 
 	e->supported_option = (char**)malloc(sizeof(char*) * 10);
+	
+	
 	i = 0;
 	while (i < 10)
 	{
