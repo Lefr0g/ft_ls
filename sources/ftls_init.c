@@ -40,6 +40,7 @@ int	ftls_init_env(t_env *e, char *progname)
 	e->supported_option[2][0] = 'a';
 	e->supported_option[3][0] = 'r';
 	e->supported_option[4][0] = 't';
+	ft_strcpy(e->supported_option[5], "long");
 	e->args_nomore = 0;
 
 	return (0);
