@@ -45,7 +45,7 @@ int				ftls_free_all(t_env *e);
 void			ftls_parse_args(int ac, char **av, char **valid);
 void			ftls_exit_on_error(t_env *e, char *arg, int errnum);
 void			ftls_print_usage_stderr(t_env *e);
-char			ft_check_arg_options(int ac, char **tested, char **valid,
+char			ft_parse_options(int ac, char **tested, char **valid,
 		char ***checked);
 void			ftls_print_error_illegal_option(char *progname, char option);
 

@@ -51,35 +51,45 @@ void	ftls_print_error_illegal_option(char *progname, char option)
 }
 
 /*
- * This functions checks that every strings given in 'tested' can also be found
- * in 'valid'.
- * If one of the strings cannot be found, the function returns 1. Otherwise
- * 0 is returned.
- * 'tested' and 'valid' must be terminated by an empty string !
-*/
-
-int		ft_tabtab_compare();
-
-
-/*
  * Subfunction for ft_check_arg_options, designed to avoid doubles in the
  * 'checked' string table.
 */
 
-static int	ft_option_is_duplicate(char *tested, char **checked)
+char	*ft_double_str_check(char *needle, char **haystack)
 {
 	int	i;
 
 	i = -1;
-	while (checked[++i])
-		if (!ft_strcmp(tested, checked[i]))
-			return (1);
-	return (0);
+	while (haystack[++i])
+		if (!ft_strcmp(needle, haystack[i]))
+			return (haystack[i]);
+	return (NULL);
 }
 
 /*
- * This function ensures options given as program arguments are supported by
- * said program.
+ * Subfunction for ft_check_arg_options, dedicated to getting one long option
+*/
+
+static int	ft_getopt(int *l, char **valid, char *tested, char **checked)
+{
+	int	j;
+	int	match;
+
+	j = -1;
+	match = 0;
+	while (valid[++j][0])
+		if (!ft_strcmp(valid[j], tested) && (match = 1)
+				&& !ft_double_str_check(tested, checked))
+			checked[++(*l)] = ft_strdup(tested);
+	if (!match)
+		return (1);
+	return (0);
+}
+
+
+/*
+ * This function ensures options given as program arguments are supported,
+ * and retrieves supported options from the command line argument list.
  *
  * 'tested' is supposed to be main's argv, but it can be any string table
  * ending with an empty string.
@@ -100,14 +110,13 @@ static int	ft_option_is_duplicate(char *tested, char **checked)
  * reimplementation of the cleaner getopt() and getopt_long() functions.
 */
 
-char	ft_check_arg_options(int ac, char **tested, char **valid, char ***checked)
+char	ft_parse_options(int ac, char **tested, char **valid, char ***checked)
 {
 	int		i;
 	int		j;
 	int		k;
 	int		l;
-	int		match;
-	int		endopt;
+	int		end;
 	char	buf[2];
 
 	i = 0;
@@ -117,57 +126,31 @@ char	ft_check_arg_options(int ac, char **tested, char **valid, char ***checked)
 			j += ft_strlen(tested[i]);
 	l = -1;
 	*checked = (char**)ft_memalloc(sizeof(char*) * (j + 1));
-	endopt = 0;
+	end = 0;
 	ft_bzero(buf, 2);
 	i = 0;
-	while (++i < ac && tested[i] && !endopt)
+	while (++i < ac && tested[i] && !end)
 	{
 		if (tested[i][0] == '-')
 		{
-			if (tested[i][1] == '-')
+			if (tested[i][1] == '-' && ((end = !tested[i][2] ? 1 : 0) || 1))
 			{
-				if (!tested[i][2])
-					endopt = 1;
-				else
-				{
-					j = -1;
-					match = 0;
-					while (valid[++j][0])
-						if (!ft_strcmp(valid[j], &tested[i][2]) && (match = 1)
-								&& !ft_option_is_duplicate(&tested[i][2], *checked))
-							checked[0][++l] = ft_strdup(&tested[i][2]);
-					if (!match)
-						return ('-');
-				}
+				if (ft_getopt(&l, valid, &tested[i][2], *checked) && !end)
+					return ('-');
 			}
 			else if (tested[i][1])
 			{
 				k = 0;
 				while (tested[i][++k])
 				{
-					j = -1;
-					match = 0;
-					while (valid[++j][0] && (buf[0] = tested[i][k]))
-					{
-						if (!ft_strcmp(valid[j], buf) && (match = 1)
-								&& !ft_option_is_duplicate(buf, *checked))
-							checked[0][++l] = ft_strdup(buf);
-					}
-					if (!match)
+					buf[0] = tested[i][k];
+					if (ft_getopt(&l, valid, buf, *checked))
 						return (buf[0]);
 				}
 			}
 		}
 	}
 	return (0);
-}
-
-
-void	ftls_parse_args(int argc, char **argv, char **valid)
-{
-	(void)argc;
-	(void)argv;
-	(void)valid;
 }
 
 int		main(int argc, char **argv)
@@ -188,7 +171,7 @@ int		main(int argc, char **argv)
 	else
 	{
 //		ft_putstr("Case 2: arguments given\n");
-		if ((c = ft_check_arg_options(argc, argv, e.supported_option,
+		if ((c = ft_parse_options(argc, argv, e.supported_option,
 						&parsed_opt)))
 		{
 			ftls_print_error_illegal_option(argv[0], c);
