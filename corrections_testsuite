@@ -1,0 +1,2 @@
+./ft_ls -art -- -lal --long --long -- --dc
+./ft_ls -art -lal f-ds -R --long --long -- --dc

@@ -51,11 +51,12 @@ void	ftls_print_error_illegal_option(char *progname, char option)
 }
 
 /*
- * Subfunction for ft_check_arg_options, designed to avoid doubles in the
- * 'checked' string table.
+ * Subfunction for ft_parse_options, designed to avoid doubles in the
+ * 'stored' string table.
+ * If found, the function returns a pointer to the double in the haystack
 */
 
-char	*ft_double_str_check(char *needle, char **haystack)
+char	*ft_find_double_str(char *needle, char **haystack)
 {
 	int	i;
 
@@ -67,10 +68,13 @@ char	*ft_double_str_check(char *needle, char **haystack)
 }
 
 /*
- * Subfunction for ft_check_arg_options, dedicated to getting one long option
+ * Subfunction for ft_parse_options, dedicated to testing the validity of
+ * the 'tested' argument as an option, then duplicating if (if valid) into the
+ * program's 'stored' table.
+ * If the 'tested' argument is not a valid option, the function returns 1
 */
 
-static int	ft_getopt(int *l, char **valid, char *tested, char **checked)
+static int	get_options(int *i, char **valid, char *tested, char **stored)
 {
 	int	j;
 	int	match;
@@ -79,20 +83,51 @@ static int	ft_getopt(int *l, char **valid, char *tested, char **checked)
 	match = 0;
 	while (valid[++j][0])
 		if (!ft_strcmp(valid[j], tested) && (match = 1)
-				&& !ft_double_str_check(tested, checked))
-			checked[++(*l)] = ft_strdup(tested);
+				&& !ft_find_double_str(tested, stored))
+		{
+			stored[*i] = ft_strdup(tested);
+			(*i)++;
+		}
 	if (!match)
 		return (1);
 	return (0);
 }
 
+/*
+ * Subfunction for ft_parse_options that allocates sufficient memory to store
+ * all valid options into a string array.
+ * Notice that it will probably allocate more memory than necessary.
+*/
+static int	allocate_storage(char **tested, char ***stored)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (tested[++i])
+	{
+		if (tested[i][0] == '-')
+		{
+			if (tested[i][1] == '-')
+				j++;
+			else
+				j += ft_strlen(tested[i]);
+		}
+	}
+	*stored = (char**)ft_memalloc(sizeof(char*) * (j + 1));
+	if (!(*stored))
+		return (1);
+	return (0);
+}
 
 /*
  * This function ensures options given as program arguments are supported,
  * and retrieves supported options from the command line argument list.
  *
  * 'tested' is supposed to be main's argv, but it can be any string table
- * ending with an empty string.
+ * ending with a NULL pointer. However the first string of the array won't be
+ * inspected.
  * 'valid' is the string table of supported options, it must be terminated by
  * an empty string.
  * 'checked' is a pointer to an unallocated string table that will store the
@@ -100,8 +135,11 @@ static int	ft_getopt(int *l, char **valid, char *tested, char **checked)
  *
  * The function ignores 'tested' stings unless they begin with a '-'
  * Characters following a '-' are treated individually
- * Characters following a '--' are considered as a long option
- * Upon reading '-- ' the function stops.
+ * Characters following a '--' are treated as a single string
+ * Upon reading '--\0' the function stops.
+ *
+ * For norme compliance, the flag indicating a '--\0' encounter was replaced by
+ * setting k to a negative value.
  * 
  * The function returns '\0' when all options are valid, '-' if a long option
  * is invalid, or the char corresponding to an invalid short option.
@@ -110,45 +148,30 @@ static int	ft_getopt(int *l, char **valid, char *tested, char **checked)
  * reimplementation of the cleaner getopt() and getopt_long() functions.
 */
 
-char	ft_parse_options(int ac, char **tested, char **valid, char ***checked)
+char	ft_parse_options(char **tested, char **valid, char ***stored)
 {
 	int		i;
 	int		j;
 	int		k;
-	int		l;
-	int		end;
 	char	buf[2];
 
-	i = 0;
-	j = 0;
-	while (tested[++i])
-		if (tested[i][0] == '-')
-			j += ft_strlen(tested[i]);
-	l = -1;
-	*checked = (char**)ft_memalloc(sizeof(char*) * (j + 1));
-	end = 0;
+	k = 0;
+	if (!(i = 0) && allocate_storage(tested, stored))
+		return ('!');
 	ft_bzero(buf, 2);
-	i = 0;
-	while (++i < ac && tested[i] && !end)
+	while (tested[++i] && (k = (tested[i][0] == '-' ? k : -1)) >= 0)
 	{
-		if (tested[i][0] == '-')
+		j = 0;
+		if (tested[i][0] == '-' && tested[i][0] && tested[i][1] == '-'
+				&& ((k = !tested[i][2] ? -1 : k) >= 0 || 1))
 		{
-			if (tested[i][1] == '-' && ((end = !tested[i][2] ? 1 : 0) || 1))
-			{
-				if (ft_getopt(&l, valid, &tested[i][2], *checked) && !end)
-					return ('-');
-			}
-			else if (tested[i][1])
-			{
-				k = 0;
-				while (tested[i][++k])
-				{
-					buf[0] = tested[i][k];
-					if (ft_getopt(&l, valid, buf, *checked))
-						return (buf[0]);
-				}
-			}
+			if (get_options(&k, valid, &tested[i][2], *stored) && k >= 0)
+				return ('-');
 		}
+		else if (tested[i][0] == '-' && tested[i][1])
+			while (tested[i][++j] && (buf[0] = tested[i][j]))
+				if (get_options(&k, valid, buf, *stored))
+					return (buf[0]);
 	}
 	return (0);
 }
@@ -170,8 +193,7 @@ int		main(int argc, char **argv)
 	}
 	else
 	{
-//		ft_putstr("Case 2: arguments given\n");
-		if ((c = ft_parse_options(argc, argv, e.supported_option,
+		if ((c = ft_parse_options(argv, e.supported_option,
 						&parsed_opt)))
 		{
 			ftls_print_error_illegal_option(argv[0], c);
