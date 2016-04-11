@@ -162,13 +162,13 @@ char	ft_parse_options(char **tested, char **valid, char ***stored)
 	while (tested[++i] && (k = (tested[i][0] == '-' ? k : -1)) >= 0)
 	{
 		j = 0;
-		if (tested[i][0] == '-' && tested[i][0] && tested[i][1] == '-'
+		if (tested[i][0] && tested[i][1] == '-'
 				&& ((k = !tested[i][2] ? -1 : k) >= 0 || 1))
 		{
 			if (get_options(&k, valid, &tested[i][2], *stored) && k >= 0)
 				return ('-');
 		}
-		else if (tested[i][0] == '-' && tested[i][1])
+		else if (tested[i][1])
 			while (tested[i][++j] && (buf[0] = tested[i][j]))
 				if (get_options(&k, valid, buf, *stored))
 					return (buf[0]);
