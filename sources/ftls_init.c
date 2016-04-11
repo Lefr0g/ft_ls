@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/08 18:47:07 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/11 17:12:32 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,31 @@ int	ftls_init_env(t_env *e, char *progname)
 		ft_print_error(progname, NULL, errno);
 		exit(1);
 	}
-	if (!(e->options = ft_strnew(10)))
-		return (1);
-	ft_bzero(e->options, 10);
-//	ft_strcpy(e->supported_options, "lRart");
-
-	e->supported_option = (char**)ft_memalloc(sizeof(char*) * 10);
-
-	i = 0;
-	while (i < 10)
-	{
+	i = -1;
+	while (++i < OPT_ARRAY_SIZE)
 		e->supported_option[i] = ft_strnew(2);
-		i++;
-	}
 	e->supported_option[0][0] = 'l';
 	e->supported_option[1][0] = 'R';
 	e->supported_option[2][0] = 'a';
 	e->supported_option[3][0] = 'r';
 	e->supported_option[4][0] = 't';
 	ft_strcpy(e->supported_option[5], "long");
-	e->args_nomore = 0;
 
 	return (0);
 }
 
 int	ftls_free_all(t_env *e)
 {
-	ft_strdel(&(e->options));
+	int	i;
+
+	i = -1;
+	while (e->cli_option[++i])
+		ft_strdel(&(e->cli_option[i]));
+	ft_memdel((void**)&(e->cli_option));
+	i = -1;
+	while (++i < OPT_ARRAY_SIZE)
+		ft_strdel(&(e->supported_option[i]));
+
+
 	return (0);
 }
