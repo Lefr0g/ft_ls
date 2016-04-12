@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/11 17:12:27 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/12 19:08:08 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,26 @@
 # define FT_LS_H
 
 # include "libft.h"
+# include <dirent.h>
 
 # define OPT_ARRAY_SIZE 7
 
 typedef struct	s_details
 {
+	int				isdir;
 	char			*path;
-	struct dirent	*s_dirent;
-	struct stat		*s_stat;
+	struct dirent	*drnt;
+	struct stat		*stt;
 	t_list			*subdir;
 }				t_details;
 
 typedef struct	s_env
 {
+	t_list			*rep;
 	char			*progname;
 	char			*supported_option[OPT_ARRAY_SIZE];
 	char			**cli_option;
+	char			**cli_notopt;
 }				t_env;
 
 /*

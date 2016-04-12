@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/11 17:12:32 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/12 19:06:47 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	ftls_init_env(t_env *e, char *progname)
 {
 	int	i;
 
-	(void)progname;
 	if (!(e->progname = ft_strdup(progname)))
 	{
 		ft_print_error(progname, NULL, errno);
@@ -32,6 +31,16 @@ int	ftls_init_env(t_env *e, char *progname)
 	e->supported_option[4][0] = 't';
 	ft_strcpy(e->supported_option[5], "long");
 
+	return (0);
+}
+
+int	ftls_init_details(t_details *d)
+{
+	d->isdir = 0;
+	d->path = NULL;
+	d->drnt = NULL;
+	d->stt = NULL;
+	d->subdir = NULL;
 	return (0);
 }
 
