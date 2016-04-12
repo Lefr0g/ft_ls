@@ -14,7 +14,10 @@
 
 int	main(void)
 {
-	ft_putstr("This is fine\n");
-	ft_printf("This is even better\n");
+	ft_putstr("VA > printed with ft_putstr()\n");
+	ft_putwstr(L"XT > printed with ft_putwstr()\n");
+	ft_printf("FTPF > printed with ft_printf()\n");
+	ft_print_error(" ", "ER > printed with ft_print_error()\n", 0);
+
 	return (0);
 }

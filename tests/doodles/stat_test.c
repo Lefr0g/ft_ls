@@ -46,7 +46,7 @@ int	main(int argc, char **argv)
 		{
 			ft_printf("\nStat() succeeded on \033[32m%s\033[0m\n", argv[1]);
 			ft_putstr("Here is the raw stat structure:\n");
-			ft_print_memory(&buf, sizeof(struct stat));
+			ft_print_memory(&buf, sizeof(buf));
 			ft_putchar('\n');
 			
 			ft_printf("ID of device containing file: \033[33m%d\033[0m\n", buf.st_dev);
