@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/12 19:08:08 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/14 18:49:36 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_LS_H
 
 # include "libft.h"
+# include "libft_extra.h"
 # include <dirent.h>
 
 # define OPT_ARRAY_SIZE 7
