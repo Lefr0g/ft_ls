@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/14 18:49:36 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/14 19:27:11 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct	s_env
 /*
 ** ftls_init.c
 */
-int				ftls_init_env(t_env *e, char *progname);
+int				ftls_init_env(t_env *e, int ac, char **av);
 int				ftls_free_all(t_env *e);
 
 /*
