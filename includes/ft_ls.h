@@ -17,6 +17,8 @@
 # include "libft_extra.h"
 # include <dirent.h>
 
+# include <sys/stat.h>
+
 # define OPT_ARRAY_SIZE 7
 
 typedef struct	s_details
@@ -40,14 +42,22 @@ typedef struct	s_env
 /*
 ** ftls_init.c
 */
+int				ftls_parse_cli_args(t_env *e, int ac, char **av);
 int				ftls_init_env(t_env *e, int ac, char **av);
+int				ftls_init_details(t_details *d);
 int				ftls_free_all(t_env *e);
 
 /*
 ** main.c
 */
-void			ftls_parse_args(int ac, char **av, char **valid);
 //void			ftls_exit_on_error(t_env *e, char *arg, int errnum);
+
+/*
+** ftls_misc.c
+*/
+void			ftls_decode_type(mode_t st_mode, char *out);
+void			ftls_decode_access_rights(mode_t st_mode, char *out);
+void			ftls_decode_mode(mode_t st_mode);
 
 /*
 ** ftls_error.c

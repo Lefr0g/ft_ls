@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "libft_extra.h"
 
 #include <sys/stat.h>
 #include <errno.h>
