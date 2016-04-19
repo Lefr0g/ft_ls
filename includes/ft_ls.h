@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/14 19:27:11 by amulin           ###   ########.fr       */
+/*   Updated: 2016/04/19 18:48:18 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@
 typedef struct	s_details
 {
 	int				isdir;
-	char			*path;
+	char			*name; // name of the directory
+	char			*path; // full path of the directory
 	struct dirent	*drnt;
-	struct stat		*stt;
+//	struct stat		*stt;
+	char			*ent_prefix; // to be added to 'names' to obtain entries paths
+	char			**ent_names; // names of the entries contained in DIR
+	int				ent_qtity; // number of entries in DIR
+	int				ent_longest_name; // lenght, used for column output
 	t_list			*subdir;
 }				t_details;
 
@@ -37,6 +42,20 @@ typedef struct	s_env
 	char			*supported_option[OPT_ARRAY_SIZE];
 	char			**cli_option;
 	char			**cli_notopt;
+
+	//				Option flags:
+	char			showhidden; // starting with ., except . and .. (for -A)
+	char			showspecial; // . and .. (for -a)
+	char			recursive; // (for -R)
+	char			reverse; // (for -r)
+	char			sort_none; // (for -f)
+	char			sort_size; // (for -S)
+	char			sort_time_mod; // (for -t)
+	char			human; // (for -h)
+	char			color; // (for -G) (pas sur, semble trop time-consuming)
+	char			showinode; // (for -i)
+	char			showlist; // (for -l)
+	char			oneperline; // (for -1)
 }				t_env;
 
 /*
