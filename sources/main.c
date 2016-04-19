@@ -42,7 +42,7 @@ int		ft_isfile(char *path, char *progname, int verbose)
 	}
 	else
 		ret = 1;
-	ft_printf("ret = %d\n", ret);
+//	ft_printf("ret = %d\n", ret);
 	return (ret);
 }
 
@@ -77,6 +77,7 @@ int		main(int ac, char **av)
 	int			i;
 	struct stat	*statbuf;
 	DIR			*dirstream;
+	t_details	*d;
 
 	statbuf = NULL;
 	dirstream = NULL;
@@ -101,11 +102,26 @@ int		main(int ac, char **av)
 	i = -1;
 	while (e.cli_notopt[++i])
 	{
-		ft_printf("ft_isdir, run %d\n", i);
+//		ft_printf("ft_isdir, run %d\n", i);
 		if (ft_isdir(e.cli_notopt[i], av[0], 1))
 			ft_printf("%s is a directory\n", e.cli_notopt[i]);
 	}
 	ft_putchar('\n');
+
+
+
+
+	//******************************** WIP **********************************
+
+	// Allouer le contenu du premier element de la future liste
+	d = (t_details*)ft_memalloc(sizeof(t_details));
+
+	// Allouer le premier element de la liste
+	e.rep = ft_lstnew(d, sizeof(d));
+
+	//***********************************************************************
+
+
 
 
 	//	Verification du classement des arguments par le parseur
