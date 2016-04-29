@@ -65,8 +65,22 @@ int		ft_isfile(char *path, char *progname, int verbose)
  *
  *
  *
+ *	Comportement en mode recursif:
+ *	- Initialiser env
+ *	- Parser args du CLI
+ *	- Parcourir les non-options, tester chacun si dir ou non
+ *	- Si non dir, opendir sur le dossier parent et obtenir les infos via readdir et
+ *	  lstat
+ *	- Si dir, allouer un premier element de liste
+ *		- Copier les infos de dirent et de lstat dans la structure data
+ *		- Si l'une des entites est un dir, allouer un nouvel element de liste et
+ *		  referencer son adresse dans subdir
+ *	- Ainsi de suite jusqu'au bout de l'arborescence
+ *	- Une fois les datas recuperes, trier chaque liste suivant les options passees
+ *	  en parametre
+ *	- Afficher le resultat suivant les options passees en parametre
  *
- *
+ *  => total : 3 parcours de l'arborescence
  *
 */
 

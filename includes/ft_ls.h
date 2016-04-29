@@ -19,11 +19,41 @@
 
 # include <sys/stat.h>
 
-# define OPT_ARRAY_SIZE 7
+# define OPT_ARRAY_SIZE 11
 
+/*
+ * Cette structure, 1 par dir entry, contient toutes les datas utiles au tri
+ * et a l'affichage, ainsi que les addresses des entrees contigues et des
+ * sous-repertoires.
+ * TODO: Adapter pour pouvoir utiliser avec les fonctions de gestion de liste de
+ * la libft.
+*/
+typedef struct	s_de
+{
+	// Below are copies from dirent
+	ino_t					d_ino; // copy from dirent
+	__uint8_t				d_namelen; // copy from dirent
+	char d_name[255 + 1]	*d_name; // directory entry name, copy from dirent
+	// Below are copies from struct stat
+	mode_t					st_mode;
+	nlink_t					st_nlinks;
+	uid_t					st_uid;
+	gid_t					st_gid;
+	struct timespec			st_atimespec; // last access
+	struct timespec			st_mtimespec; // last modification
+	struct timespec			st_ctimespec; // last status change
+	off_t					st_size; // in bytes
+	// Below are custom variables
+	char					*prefix; // used to obtain file path
+	struct s_de				*next; // points to next dir entry at this level
+	struct s_de				*subdir; // only if this entry is a dir
+}				t_de;
+
+/*
 typedef struct	s_details
 {
 	int				isdir;
+	DIR				*dirstream; // directory stream
 	char			*name; // name of the directory
 	char			*path; // full path of the directory
 	struct dirent	*drnt;
@@ -34,6 +64,7 @@ typedef struct	s_details
 	int				ent_longest_name; // lenght, used for column output
 	t_list			*subdir;
 }				t_details;
+*/
 
 typedef struct	s_env
 {

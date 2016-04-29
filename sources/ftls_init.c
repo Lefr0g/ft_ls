@@ -52,12 +52,18 @@ int	ftls_init_env(t_env *e, int ac, char **av)
 	i = -1;
 	while (++i < OPT_ARRAY_SIZE)
 		e->supported_option[i] = ft_strnew(2);
-	e->supported_option[0][0] = 'l';
+	e->supported_option[0][0] = 'A';
 	e->supported_option[1][0] = 'R';
-	e->supported_option[2][0] = 'a';
-	e->supported_option[3][0] = 'r';
-	e->supported_option[4][0] = 't';
-	ft_strcpy(e->supported_option[5], "long");
+	e->supported_option[2][0] = 'S';
+	e->supported_option[3][0] = 'a';
+	e->supported_option[4][0] = 'f';
+	e->supported_option[5][0] = 'h';
+	e->supported_option[6][0] = 'i';
+	e->supported_option[7][0] = 'r';
+	e->supported_option[8][0] = 't';
+	e->supported_option[9][0] = 'l';
+//	ft_strcpy(e->supported_option[5], "long");
+//	e->supported_option[x][0] = 'G';
 	
 	if (ftls_parse_cli_args(e, ac, av))
 		exit(1);
@@ -70,7 +76,7 @@ int	ftls_init_details(t_details *d)
 	d->isdir = 0;
 	d->path = NULL;
 	d->drnt = NULL;
-	d->stt = NULL;
+//	d->stt = NULL;
 	d->subdir = NULL;
 	return (0);
 }
