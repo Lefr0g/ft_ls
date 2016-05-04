@@ -17,9 +17,10 @@ typedef struct	s_my_content
  * d'evaluation a utiliser (tri d'ints, tri lexicographique...)
  *
  * Algo tri:
- * 	- On part du premier element, et on parcour vers la droite
- * 	- Si la valeur de l'element en cours est inferieur au precedent, on revient vers
- * 	  la gauche
+ * 	- On part du deuxieme element, et on parcour vers la droite
+ * 	- Si la valeur de l'element en cours est inferieur au precedent
+ * 		- on detache l'element en cours
+ * 		- on parcour la liste vers la gauche
  * 	- Une fois a la bonne position, on insere l'element a sa place
  * 	- On revient au bout de la liste triee, et on considere le prochain element
  * 	- Ainsi de suite
@@ -36,6 +37,28 @@ int		ftls_sort_list(t_list **alst, int content_offset)
 
 	if (!alst || !(*alst) || !(*alst)->next)
 		return (1); // exit if pointer error or single element in list
+
+
+	ref_ptr = *alst;
+	run_ptr = ref_ptr->next;
+	while (run_ptr)
+	{
+		if (*(int*)(run_ptr->content + content_offset) < 
+				*(int*)(ref_ptr->content + content_offset))
+		{
+			// detacher l'element
+			run_ptr->prev->next = run_ptr->next;
+			run_ptr->next->prev = run_ptr->prev;
+			// lancer le parour vers la gauche
+			   // une fois en position, inserer l'element
+		}
+		else
+			run_ptr = run_ptr->next;
+	}
+
+
+// Foireux, a refaire
+/*
 	lst_first = *alst;
 	run_ptr = lst_first->next;
 
@@ -46,7 +69,8 @@ int		ftls_sort_list(t_list **alst, int content_offset)
 		pos_ptr = run_ptr->next;
 		while (ref_ptr)
 		{
-			ft_printf("run_ptr = %p, ref_ptr = %p\n", run_ptr, ref_ptr);
+			ft_printf("run_ptr = %p, ref_ptr = %p, alst = %p\n", run_ptr, ref_ptr,
+					*alst);
 			sleep(1);
 			ref_struct = ref_ptr->content;
 			if (*(int*)(ref_struct + content_offset) <=
@@ -63,12 +87,15 @@ int		ftls_sort_list(t_list **alst, int content_offset)
 				run_ptr->prev = NULL;
 				run_ptr->next = ref_ptr;
 				ref_ptr->prev = run_ptr;
+				ft_putstr("ref_ptr au bout.\n");
+				ref_ptr = NULL;
 			}
 			else
 				ref_ptr = ref_ptr->prev;
 		}
 		run_ptr = pos_ptr;
 	}
+*/
 	return (0);
 }
 
@@ -127,6 +154,7 @@ int		main(int ac, char **av)
 		ft_printf("raw = \"%s\", ", content_ptr->raw);
 		ft_printf("content_size = %d\n", lst_ptr->content_size);
 		lst_ptr = lst_ptr->next;
+		sleep(1);
 	}
 	return (0);
 }
