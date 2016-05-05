@@ -2,7 +2,7 @@
 
 make -C ../../libft
 clang -Wall -Werror -Wextra insert_sort.c -I ../../libft/includes -L ../../libft \
-	-lft -o a.out &&
-	printf "Compilation complete (-> a.out)\n"
-rm /tmp/a.out 2> /dev/null
-cp a.out /tmp
+	-lft -o sort.out &&
+	printf "Compilation complete (-> sort.out)\n"
+rm /tmp/sort.out 2> /dev/null
+cp sort.out /tmp

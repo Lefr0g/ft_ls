@@ -8,6 +8,49 @@ typedef struct	s_my_content
 	char		*raw;
 }				t_my_content;
 
+// Fonctions a coder pour la libft
+// 
+// void		ft_lstdetachone(t_list **alst, t_list *elem);
+// void		ft_lstinsertone(t_list *pos, t_list *elem);
+
+/*
+ * This function detaches an element from the list without deleting it.
+*/
+t_list	*ft_lstdetachone(t_list *elem)
+{
+	if (!elem)
+		return (NULL);
+	if (elem->prev)
+		elem->prev->next = elem->next;
+	if (elem->next)
+		elem->next->prev = elem->prev;
+	elem->prev = NULL;
+	elem->next = NULL;
+	return (elem);
+}
+
+/*
+ * This function inserts 'elem' right after the element pointed to by 'pos'.
+ * To insert an element at the head of the list, use ft_lstappend() instead.
+ */
+t_list	*ft_lstinsertright(t_list *elem, t_list *pos)
+{
+	if (!elem || !pos)
+		return (NULL);
+	if (pos->next)
+	{
+		pos->next->prev = elem;
+		elem->next = pos->next;
+	}
+	else
+		elem->next = NULL;
+	elem->prev = pos;
+	pos->next = elem;
+	return (elem);
+}
+
+
+
 /*
  * Cette fonction doit pouvoir realiser un tri par insersion sur la liste passee
  * en parametre, en utilisant comme critere l'element de la structure 'content'
@@ -27,75 +70,59 @@ typedef struct	s_my_content
 */
 int		ftls_sort_list(t_list **alst, int content_offset)
 {
+	(void)alst;
+	(void)content_offset;
+	
+	
 	t_list			*run_ptr; // list runner
 	t_list			*ref_ptr; // compared element pointer
 	t_list			*pos_ptr; // saves the pointer to the next element to be sorted
-	t_list			*lst_first; // list head pointer
-//	t_list			*lst_next; // points to next element to be sorted
-	t_my_content	*run_struct; // recipient for running element's structure
-	t_my_content	*ref_struct; // recipient for compared element's structure
+	t_list			*head_ptr; // list head pointer
 
 	if (!alst || !(*alst) || !(*alst)->next)
 		return (1); // exit if pointer error or single element in list
 
 
 	ref_ptr = *alst;
+	head_ptr = *alst;
 	run_ptr = ref_ptr->next;
 	while (run_ptr)
 	{
-		if (*(int*)(run_ptr->content + content_offset) < 
-				*(int*)(ref_ptr->content + content_offset))
+		if (*(int*)(ref_ptr->content + content_offset) > 
+				*(int*)(run_ptr->content + content_offset))
 		{
+			pos_ptr = run_ptr->next; // sauvegarde de la position pour reprise
 			// detacher l'element
-			run_ptr->prev->next = run_ptr->next;
-			run_ptr->next->prev = run_ptr->prev;
-			// lancer le parour vers la gauche
-			   // une fois en position, inserer l'element
+			if (!ft_lstdetachone(run_ptr))
+				return (0);
+
+			// lancer le parcour vers la gauche
+			while (ref_ptr)
+			{
+				// une fois en position, inserer l'element
+				if (*(int*)(ref_ptr->content + content_offset) < 
+				*(int*)(run_ptr->content + content_offset))
+				{
+					ft_lstinsertright(run_ptr, ref_ptr);
+					ref_ptr = NULL;
+				}
+				else
+				{
+					// inserer en tete de liste si aucune position ne convient
+					if (!(ref_ptr = ref_ptr->prev))
+						ft_lstappend(&head_ptr, run_ptr);
+				}
+			}
+			// on se repositionne au bout de la liste d'elements deja tries
+			run_ptr = pos_ptr;
+			ref_ptr = run_ptr->prev;
 		}
 		else
-			run_ptr = run_ptr->next;
-	}
-
-
-// Foireux, a refaire
-/*
-	lst_first = *alst;
-	run_ptr = lst_first->next;
-
-	while (run_ptr)
-	{
-		run_struct = run_ptr->content;
-		ref_ptr = run_ptr->prev;
-		pos_ptr = run_ptr->next;
-		while (ref_ptr)
 		{
-			ft_printf("run_ptr = %p, ref_ptr = %p, alst = %p\n", run_ptr, ref_ptr,
-					*alst);
-			sleep(1);
-			ref_struct = ref_ptr->content;
-			if (*(int*)(ref_struct + content_offset) <=
-					*(int*)(run_struct + content_offset))
-			{
-				ref_ptr->next->prev = run_ptr;
-				run_ptr->prev = ref_ptr;
-				run_ptr->next = ref_ptr->next;
-				ref_ptr->next = run_ptr;
-				// inserer l'element
-			}
-			if (!(ref_ptr->prev))
-			{
-				run_ptr->prev = NULL;
-				run_ptr->next = ref_ptr;
-				ref_ptr->prev = run_ptr;
-				ft_putstr("ref_ptr au bout.\n");
-				ref_ptr = NULL;
-			}
-			else
-				ref_ptr = ref_ptr->prev;
+			run_ptr = run_ptr->next;
+			ref_ptr = ref_ptr->next;
 		}
-		run_ptr = pos_ptr;
 	}
-*/
 	return (0);
 }
 
