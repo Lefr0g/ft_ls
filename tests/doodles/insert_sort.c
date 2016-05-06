@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   insert_sort.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/06 16:45:38 by amulin            #+#    #+#             */
+/*   Updated: 2016/05/06 17:05:13 by amulin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "libft_extra.h"
 
@@ -115,7 +127,7 @@ int		ftls_sort_list(t_list **alst, int content_offset)
 					// inserer en tete de liste si aucune position ne convient
 					if (!(ref_ptr = ref_ptr->prev))
 					{
-						ft_lstappend(&head_ptr, run_ptr);
+						ft_lstadd(alst, run_ptr);
 						ft_printf("Check : (elem appended)\n");
 					}
 				}
@@ -127,7 +139,7 @@ int		ftls_sort_list(t_list **alst, int content_offset)
 			else
 				ref_ptr = NULL;
 			ft_printf("Check 2\n");
-			sleep(1);
+//			sleep(1);
 		}
 		else
 		{
