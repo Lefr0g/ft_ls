@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/14 21:01:16 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/10 16:19:47 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ int	ftls_init_env(t_env *e, int ac, char **av)
 	return (0);
 }
 
-int	ftls_init_details(t_details *d)
+int	ftls_init_details(t_de *d)
 {
-	d->isdir = 0;
-	d->path = NULL;
-	d->drnt = NULL;
+//	d->isdir = 0;
+//	d->path = NULL;
+//	d->drnt = NULL;
 //	d->stt = NULL;
 	d->subdir = NULL;
 	return (0);

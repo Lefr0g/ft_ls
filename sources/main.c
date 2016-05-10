@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/14 19:56:16 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/10 16:18:36 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int		main(int ac, char **av)
 	int			i;
 	struct stat	*statbuf;
 	DIR			*dirstream;
-	t_details	*d;
+	t_de		*d;
 
 	statbuf = NULL;
 	dirstream = NULL;
@@ -128,7 +128,7 @@ int		main(int ac, char **av)
 	//******************************** WIP **********************************
 
 	// Allouer le contenu du premier element de la future liste
-	d = (t_details*)ft_memalloc(sizeof(t_details));
+	d = (t_de*)ft_memalloc(sizeof(t_de));
 
 	// Allouer le premier element de la liste
 	e.rep = ft_lstnew(d, sizeof(d));

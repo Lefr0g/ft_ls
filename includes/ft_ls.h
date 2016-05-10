@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/04/19 18:48:18 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/10 16:31:53 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,19 @@
 
 /*
  * Cette structure, 1 par dir entry, contient toutes les datas utiles au tri
- * et a l'affichage, ainsi que les addresses des entrees contigues et des
- * sous-repertoires.
- * TODO: Adapter pour pouvoir utiliser avec les fonctions de gestion de liste de
- * la libft.
+ * et a l'affichage.
+ * Si l'entree est un repertoire, 'subdir' pointe vers une liste nouvelle liste,
+ * contenant les entrees de ce sous-repertoire.
+ * Sinon, 'subdir' est NULL.
+ * Le parcours des entrees contenues dans un repertoire se fait a l'aide
+ * des pointeurs next ou prev de la t_list contenant cette structure.
 */
 typedef struct	s_de
 {
 	// Below are copies from dirent
 	ino_t					d_ino; // copy from dirent
 	__uint8_t				d_namelen; // copy from dirent
-	char d_name[255 + 1]	*d_name; // directory entry name, copy from dirent
+	char					d_name[255 + 1]; // directory entry name, from dirent
 	// Below are copies from struct stat
 	mode_t					st_mode;
 	nlink_t					st_nlinks;
@@ -45,7 +47,6 @@ typedef struct	s_de
 	off_t					st_size; // in bytes
 	// Below are custom variables
 	char					*prefix; // used to obtain file path
-	struct s_de				*next; // points to next dir entry at this level
 	struct s_de				*subdir; // only if this entry is a dir
 }				t_de;
 
@@ -94,7 +95,7 @@ typedef struct	s_env
 */
 int				ftls_parse_cli_args(t_env *e, int ac, char **av);
 int				ftls_init_env(t_env *e, int ac, char **av);
-int				ftls_init_details(t_details *d);
+int				ftls_init_details(t_de *d);
 int				ftls_free_all(t_env *e);
 
 /*
