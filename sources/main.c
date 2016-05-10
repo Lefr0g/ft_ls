@@ -99,8 +99,8 @@ int		main(int ac, char **av)
 	//	Allocation memoire et parsing des arguments
 	if (ftls_init_env(&e, ac, av))
 		return (1);
-
-
+/*
+	// ************************************************ POUR TEST
 	//	Verifier si le nom est un fichier	
 	ft_putstr("FT_ISFILE ******************************\n");
 	i = -1;
@@ -121,8 +121,18 @@ int		main(int ac, char **av)
 			ft_printf("%s is a directory\n", e.cli_notopt[i]);
 	}
 	ft_putchar('\n');
+	// ***********************************************************
+*/
 
 
+	// Check file or directory given in argument exists. Remove it from the
+	// stored 'cli_notopt' if not.
+	i = -1;
+	while (e.cli_notopt[++i])
+	{
+		if (!ft_isfile(e.cli_notopt[i], av[0], 1))
+			ft_strclr(e.cli_notopt[i]);
+	}
 
 
 	//******************************** WIP **********************************
