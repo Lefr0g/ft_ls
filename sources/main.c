@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/10 16:18:36 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/20 19:43:23 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int		ft_isfile(char *path, char *progname, int verbose)
 	}
 	else
 		ret = 1;
-//	ft_printf("ret = %d\n", ret);
 	return (ret);
 }
 
@@ -55,13 +54,18 @@ int		ft_isfile(char *path, char *progname, int verbose)
  *		- Recuperer la liste des options
  *		- Recupere la liste des non-options
  *	- Le nom donne en argument est-il un dir ?
- *		- Si oui, opendir sur 'nom'
- *			- Boucle readdir, allouer un nouvel element de liste par dirent
- *			- Trier la liste obtenue selon les options passees via CLI
- *			- 
- *		- Si non, opendir sur '.' et rechercher ce nom dans les retours readdir
- *			- Si trouve, afficher fichier
- *			- Sinon, afficher not found 
+ *		- Si oui, stat sur 'nom'
+ *			- Si trouve, creer element dans liste racine
+ *				- Opendir sur nom, puis boucle readdir pour allouer 
+ *				un nouvel element de sudir par dirent
+ *			- Sinon, afficher No such file or directory
+ *		- Si non, stat sur le nom du fichier
+ *			- Si trouve, creer element dans la liste racine
+ *			- Sinon, afficher No such file or directory
+ *	- Repeter pour chaque argument
+ *	- Trier liste racine, mettre les simples fichiers en tete.
+ *	- Trier les sous-listes pour les dirs
+ *	- Afficher.
  *
  *
  *
@@ -69,8 +73,7 @@ int		ft_isfile(char *path, char *progname, int verbose)
  *	- Initialiser env
  *	- Parser args du CLI
  *	- Parcourir les non-options, tester chacun si dir ou non
- *	- Si non dir, opendir sur le dossier parent et obtenir les infos via readdir et
- *	  lstat
+ *	- Si non dir, obtenir les infos via lstat
  *	- Si dir, allouer un premier element de liste
  *		- Copier les infos de dirent et de lstat dans la structure data
  *		- Si l'une des entites est un dir, allouer un nouvel element de liste et
@@ -80,90 +83,87 @@ int		ft_isfile(char *path, char *progname, int verbose)
  *	  en parametre
  *	- Afficher le resultat suivant les options passees en parametre
  *
- *  => total : 3 parcours de l'arborescence
- *
 */
 
 int		main(int ac, char **av)
 {
 	t_env	e;
 
+//	struct stat	*statbuf;
+//	DIR			*dirstream;
 	int			i;
-	struct stat	*statbuf;
-	DIR			*dirstream;
-	t_de		*d;
 
-	statbuf = NULL;
-	dirstream = NULL;
+//	statbuf = NULL;
+//	dirstream = NULL;
 
 	//	Allocation memoire et parsing des arguments
 	if (ftls_init_env(&e, ac, av))
 		return (1);
-/*
-	// ************************************************ POUR TEST
-	//	Verifier si le nom est un fichier	
-	ft_putstr("FT_ISFILE ******************************\n");
-	i = -1;
-	while (e.cli_notopt[++i])
-	{
-		if (ft_isfile(e.cli_notopt[i], av[0], 1))
-			ft_printf("%s is a file\n", e.cli_notopt[i]);
-	}
-	ft_putchar('\n');
 
-	//	Verifier si le nom est un repertoire
-	ft_putstr("FT_ISDIR ******************************\n");
-	i = -1;
-	while (e.cli_notopt[++i])
-	{
-//		ft_printf("ft_isdir, run %d\n", i);
-		if (ft_isdir(e.cli_notopt[i], av[0], 1))
-			ft_printf("%s is a directory\n", e.cli_notopt[i]);
-	}
-	ft_putchar('\n');
-	// ***********************************************************
-*/
-
-
-	// Check file or directory given in argument exists. Remove it from the
-	// stored 'cli_notopt' if not.
-	i = -1;
-	while (e.cli_notopt[++i])
-	{
-		if (!ft_isfile(e.cli_notopt[i], av[0], 1))
-			ft_strclr(e.cli_notopt[i]);
-	}
-
+	ftls_debug_show_args(&e);
 
 	//******************************** WIP **********************************
 
-	// Allouer le contenu du premier element de la future liste
-	d = (t_de*)ft_memalloc(sizeof(t_de));
-
-	// Allouer le premier element de la liste
-	e.rep = ft_lstnew(d, sizeof(d));
-
-	//***********************************************************************
-
-
-
-
-	//	Verification du classement des arguments par le parseur
-	ft_putstr("\nPrinting sorted program arguments:\n");
-	ft_putstr(">>> Options:\n");
-	i = -1;
-	while (e.cli_option[++i])
-	{
-		ft_printf("\tOption %d = %s\n", i, e.cli_option[i]);
-	}
-	ft_putstr(">>> Files, directories or bad arguments:\n");
 	i = -1;
 	while (e.cli_notopt[++i])
 	{
-		ft_printf("\tNon-option %d = %s\n", i, e.cli_notopt[i]);
+		ftls_add_entry(&(e.lst), e.cli_notopt[i], NULL);
 	}
+	//***********************************************************************
 
-	//	Liberation memoire
+	ft_printf("List address = %p. Printing list content :\n", e.lst);
+	ft_putendl("************************************************************");
+	ftls_debug_show_list(e.lst);
+
+//	Liberation memoire
 	ftls_free_all(&e);
 	return (0);
+}
+
+/*
+** WIP
+*/
+void	ftls_add_entry(t_list **alst, char *name, char *prefix)
+{
+	t_de		*entry;
+	struct stat	statbuf;
+	char		*path;
+	t_list		*ptr_check;
+
+	ptr_check = NULL;
+
+	if (ft_strlen(name) > 255)
+		exit(1);
+
+	entry = (t_de*)ft_memalloc(sizeof(t_de));
+	if (prefix)
+		path = ft_strjoin(prefix, name);
+	else
+		path = ft_strdup(name);
+	if (lstat(path, &statbuf))
+		exit(2);
+	ft_strdel(&path);
+
+	entry->d_ino = statbuf.st_ino;
+
+	entry->d_namelen = ft_strlen(name);
+	ft_strcpy(entry->d_name, name);
+	
+	entry->st_mode = statbuf.st_mode;
+	entry->st_nlink = statbuf.st_nlink;
+	entry->st_uid = statbuf.st_uid;
+	entry->st_gid = statbuf.st_gid;
+	entry->st_atimespec = statbuf.st_atimespec;
+	entry->st_mtimespec = statbuf.st_mtimespec;
+	entry->st_ctimespec = statbuf.st_ctimespec;
+	entry->st_size = statbuf.st_size;
+
+	if (prefix)
+		entry->prefix = ft_strdup(prefix);
+
+	ptr_check = ft_lstnew(entry, sizeof(t_de));
+	if (*alst)
+		ft_lstadd(alst, ptr_check);
+	else
+		*alst = ptr_check;
 }

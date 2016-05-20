@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/10 16:31:53 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/20 19:10:02 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@
 /*
  * Cette structure, 1 par dir entry, contient toutes les datas utiles au tri
  * et a l'affichage.
- * Si l'entree est un repertoire, 'subdir' pointe vers une liste nouvelle liste,
- * contenant les entrees de ce sous-repertoire.
+ * Si l'entree est un repertoire a afficher OU l'option -R a ete donnee,
+ * 'subdir' pointe vers une liste nouvelle liste contenant les entrees de
+ * ce sous-repertoire.
  * Sinon, 'subdir' est NULL.
  * Le parcours des entrees contenues dans un repertoire se fait a l'aide
  * des pointeurs next ou prev de la t_list contenant cette structure.
@@ -38,7 +39,7 @@ typedef struct	s_de
 	char					d_name[255 + 1]; // directory entry name, from dirent
 	// Below are copies from struct stat
 	mode_t					st_mode;
-	nlink_t					st_nlinks;
+	nlink_t					st_nlink;
 	uid_t					st_uid;
 	gid_t					st_gid;
 	struct timespec			st_atimespec; // last access
@@ -69,7 +70,7 @@ typedef struct	s_details
 
 typedef struct	s_env
 {
-	t_list			*rep;
+	t_list			*lst;
 	char			*progname;
 	char			*supported_option[OPT_ARRAY_SIZE];
 	char			**cli_option;
@@ -102,6 +103,10 @@ int				ftls_free_all(t_env *e);
 ** main.c
 */
 //void			ftls_exit_on_error(t_env *e, char *arg, int errnum);
+int				ft_isdir(char *path, char *progname, int verbose);
+int				ft_isfile(char *path, char *progname, int verbose);
+
+void			ftls_add_entry(t_list **alst, char *name, char *prefix);
 
 /*
 ** ftls_misc.c
@@ -115,5 +120,11 @@ void			ftls_decode_mode(mode_t st_mode);
 */
 void			ftls_print_usage_stderr(t_env *e);
 void			ftls_print_error_illegal_option(char *progname, char option);
+
+/*
+** ftls_debug.c
+*/
+void			ftls_debug_show_args(t_env *e);
+void			ftls_debug_show_list(t_list *lst);
 
 #endif

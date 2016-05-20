@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/10 16:19:47 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/20 17:33:51 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 	i = 0;
 	j = -1;
 	while (++i < ac)
-		if (buf[i][0])
+		if (buf[i][0] && ft_isfile(buf[i], e->progname, 1))
 			if (!(e->cli_notopt[++j] = ft_strdup(buf[i])))
 				return (1);
 	ft_strarray_del(&buf);
@@ -44,6 +44,7 @@ int	ftls_init_env(t_env *e, int ac, char **av)
 {
 	int		i;
 
+	ft_bzero(e, sizeof(*e));
 	if (!(e->progname = ft_strdup(av[0])))
 	{
 		ft_print_error(av[0], NULL, errno);
@@ -89,9 +90,9 @@ int	ftls_free_all(t_env *e)
 	ft_strdel(&(e->progname));
 	while (++i < OPT_ARRAY_SIZE)
 		ft_strdel(&(e->supported_option[i]));
-	ft_printf("Deleting e->cli_option\n");
+//	ft_printf("Deleting e->cli_option\n");
 	ft_strarray_del(&(e->cli_option));
-	ft_printf("Deleting e->cli_notopt\n");
+//	ft_printf("Deleting e->cli_notopt\n");
 	ft_strarray_del(&(e->cli_notopt));
 	ft_printf("ftls_free_all completed\n");
 
