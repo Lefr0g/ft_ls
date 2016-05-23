@@ -17,6 +17,19 @@
 # include "libft_extra.h"
 # include <dirent.h>
 
+# ifdef __APPLE__
+#  define TIME_TYPE struct timespec
+#  define ATIME	st_atimespec
+#  define MTIME	st_mtimespec
+#  define CTIME	st_atimespec
+# elif __linux__
+#  define TIME_TYPE time_t
+#  define ATIME	st_atime
+#  define MTIME	st_mtime
+#  define CTIME	st_atime
+# endif
+
+
 # include <sys/stat.h>
 
 # define OPT_ARRAY_SIZE 11
@@ -42,9 +55,12 @@ typedef struct	s_de
 	nlink_t					st_nlink;
 	uid_t					st_uid;
 	gid_t					st_gid;
-	struct timespec			st_atimespec; // last access
-	struct timespec			st_mtimespec; // last modification
-	struct timespec			st_ctimespec; // last status change
+	TIME_TYPE				st_atimespec; // last access
+	TIME_TYPE				st_mtimespec; // last modification
+	TIME_TYPE				st_ctimespec; // last status change
+//	struct timespec			st_atimespec; // last access
+//	struct timespec			st_mtimespec; // last modification
+//	struct timespec			st_ctimespec; // last status change
 	off_t					st_size; // in bytes
 	// Below are custom variables
 	char					*prefix; // used to obtain file path
@@ -107,6 +123,7 @@ int				ft_isdir(char *path, char *progname, int verbose);
 int				ft_isfile(char *path, char *progname, int verbose);
 
 void			ftls_add_entry(t_list **alst, char *name, char *prefix);
+void			test_elemdel(void *ptr, size_t size);
 
 /*
 ** ftls_misc.c

@@ -115,6 +115,13 @@ int		main(int ac, char **av)
 	ft_putendl("************************************************************");
 	ftls_debug_show_list(e.lst);
 
+	ft_printf("\nDeleting one element...");
+	ft_lstdelone(&(e.lst), &test_elemdel);
+	ft_printf(" Done\n");
+
+	ft_putendl("************************************************************");
+	ftls_debug_show_list(e.lst);
+
 //	Liberation memoire
 	ftls_free_all(&e);
 	return (0);
@@ -153,9 +160,9 @@ void	ftls_add_entry(t_list **alst, char *name, char *prefix)
 	entry->st_nlink = statbuf.st_nlink;
 	entry->st_uid = statbuf.st_uid;
 	entry->st_gid = statbuf.st_gid;
-	entry->st_atimespec = statbuf.st_atimespec;
-	entry->st_mtimespec = statbuf.st_mtimespec;
-	entry->st_ctimespec = statbuf.st_ctimespec;
+	entry->st_atimespec = statbuf.ATIME;
+	entry->st_mtimespec = statbuf.MTIME;
+	entry->st_ctimespec = statbuf.CTIME;
 	entry->st_size = statbuf.st_size;
 
 	if (prefix)
@@ -166,4 +173,10 @@ void	ftls_add_entry(t_list **alst, char *name, char *prefix)
 		ft_lstadd(alst, ptr_check);
 	else
 		*alst = ptr_check;
+}
+
+void	test_elemdel(void *ptr, size_t size)
+{
+	ft_bzero(ptr, size);
+	ft_memdel(&ptr);
 }

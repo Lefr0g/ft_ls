@@ -12,7 +12,7 @@
 
 OS_NAME = $(shell uname -s)
 ifeq ($(OS_NAME),Linux)
-	CC = gcc
+	CC = clang
 endif
 ifeq ($(OS_NAME),Darwin)
 	CC = clang
@@ -63,8 +63,8 @@ all: libft $(NAME)
 	
 $(NAME): $(LIBFT_REAL) $(SOURCES) $(HEADERS)
 	@printf "$(UICEPTION)$(UIWAIT) Compiling $(NAME)"
-	@$(CC) $(FLAGS) -I $(INCLUDIR) -I $(LFTINCLUDIR) -L $(LFTDIR) \
-		-lft $(SOURCES) -o $(NAME)
+	@$(CC) $(FLAGS) $(SOURCES) -I $(INCLUDIR) -I $(LFTINCLUDIR) -L $(LFTDIR) \
+		-lft -o $(NAME)
 	@printf " $(UIOK)\n"
 
 $(LIBFT_REAL): libft

@@ -96,5 +96,6 @@ int	ftls_free_all(t_env *e)
 	ft_strarray_del(&(e->cli_notopt));
 	ft_printf("ftls_free_all completed\n");
 
+
 	return (0);
 }
