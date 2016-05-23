@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 19:05:23 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/23 20:32:05 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 # include <sys/stat.h>
 
-# define OPT_ARRAY_SIZE 11
+# define OPT_ARRAY_SIZE 12
 
 /*
  * Cette structure, 1 par dir entry, contient toutes les datas utiles au tri
@@ -98,7 +98,7 @@ typedef struct	s_env
 	char			sort_size; // (for -S)
 	char			sort_time_mod; // (for -t)
 	char			human; // (for -h)
-	char			color; // (for -G) (pas sur, semble trop time-consuming)
+//	char			color; // (for -G) (pas sur, semble trop time-consuming)
 	char			showinode; // (for -i)
 	char			showlist; // (for -l)
 	char			oneperline; // (for -1)
@@ -124,10 +124,11 @@ int				ft_isfile(char *path, char *progname, int verbose);
 /*
 ** ftls_list.c
 */
-void			ftls_add_entry(t_list **alst, char *progname, char *name,
+void			ftls_add_entry(t_list **alst, t_env *e, char *name,
 		char *prefix);
 void			ftls_copy_details(t_de *dst, struct stat *src, char *name,
 		char *prefix);
+void			ftls_manage_subdir(t_list *current, t_list **subdir, t_env *e);
 void			test_elemdel(void *ptr, size_t size);
 
 /*

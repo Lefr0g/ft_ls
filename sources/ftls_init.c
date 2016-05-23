@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 19:08:27 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/23 19:25:49 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	ftls_init_env(t_env *e, char **av)
 	e->supported_option[7][0] = 'r';
 	e->supported_option[8][0] = 't';
 	e->supported_option[9][0] = 'l';
+	e->supported_option[10][0] = '1';
 //	ft_strcpy(e->supported_option[5], "long");
 //	e->supported_option[x][0] = 'G';
 	
@@ -98,6 +99,7 @@ int	ftls_init_options(t_env *e)
 		e->reverse = (c == 'r') ? 1 : e->reverse;
 		e->sort_time_mod = (c == 't') ? 1 : e->sort_time_mod;
 		e->showlist = (c == 'l') ? 1 : e->showlist;
+		e->oneperline = (c == '1') ? 1 : e->oneperline;
 	}
 	return (0);
 }

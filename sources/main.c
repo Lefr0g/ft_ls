@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 19:10:26 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/23 21:20:00 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,18 @@ int		main(int ac, char **av)
 	ftls_init_options(&e);
 
 	ftls_debug_show_args(&e);
+	ftls_debug_show_options(&e);
 
 	//******************************** WIP **********************************
 
 	// Remplissage de la liste e.lst avec les fichiers valides passes en args
 	i = -1;
 	while (e.cli_notopt[++i])
-		ftls_add_entry(&(e.lst), e.progname, e.cli_notopt[i], NULL);
+		ftls_add_entry(&(e.lst), &e, e.cli_notopt[i], NULL);
 	//***********************************************************************
 
-//	ftls_debug_show_list(e.lst);
+	ftls_debug_show_list(e.lst);
 
-	ftls_debug_show_options(&e);
 
 //	Liberation memoire
 	ftls_free_all(&e);
