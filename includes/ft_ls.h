@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 16:00:07 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/23 19:05:23 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@
 */
 typedef struct	s_de
 {
-	// Below are copies from dirent
-	ino_t					d_ino; // copy from dirent
-	__uint8_t				d_namelen; // copy from dirent
-	char					d_name[255 + 1]; // directory entry name, from dirent
+	// Below values should match return from dirent
+	ino_t					d_ino;
+	__uint8_t				d_namelen;
+	char					d_name[255 + 1];
 	// Below are copies from struct stat
 	mode_t					st_mode;
 	nlink_t					st_nlink;
@@ -58,13 +58,10 @@ typedef struct	s_de
 	TIME_TYPE				st_atimespec; // last access
 	TIME_TYPE				st_mtimespec; // last modification
 	TIME_TYPE				st_ctimespec; // last status change
-//	struct timespec			st_atimespec; // last access
-//	struct timespec			st_mtimespec; // last modification
-//	struct timespec			st_ctimespec; // last status change
 	off_t					st_size; // in bytes
 	// Below are custom variables
 	char					*prefix; // used to obtain file path
-	struct s_de				*subdir; // only if this entry is a dir
+	t_list					*subdir; // only if this entry is a dir
 }				t_de;
 
 /*
@@ -111,8 +108,9 @@ typedef struct	s_env
 ** ftls_init.c
 */
 int				ftls_parse_cli_args(t_env *e, int ac, char **av);
-int				ftls_init_env(t_env *e, int ac, char **av);
+int				ftls_init_env(t_env *e, char **av);
 int				ftls_init_details(t_de *d);
+int				ftls_init_options(t_env *e);
 int				ftls_free_all(t_env *e);
 
 /*
@@ -122,7 +120,14 @@ int				ftls_free_all(t_env *e);
 int				ft_isdir(char *path, char *progname, int verbose);
 int				ft_isfile(char *path, char *progname, int verbose);
 
-void			ftls_add_entry(t_list **alst, char *name, char *prefix);
+
+/*
+** ftls_list.c
+*/
+void			ftls_add_entry(t_list **alst, char *progname, char *name,
+		char *prefix);
+void			ftls_copy_details(t_de *dst, struct stat *src, char *name,
+		char *prefix);
 void			test_elemdel(void *ptr, size_t size);
 
 /*
@@ -143,5 +148,6 @@ void			ftls_print_error_illegal_option(char *progname, char option);
 */
 void			ftls_debug_show_args(t_env *e);
 void			ftls_debug_show_list(t_list *lst);
+void			ftls_debug_show_options(t_env *e);
 
 #endif

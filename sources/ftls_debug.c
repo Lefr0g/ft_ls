@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 16:45:05 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/23 18:45:31 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	ftls_debug_show_list(t_list *lst)
 	int		i;
 	t_de	*content;
 
+	ft_putendl("************************************************************");
+	ft_printf("Printing list content. List address = %p :\n", lst);
 	i = 0;
 	while (lst)
 	{
@@ -58,4 +60,19 @@ void	ftls_debug_show_list(t_list *lst)
 		lst = lst->next;
 		i++;
 	}
+}
+
+void	ftls_debug_show_options(t_env *e)
+{
+	ft_putendl("************************************************************");
+	ft_printf("Printing option flags :\n");
+	ft_printf("Showhidden %hhd\t\tShowspecial %hhd\n", e->showhidden,
+			e->showspecial);
+	ft_printf("Recursive %2hhd\t\tReverse %5hhd\n", e->recursive, e->reverse);
+	ft_printf("Sort_none %2hhd\t\tSort_size %3hhd\t\tSort_time_mod %hhd\n",
+			e->sort_none, e->sort_size, e->sort_time_mod);
+	ft_printf("Human %6hhd\t\tColor %7hhd\n", e->human, e->color);
+	ft_printf("Showinode %2hhd\t\tShowlist %4hhd\t\tOneperline %4hhd\n",
+			e->showinode, e->showlist, e->oneperline);
+	ft_putendl("************************************************************");
 }

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 16:28:35 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/23 19:08:27 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 	return (0);
 }
 
-int	ftls_init_env(t_env *e, int ac, char **av)
+int	ftls_init_env(t_env *e, char **av)
 {
 	int		i;
 
@@ -48,7 +48,7 @@ int	ftls_init_env(t_env *e, int ac, char **av)
 	if (!(e->progname = ft_strdup(av[0])))
 	{
 		ft_print_error(av[0], NULL, errno);
-		exit(1);
+		return (1);
 	}
 	i = -1;
 	while (++i < OPT_ARRAY_SIZE)
@@ -66,9 +66,6 @@ int	ftls_init_env(t_env *e, int ac, char **av)
 //	ft_strcpy(e->supported_option[5], "long");
 //	e->supported_option[x][0] = 'G';
 	
-	if (ftls_parse_cli_args(e, ac, av))
-		exit(1);
-
 	return (0);
 }
 
@@ -78,7 +75,30 @@ int	ftls_init_details(t_de *d)
 //	d->path = NULL;
 //	d->drnt = NULL;
 //	d->stt = NULL;
+	d->prefix = NULL;
 	d->subdir = NULL;
+	return (0);
+}
+
+int	ftls_init_options(t_env *e)
+{
+	int		i;
+	char	c;
+
+	i = -1;
+	while (e->cli_option[++i] && (c = e->cli_option[i][0]))
+	{
+		e->showhidden = (c == 'A') ? 1 : e->showhidden;
+		e->recursive = (c == 'R') ? 1 : e->recursive;
+		e->sort_size = (c == 'S') ? 1 : e->sort_size;
+		e->showspecial = (c == 'a') ? 1 : e->showspecial;
+		e->sort_none = (c == 'f') ? 1 : e->sort_none;
+		e->human = (c == 'h') ? 1 : e->human;
+		e->showinode = (c == 'i') ? 1 : e->showinode;
+		e->reverse = (c == 'r') ? 1 : e->reverse;
+		e->sort_time_mod = (c == 't') ? 1 : e->sort_time_mod;
+		e->showlist = (c == 'l') ? 1 : e->showlist;
+	}
 	return (0);
 }
 
