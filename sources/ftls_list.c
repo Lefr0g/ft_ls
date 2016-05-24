@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/24 13:00:29 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/24 15:55:57 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	if (lstat(path, &statbuf))
 	{
 		ft_print_error(e->progname, path, errno);
+		ft_printf("(Error from lstat)\n");
 		exit(2);
 	}
 	ft_strdel(&path);
@@ -43,7 +44,14 @@ void	ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	else
 		*alst = lst_ptr;
 
-	// WIP
+
+
+	// TODO
+	// Ajouter ici (en amont de la recursivite) les fonctions pour :
+	// 		- Tri
+	// 		- Affichage
+	// 		- Suppression
+	
 	ftls_manage_subdir(lst_ptr, &((t_de*)(lst_ptr->content))->subdir, e);
 
 }
@@ -55,31 +63,40 @@ void	ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 ** This function fills the subdir list whenever and only if needed.
 ** It contains the trigger for recursive population of dir lists.
 */
-void	ftls_manage_subdir(t_list *current, t_list **subdir, t_env *e)
+int		ftls_manage_subdir(t_list *current, t_list **subdir, t_env *e)
 {
 	t_de			*d;
 	DIR 			*dirstream;
 	struct dirent	*dirent;
 	char			*prefix;
+	char			*path;
 
 	d = current->content;
-	if ((!d->prefix || e->recursive) && (d->st_mode & S_IFDIR) == S_IFDIR)
+	if ((d->st_mode & S_IFDIR) == S_IFDIR && (!d->prefix || (e->recursive &&
+					ft_strcmp(d->d_name, ".") && ft_strcmp(d->d_name, ".."))))
 	{
-		if (!(dirstream = opendir(d->d_name)))
+		if (d->prefix)
+			path = ft_strjoin(d->prefix, d->d_name);
+		else
+			path = ft_strdup(d->d_name);
+		if (!(dirstream = opendir(path)))
 		{
 			ft_print_error(e->progname, d->d_name, errno);
-			exit(1);
+			ft_printf("(Error from opendir)\n");
+			return (1);
 		}
-		prefix = ft_strjoin(d->d_name, "/");
+		prefix = ft_strjoin(path, "/");
+		ft_strdel(&path);
 		while ((dirent = readdir(dirstream)))
 			ftls_add_entry(subdir, e, dirent->d_name, prefix);
 		ft_strdel(&prefix);
 		if (closedir(dirstream))
 		{
 			ft_print_error(e->progname, d->d_name, errno);
-			exit(1);
+			return (1);
 		}
 	}
+	return (0);
 }
 
 /*

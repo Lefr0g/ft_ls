@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 21:07:55 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/24 15:23:07 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ void	ftls_debug_show_list(t_list *lst)
 	{
 		content = lst->content;
 		ft_printf("List elem %d, inode = %d\n", i, content->d_ino);
-		ft_printf("Name = %s, namelen = %d\n", content->d_name, content->d_namelen);
+		ft_printf("Name = \033[32m%s\033[0m, namelen = %d\n",
+				content->d_name, content->d_namelen);
 		ft_printf("Size = %d\n", content->st_size);
-		ft_printf("Prefix = %s\n", content->prefix);
+		ft_printf("Prefix = \033[34m%s\033[0m\n", content->prefix);
 		ft_printf("Mode = %b\n", content->st_mode);
 		ft_printf("nlink = %d\n", content->st_nlink);
 		ft_printf("uid = %d\n", content->st_uid);
