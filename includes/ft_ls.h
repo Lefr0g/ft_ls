@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/24 15:39:53 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/24 20:09:43 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,20 @@
 
 # include <sys/stat.h>
 
+# include <sys/xattr.h>
+# include <sys/acl.h>
+# include <pwd.h>
+# include <grp.h>
+# include <time.h>
+
+// Optional ?
+# include <sys/types.h>
+# include <uuid/uuid.h>
+
 # define OPT_ARRAY_SIZE 12
+
+// Disable the following for a clean Valgrind report
+# define LEAKY_STDLIB_ENABLE 1
 
 /*
  * Cette structure, 1 par dir entry, contient toutes les datas utiles au tri
@@ -62,6 +75,7 @@ typedef struct	s_de
 	// Below are custom variables
 	char					*prefix; // used to obtain file path
 	t_list					*subdir; // only if this entry is a dir
+	t_list					*parent; // only if this entry is a subdir
 }				t_de;
 
 /*
@@ -124,7 +138,7 @@ int				ft_isfile(char *path, char *progname, int verbose);
 /*
 ** ftls_list.c
 */
-void			ftls_add_entry(t_list **alst, t_env *e, char *name,
+int				ftls_add_entry(t_list **alst, t_env *e, char *name,
 		char *prefix);
 void			ftls_copy_details(t_de *dst, struct stat *src, char *name,
 		char *prefix);
@@ -137,6 +151,11 @@ void			ftls_elemdel(void *ptr, size_t size);
 void			ftls_decode_type(mode_t st_mode, char *out);
 void			ftls_decode_access_rights(mode_t st_mode, char *out);
 void			ftls_decode_mode(mode_t st_mode);
+
+/*
+** flts_print.c
+*/
+void			ftls_quick_ll(t_env *e, t_de *d);
 
 /*
 ** ftls_error.c
