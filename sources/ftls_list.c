@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 21:22:10 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/24 13:00:29 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,15 @@ void	ftls_copy_details(t_de *dst, struct stat *src, char *name, char *prefix)
 }
 
 /*
-** TODO : fix read error
+** This function is designed for use as a parameter for ft_lstdel()
 */
-void	test_elemdel(void *ptr, size_t size)
+void	ftls_elemdel(void *ptr, size_t size)
 {
 	t_de	*d;
 
-	d = ((t_list*)ptr)->content;
+	d = (t_de*)ptr;
 	if (d->subdir)
-		ft_lstdel(&(d->subdir), &test_elemdel);
+		ft_lstdel(&(d->subdir), &ftls_elemdel);
 	if (d->prefix)
 		ft_strdel(&d->prefix);
 	ft_bzero(ptr, size);

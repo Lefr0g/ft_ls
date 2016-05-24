@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 19:25:49 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/24 12:59:37 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ int	ftls_free_all(t_env *e)
 //	ft_printf("Deleting e->cli_notopt\n");
 	ft_strarray_del(&(e->cli_notopt));
 
-	ft_lstdel(&(e->lst), &test_elemdel);
+//	ft_printf("Launching list deletion process...\n");
+	ft_lstdel(&(e->lst), &ftls_elemdel);
 
 	ft_printf("ftls_free_all completed\n");
 

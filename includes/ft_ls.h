@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/23 20:32:05 by amulin           ###   ########.fr       */
+/*   Updated: 2016/05/24 13:00:08 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void			ftls_add_entry(t_list **alst, t_env *e, char *name,
 void			ftls_copy_details(t_de *dst, struct stat *src, char *name,
 		char *prefix);
 void			ftls_manage_subdir(t_list *current, t_list **subdir, t_env *e);
-void			test_elemdel(void *ptr, size_t size);
+void			ftls_elemdel(void *ptr, size_t size);
 
 /*
 ** ftls_misc.c
