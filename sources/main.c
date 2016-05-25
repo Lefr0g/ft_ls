@@ -102,9 +102,26 @@ int		main(int ac, char **av)
 	//******************************** WIP **********************************
 
 	// Remplissage de la liste e.lst avec les fichiers valides passes en args
-	i = -1;
-	while (e.cli_notopt[++i])
-		ftls_add_entry(&(e.lst), &e, e.cli_notopt[i], NULL);
+//	i = -1;
+//	while (e.cli_notopt[++i])
+//		ftls_add_entry(&(e.lst), &e, e.cli_notopt[i], NULL);
+
+	alloc list node;
+	if (!e->cli_notopt[0])
+	{
+		ftls_process_entry(&e, node->content->subdir, ".");
+	}
+	else
+	{
+		i = -1;
+		ftls_process_entry(&e, node->content->subdir, 1, e->cli_notopt[++i]);
+		while (e->cli_notopt[++i])
+		{
+			ftls_process_entry(&e, node);
+
+		}
+	}
+	
 	//***********************************************************************
 
 //	ftls_debug_show_list(e.lst);

@@ -47,7 +47,7 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	else
 		*alst = lst_ptr;
 
-	ftls_copy_navpointers(lst_ptr);  // experimental
+//	ftls_copy_navpointers(lst_ptr);  // experimental
 
 
 	// TODO
