@@ -62,3 +62,15 @@ void	ftls_decode_mode(mode_t st_mode)
 	ft_putstr(out);
 	ft_putstr("\033[0m");
 }
+
+int		ftls_get_terminal_width(t_env *e)
+{
+	struct ttysize	s_ttsz;
+
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &s_ttsz) == -1)
+	{
+		ft_print_error(e->progname, "ioctl()", errno);
+		return (-1);
+	}
+	return (s_ttsz.ts_cols);
+}

@@ -50,7 +50,7 @@ int		ft_isfile(char *path, char *progname, int verbose)
  *	Flow
  *	- Initialiser env
  *	- Parser les args de la fonction
- *		- Verifier que chaque option est valide (via libft)
+ *		- Verifier que chaque option est valide
  *		- Recuperer la liste des options
  *		- Recupere la liste des non-options
  *	- Le nom donne en argument est-il un dir ?
@@ -69,7 +69,7 @@ int		ft_isfile(char *path, char *progname, int verbose)
  *
  *
  *
- *	Comportement en mode recursif:
+ *	Algo scan recursif puis affichage:
  *	- Initialiser env
  *	- Parser args du CLI
  *	- Parcourir les non-options, tester chacun si dir ou non
@@ -106,18 +106,18 @@ int		main(int ac, char **av)
 //	while (e.cli_notopt[++i])
 //		ftls_add_entry(&(e.lst), &e, e.cli_notopt[i], NULL);
 
-	alloc list node;
-	if (!e->cli_notopt[0])
+//	alloc list node;
+	if (!e.cli_notopt[0])
 	{
-		ftls_process_entry(&e, node->content->subdir, ".");
+//		ftls_process_entry(&e, node->content->subdir, ".");
 	}
 	else
 	{
 		i = -1;
-		ftls_process_entry(&e, node->content->subdir, 1, e->cli_notopt[++i]);
-		while (e->cli_notopt[++i])
+//		ftls_process_entry(&e, node->content->subdir, 1, e->cli_notopt[++i]);
+		while (e.cli_notopt[++i])
 		{
-			ftls_process_entry(&e, node);
+//			ftls_process_entry(&e, node);
 
 		}
 	}
@@ -126,6 +126,7 @@ int		main(int ac, char **av)
 
 //	ftls_debug_show_list(e.lst);
 
+	ft_printf("Terminal width = %d\n", e.termwidth);
 
 //	Liberation memoire
 	ftls_free_all(&e);

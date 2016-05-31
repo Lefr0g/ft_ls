@@ -196,9 +196,9 @@ int		main(int ac, char **av)
 	ft_printf("decalage = %d\n", ((void*)&content_ptr->value - (void*)content_ptr));
 
 	lst_ptr = lst_first;	
-	ft_printf("lst_ptr = %p\n", lst_ptr);
+	ft_printf("Sorting list, lst_ptr (first) = %p\n", lst_ptr);
 	ftls_sort_list(&lst_ptr, ((void*)&content_ptr->value - (void*)content_ptr));
-	ft_printf("lst_ptr = %p\n", lst_ptr);
+	ft_printf("Sorting done, lst_ptr (first) = %p\n", lst_ptr);
 	while (lst_ptr)
 	{
 		content_ptr = lst_ptr->content;
@@ -206,7 +206,7 @@ int		main(int ac, char **av)
 		ft_printf("raw = \"%s\", ", content_ptr->raw);
 		ft_printf("content_size = %d\n", lst_ptr->content_size);
 		lst_ptr = lst_ptr->next;
-		sleep(1);
+//		sleep(1);
 	}
 	return (0);
 }

@@ -38,11 +38,15 @@
 # include <grp.h>
 # include <time.h>
 
+// Used to get terminal size
+# include <sys/ioctl.h>
+
 // Optional ?
 # include <sys/types.h>
 # include <uuid/uuid.h>
 
 # define OPT_ARRAY_SIZE 12
+# define LIST_MODE_COLUMNS 7
 
 // Disable the following for a clean Valgrind report
 # define LEAKY_STDLIB_ENABLE 1
@@ -73,27 +77,34 @@ typedef struct	s_de
 	TIME_TYPE				st_ctimespec; // last status change
 	off_t					st_size; // in bytes
 	// Below are custom variables
+	char					isdir; // bool
 	char					*prefix; // used to obtain file path
+	t_list					*carrier; // ptr to containing list element
 	t_list					*subdir; // only if this entry is a dir
 	t_list					*parent; // only if this entry is a subdir
 }				t_de;
 
+
 /*
-typedef struct	s_details
-{
-	int				isdir;
-	DIR				*dirstream; // directory stream
-	char			*name; // name of the directory
-	char			*path; // full path of the directory
-	struct dirent	*drnt;
-//	struct stat		*stt;
-	char			*ent_prefix; // to be added to 'names' to obtain entries paths
-	char			**ent_names; // names of the entries contained in DIR
-	int				ent_qtity; // number of entries in DIR
-	int				ent_longest_name; // lenght, used for column output
-	t_list			*subdir;
-}				t_details;
+** Nouvelle structure pour version optimisee. Pas de parcours de liste en profondeur
 */
+typedef struct	s_subdirent
+{
+	char					*name;
+	char					*prefix;
+
+	mode_t					st_mode;
+	nlink_t					st_nlink;
+	uid_t					st_uid;
+	gid_t					st_gid;
+	TIME_TYPE				st_atimespec; // last access
+	TIME_TYPE				st_mtimespec; // last modification
+	TIME_TYPE				st_ctimespec; // last status change
+	off_t					st_size; // in bytes
+
+}				t_subdirent;
+
+
 
 typedef struct	s_env
 {
@@ -116,6 +127,12 @@ typedef struct	s_env
 	char			showinode; // (for -i)
 	char			showlist; // (for -l)
 	char			oneperline; // (for -1)
+
+	//				I/O data for human readable and layout
+	int				termwidth;
+	int				maxcol[LIST_MODE_COLUMNS]; // longest string for each column (-l)
+	int				col_len; // longest string for normal output
+	int				totalblocks; // for -l
 }				t_env;
 
 /*
@@ -146,11 +163,17 @@ int				ftls_manage_subdir(t_list *current, t_list **subdir, t_env *e);
 void			ftls_elemdel(void *ptr, size_t size);
 
 /*
+** ftls_process.c
+*/
+int				ftls_process_entry(void);
+
+/*
 ** ftls_misc.c
 */
 void			ftls_decode_type(mode_t st_mode, char *out);
 void			ftls_decode_access_rights(mode_t st_mode, char *out);
 void			ftls_decode_mode(mode_t st_mode);
+int				ftls_get_terminal_width(t_env *e);
 
 /*
 ** flts_print.c

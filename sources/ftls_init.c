@@ -66,7 +66,7 @@ int	ftls_init_env(t_env *e, char **av)
 	e->supported_option[10][0] = '1';
 //	ft_strcpy(e->supported_option[5], "long");
 //	e->supported_option[x][0] = 'G';
-	
+	e->termwidth = ftls_get_terminal_width(e);
 	return (0);
 }
 
