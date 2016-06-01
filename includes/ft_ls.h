@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/24 20:09:43 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/01 19:21:48 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct	s_de
 /*
 ** Nouvelle structure pour version optimisee. Pas de parcours de liste en profondeur
 */
-typedef struct	s_subdirent
+typedef struct	s_entry
 {
 	char					*name;
 	char					*prefix;
@@ -102,7 +102,7 @@ typedef struct	s_subdirent
 	TIME_TYPE				st_ctimespec; // last status change
 	off_t					st_size; // in bytes
 
-}				t_subdirent;
+}				t_entry;
 
 
 
@@ -133,6 +133,9 @@ typedef struct	s_env
 	int				maxcol[LIST_MODE_COLUMNS]; // longest string for each column (-l)
 	int				col_len; // longest string for normal output
 	int				totalblocks; // for -l
+
+	//				Context data for main browsing / processing functions
+	int				isdir;
 }				t_env;
 
 /*
@@ -140,7 +143,8 @@ typedef struct	s_env
 */
 int				ftls_parse_cli_args(t_env *e, int ac, char **av);
 int				ftls_init_env(t_env *e, char **av);
-int				ftls_init_details(t_de *d);
+int				ftls_init_details(t_de *d); //OLD
+int				ftls_init_entry(t_entry *d);
 int				ftls_init_options(t_env *e);
 int				ftls_free_all(t_env *e);
 
@@ -156,16 +160,23 @@ int				ft_isfile(char *path, char *progname, int verbose);
 ** ftls_list.c
 */
 int				ftls_add_entry(t_list **alst, t_env *e, char *name,
-		char *prefix);
+		char *prefix);												// OLD
 void			ftls_copy_details(t_de *dst, struct stat *src, char *name,
-		char *prefix);
+		char *prefix);												// OLD
 int				ftls_manage_subdir(t_list *current, t_list **subdir, t_env *e);
 void			ftls_elemdel(void *ptr, size_t size);
+
+int				ftls_add_entry_v2(t_list **alst, t_env *e, char *name,
+		char *prefix);
+void			ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name,
+		char *prefix);
+
 
 /*
 ** ftls_process.c
 */
-int				ftls_process_entry(void);
+int				ftls_process_entry(t_env *e, char *name, char *prefix);
+int				ftls_process_argnames(t_env *e);
 
 /*
 ** ftls_misc.c
@@ -178,7 +189,8 @@ int				ftls_get_terminal_width(t_env *e);
 /*
 ** flts_print.c
 */
-void			ftls_quick_ll(t_env *e, t_de *d);
+void			ftls_quick_ll(t_env *e, t_de *d); 	// OLD
+void			ftls_quick_ll_v2(t_env *e, t_entry *d);
 
 /*
 ** ftls_error.c

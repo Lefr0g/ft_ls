@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/24 12:59:37 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/01 21:14:51 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,12 @@ int	ftls_init_details(t_de *d)
 	return (0);
 }
 
+int	ftls_init_entry(t_entry *ptr)
+{
+	ft_bzero(ptr, sizeof(t_entry));
+	return (0);
+}
+
 int	ftls_init_options(t_env *e)
 {
 	int		i;
@@ -118,9 +124,10 @@ int	ftls_free_all(t_env *e)
 	ft_strarray_del(&(e->cli_notopt));
 
 //	ft_printf("Launching list deletion process...\n");
-	ft_lstdel(&(e->lst), &ftls_elemdel);
+	if (e->lst)
+		ft_lstdel(&(e->lst), &ftls_elemdel);
 
-	ft_printf("ftls_free_all completed\n");
+//	ft_printf("ftls_free_all completed\n");
 
 
 	return (0);

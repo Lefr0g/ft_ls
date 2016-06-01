@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/24 19:43:02 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/01 21:14:17 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int		ft_isfile(char *path, char *progname, int verbose)
 int		main(int ac, char **av)
 {
 	t_env	e;
-	int		i;
 
 
 	//	Allocation memoire et parsing des arguments
@@ -96,8 +95,8 @@ int		main(int ac, char **av)
 		return (1);
 	ftls_init_options(&e);
 
-	ftls_debug_show_args(&e);
-	ftls_debug_show_options(&e);
+//	ftls_debug_show_args(&e);
+//	ftls_debug_show_options(&e);
 
 	//******************************** WIP **********************************
 
@@ -109,24 +108,25 @@ int		main(int ac, char **av)
 //	alloc list node;
 	if (!e.cli_notopt[0])
 	{
+		e.isdir = 1;
+		ftls_process_entry(&e, ".", NULL);
 //		ftls_process_entry(&e, node->content->subdir, ".");
 	}
 	else
-	{
-		i = -1;
+		ftls_process_argnames(&e);
+//	{
+//		i = -1;
 //		ftls_process_entry(&e, node->content->subdir, 1, e->cli_notopt[++i]);
-		while (e.cli_notopt[++i])
-		{
+//		while (e.cli_notopt[++i])
+//		{
 //			ftls_process_entry(&e, node);
-
-		}
-	}
+//		}
+//	}
 	
 	//***********************************************************************
 
 //	ftls_debug_show_list(e.lst);
 
-	ft_printf("Terminal width = %d\n", e.termwidth);
 
 //	Liberation memoire
 	ftls_free_all(&e);

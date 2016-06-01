@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/05/24 20:10:36 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/01 21:13:43 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,30 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 		ft_printf("%s:\n", name);
 
 	ftls_manage_subdir(lst_ptr, &((t_de*)(lst_ptr->content))->subdir, e);
+	return (0);
+}
+
+int		ftls_add_entry_v2(t_list **alst, t_env *e, char *name, char *prefix)
+{
+	struct stat	statbuf;
+	char		*path;
+	t_entry		entry;
+	t_list		*lst_ptr;
+
+	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
+	if (lstat(path, &statbuf))
+	{
+		ft_print_error(e->progname, path, errno);
+		ft_printf("(Error from lstat)\n");
+		return (1);
+	}
+	ft_strdel(&path);
+	ftls_copy_details_v2(&entry, &statbuf, name, prefix);
+	lst_ptr = ft_lstnew(&entry, sizeof(t_entry));
+	if (*alst)
+		ft_lstappend(alst, lst_ptr);
+	else
+		*alst = lst_ptr;
 	return (0);
 }
 
@@ -130,16 +154,34 @@ void	ftls_copy_details(t_de *dst, struct stat *src, char *name, char *prefix)
 		dst->prefix = ft_strdup(prefix);
 }
 
+void	ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name, char *prefix)
+{
+	ftls_init_entry(dst);
+	dst->name = ft_strdup(name);
+	dst->st_mode = src->st_mode;
+	dst->st_nlink = src->st_nlink;
+	dst->st_uid = src->st_uid;
+	dst->st_gid = src->st_gid;
+	dst->st_atimespec = src->ATIME;
+	dst->st_mtimespec = src->MTIME;
+	dst->st_ctimespec = src->CTIME;
+	dst->st_size = src->st_size;
+	if (prefix)
+		dst->prefix = ft_strdup(prefix);
+}
+
 /*
 ** This function is designed for use as a parameter for ft_lstdel()
 */
 void	ftls_elemdel(void *ptr, size_t size)
 {
-	t_de	*d;
+	t_entry	*d;
 
-	d = (t_de*)ptr;
-	if (d->subdir)
-		ft_lstdel(&(d->subdir), &ftls_elemdel);
+	d = (t_entry*)ptr;
+//	if (d->subdir)
+//		ft_lstdel(&(d->subdir), &ftls_elemdel);
+	if (d->name)
+		ft_strdel(&d->name);
 	if (d->prefix)
 		ft_strdel(&d->prefix);
 	ft_bzero(ptr, size);
