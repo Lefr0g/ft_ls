@@ -64,6 +64,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	t_list			*ptr;
 	DIR				*dir;
 	struct dirent	*my_dirent;
+	t_entry			*entptr;
 
 	subdir = NULL;
 	if (e->isdir)
@@ -77,9 +78,25 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	ptr = subdir;
 	while (ptr)
 	{
-		ftls_quick_ll_v2(e, ptr->content);
+		entptr = ptr->content;
+		if (ftls_is_entry_eligible(e, entptr))
+			ftls_quick_ll_v2(e, entptr);
+
 		if (e->recursive)
-			ftls_process_entry(e, ); /////
+		{
+			if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
+				e->isdir = 1;
+			else
+				e->isdir = 0;
+			if (e->isdir && !ftls_isnavdot(entptr->name))
+			{
+				ft_printf("ftls_process_entry | entptr->prefix = %s\n",
+						entptr->prefix);
+				ft_printf("\t\tname = %s\n", entptr->name);
+				ftls_process_entry(e, entptr->name, entptr->prefix);
+				ft_printf("PROCESS OK\n");
+			}
+		}
 		ptr = ptr->next;
 	}
 	return (0);
@@ -111,7 +128,7 @@ int		ftls_process_argnames(t_env *e)
 		if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
 		{
 			e->isdir = 1;
-			ftls_process_entry(e, entptr->name, entptr->prefix);
+			ftls_process_entry(e, entptr->name, NULL);
 		}
 		ptr = ptr->next;
 	}

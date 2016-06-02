@@ -74,3 +74,25 @@ int		ftls_get_terminal_width(t_env *e)
 	}
 	return (s_ttsz.ts_cols);
 }
+
+int		ftls_isnavdot(char *name)
+{
+	if (!ft_strcmp(name, ".") || !ft_strcmp(name, ".."))
+		return (1);
+	return (0);
+}
+
+/*
+ *	This function checks if the option set is compatible with the file name.
+ *	Flags managed by this funtion: -a -A
+*/
+int		ftls_is_entry_eligible(t_env *e, t_entry *entptr)
+{
+	// Test conditions de prise en compte des fichiers caches
+	if (entptr->name[0] != '.' || (entptr->name[0] == '.' &&
+				(e->show_all_nodot || e->show_all)))
+		if (entptr->name[0] != '.' || !(ftls_isnavdot(entptr->name)
+					&& (e->show_all_nodot)))
+			return (1);
+	return (0);
+}

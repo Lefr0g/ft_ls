@@ -95,15 +95,15 @@ int	ftls_init_options(t_env *e)
 	i = -1;
 	while (e->cli_option[++i] && (c = e->cli_option[i][0]))
 	{
-		e->showhidden = (c == 'A') ? 1 : e->showhidden;
+		e->show_all_nodot = (c == 'A') ? 1 : e->show_all_nodot;
 		e->recursive = (c == 'R') ? 1 : e->recursive;
 		e->sort_size = (c == 'S') ? 1 : e->sort_size;
-		e->showspecial = (c == 'a') ? 1 : e->showspecial;
+		e->show_all = (c == 'a') ? 1 : e->show_all;
 		e->sort_none = (c == 'f') ? 1 : e->sort_none;
 		e->human = (c == 'h') ? 1 : e->human;
 		e->showinode = (c == 'i') ? 1 : e->showinode;
 		e->reverse = (c == 'r') ? 1 : e->reverse;
-		e->sort_time_mod = (c == 't') ? 1 : e->sort_time_mod;
+		e->sort_timemod = (c == 't') ? 1 : e->sort_timemod;
 		e->showlist = (c == 'l') ? 1 : e->showlist;
 		e->oneperline = (c == '1') ? 1 : e->oneperline;
 	}

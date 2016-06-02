@@ -115,13 +115,13 @@ typedef struct	s_env
 	char			**cli_notopt;
 
 	//				Option flags:
-	char			showhidden; // starting with ., except . and .. (for -A)
-	char			showspecial; // . and .. (for -a)
+	char			show_all_nodot; // starting with . except "." and .. (for -A)
+	char			show_all; // All including "." and .. (for -a)
 	char			recursive; // (for -R)
 	char			reverse; // (for -r)
 	char			sort_none; // (for -f)
 	char			sort_size; // (for -S)
-	char			sort_time_mod; // (for -t)
+	char			sort_timemod; // (for -t)
 	char			human; // (for -h)
 //	char			color; // (for -G) (pas sur, semble trop time-consuming)
 	char			showinode; // (for -i)
@@ -185,6 +185,8 @@ void			ftls_decode_type(mode_t st_mode, char *out);
 void			ftls_decode_access_rights(mode_t st_mode, char *out);
 void			ftls_decode_mode(mode_t st_mode);
 int				ftls_get_terminal_width(t_env *e);
+int				ftls_isnavdot(char *name);
+int				ftls_is_entry_eligible(t_env *e, t_entry *entptr);
 
 /*
 ** flts_print.c

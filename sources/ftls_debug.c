@@ -68,14 +68,14 @@ void	ftls_debug_show_list(t_list *lst)
 void	ftls_debug_show_options(t_env *e)
 {
 	ft_putendl("************************************************************");
-	ft_printf("Printing option flags :\n");
-	ft_printf("Showhidden %hhd\t\tShowspecial %hhd\n", e->showhidden,
-			e->showspecial);
-	ft_printf("Recursive %2hhd\t\tReverse %5hhd\n", e->recursive, e->reverse);
-	ft_printf("Sort_none %2hhd\t\tSort_size %3hhd\t\tSort_time_mod %hhd\n",
-			e->sort_none, e->sort_size, e->sort_time_mod);
-	ft_printf("Human %6hhd\n", e->human);
-	ft_printf("Showinode %2hhd\t\tShowlist %4hhd\t\tOneperline %4hhd\n",
-			e->showinode, e->showlist, e->oneperline);
+	ft_printf("OPTION FLAGS________________________________________________\n");
+	ft_printf("Show_all_nodot %hhd\tShow_all %4hhd\n", e->show_all_nodot,
+			e->show_all);
+	ft_printf("Recursive %6hhd\tReverse %5hhd\n", e->recursive, e->reverse);
+	ft_printf("Sort_none %6hhd\tSort_size %3hhd\t\n",
+			e->sort_none, e->sort_size);
+	ft_printf("Sort_timemod %3hhd\tHuman %7hhd\n", e->sort_timemod, e->human);
+	ft_printf("Showinode %6hhd\tShowlist %4hhd\t\n", e->showinode, e->showlist);
+	ft_printf("Oneperline %5hhd\n", e->oneperline);
 	ft_putendl("************************************************************");
 }
