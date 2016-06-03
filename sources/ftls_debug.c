@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/01 19:30:19 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 14:52:36 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ftls_debug_show_args(t_env *e)
 {
 	int	i;
 
+	ft_putendl("************************************************************");
 	ft_printf("Terminal width = %d\n", e->termwidth);
 	ft_putstr("Printing sorted program arguments:\n");
 	ft_putstr(">>> Options:\n");
@@ -25,7 +26,7 @@ void	ftls_debug_show_args(t_env *e)
 	{
 		ft_printf("\tOption %d = %s\n", i, e->cli_option[i]);
 	}
-	ft_putstr(">>> Files, directories or bad arguments:\n");
+	ft_putstr(">>> Valid files or directories:\n");
 	i = -1;
 	while (e->cli_notopt[++i])
 	{

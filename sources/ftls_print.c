@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/01 19:06:25 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 15:39:22 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,5 @@ void	ftls_quick_ll_v2(t_env *e, t_entry *d)
 # endif
 	ft_printf("%s\n", d->name);
 
+	e->print_initiated = 1;
 }

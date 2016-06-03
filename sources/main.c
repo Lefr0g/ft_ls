@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 14:44:54 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 16:05:21 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		ft_isfile(char *path, char *progname, int verbose)
 
 /*
  *
+	e->print_initiated = 1;
  *	Flow
  *	- Initialiser env
  *	- Parser les args de la fonction
@@ -95,8 +96,8 @@ int		main(int ac, char **av)
 		return (1);
 	ftls_init_options(&e);
 
-	ftls_debug_show_args(&e);
-	ftls_debug_show_options(&e);
+//	ftls_debug_show_args(&e);
+//	ftls_debug_show_options(&e);
 
 	//******************************** WIP **********************************
 
@@ -107,7 +108,6 @@ int		main(int ac, char **av)
 
 //	alloc list node;
 //
-	ft_printf("CHECK\n");
 	if (!e.cli_notopt[0])
 	{
 		e.isdir = 1;
@@ -131,9 +131,7 @@ int		main(int ac, char **av)
 
 
 //	Liberation memoire
-	ft_printf("Liberaion memoire...");
 	ftls_free_all(&e);
-	ft_printf(" done.\n");
 
 //	while (42);
 	return (0);

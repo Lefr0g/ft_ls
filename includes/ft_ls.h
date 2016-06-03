@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/01 19:21:48 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 15:27:04 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ typedef struct	s_env
 	int				maxcol[LIST_MODE_COLUMNS]; // longest string for each column (-l)
 	int				col_len; // longest string for normal output
 	int				totalblocks; // for -l
+	int				print_initiated;
 
 	//				Context data for main browsing / processing functions
 	int				isdir;

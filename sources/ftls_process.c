@@ -76,7 +76,10 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 			buf = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(".");
 		else
 			buf = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
-		path = ft_strjoin(buf, "/");
+		if (ft_strcmp(buf, "/"))
+			path = ft_strjoin(buf, "/");
+		else
+			path = ft_strdup(buf);
 //		ft_printf("path = %s\n", path);
 		dir = opendir(path);
 //		ft_printf("Opendir OK, dir = %p\n", dir);
@@ -86,7 +89,16 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 			ftls_add_entry_v2(&subdir, e, my_dirent->d_name, path);
 //			ft_printf("New entry added\n");
 		}
-		ft_printf("\n%s:\n", path);
+		if (closedir(dir))
+		{
+			ft_print_error(e->progname, "closedir()", errno);
+			return (1);
+		}
+		if (e->print_initiated)
+			ft_putchar('\n');
+		ft_printf("%s:\n", buf);
+		ft_strdel(&buf);
+		ft_strdel(&path);
 	}
 
 //	Trier ici
@@ -97,10 +109,24 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	{
 		entptr = ptr->content;
 		if (ftls_is_entry_eligible(e, entptr))
-			ftls_quick_ll_v2(e, entptr);
+		{
+			if (e->showlist)
+				ftls_quick_ll_v2(e, entptr);
+			else
+			{
+				ft_putstr(entptr->name);
+				if (e->oneperline)
+					ft_putchar('\n');
+				else
+					ft_putchar('\t');
+				e->print_initiated = 1;
+			}
+		}
 		ptr = ptr->next;
 	}
 	ptr = subdir;
+	if (!e->oneperline && !e->showlist && e->print_initiated)
+		ft_putchar('\n');
 
 	while (ptr)
 	{
@@ -124,6 +150,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		}
 		ptr = ptr->next;
 	}
+	ft_lstdel(&(subdir), &ftls_elemdel);
 	return (0);
 }
 
@@ -145,7 +172,7 @@ int		ftls_process_argnames(t_env *e)
 	{
 		if (e->cli_notopt[i][0])
 		{
-			ft_printf("e->cli_notopt[%d] = %s\n", i, e->cli_notopt[i]);
+//			ft_printf("e->cli_notopt[%d] = %s\n", i, e->cli_notopt[i]);
 			ftls_add_entry_v2(&e->lst, e, e->cli_notopt[i], NULL);
 		}
 	}
@@ -155,18 +182,16 @@ int		ftls_process_argnames(t_env *e)
 	while (ptr)
 	{
 		entptr = ptr->content;
-		ft_printf("total (fake)\n");
+//		ft_printf("total (fake)\n");
 		if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
 		{
 			e->isdir = 1;
-//			prefix = ft_strjoin("./", prefix);
-			ft_printf("entptr->name = %s\n", entptr->name);
+//			ft_printf("entptr->name = %s\n", entptr->name);
 			ftls_process_entry(e, entptr->name, NULL);
 //		ft_strdel(&prefix);
 		}
 		ptr = ptr->next;
 	}
-
 
 
 //	ft_lstdel(&(e->lst), &ftls_elemdel);
