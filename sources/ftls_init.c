@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/01 21:14:51 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 14:46:35 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,15 @@ int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 		return (1);
 	i = 0;
 	j = -1;
+
 	while (++i < ac)
-		if (buf[i][0] && ft_isfile(buf[i], e->progname, 1))
-			if (!(e->cli_notopt[++j] = ft_strdup(buf[i])))
-				return (1);
+		if (buf[i][0])
+		{
+			if (ft_isfile(buf[i], e->progname, 1))
+				e->cli_notopt[++j] = ft_strdup(buf[i]);
+			else
+				e->cli_notopt[++j] = ft_strdup("");
+		}
 	ft_strarray_del(&buf);
 	return (0);
 }
@@ -126,7 +131,6 @@ int	ftls_free_all(t_env *e)
 //	ft_printf("Launching list deletion process...\n");
 	if (e->lst)
 		ft_lstdel(&(e->lst), &ftls_elemdel);
-
 //	ft_printf("ftls_free_all completed\n");
 
 

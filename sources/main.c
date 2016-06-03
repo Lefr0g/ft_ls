@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/01 21:14:17 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 14:44:54 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		main(int ac, char **av)
 		return (1);
 	ftls_init_options(&e);
 
-//	ftls_debug_show_args(&e);
+	ftls_debug_show_args(&e);
 	ftls_debug_show_options(&e);
 
 	//******************************** WIP **********************************
@@ -106,6 +106,8 @@ int		main(int ac, char **av)
 //		ftls_add_entry(&(e.lst), &e, e.cli_notopt[i], NULL);
 
 //	alloc list node;
+//
+	ft_printf("CHECK\n");
 	if (!e.cli_notopt[0])
 	{
 		e.isdir = 1;
@@ -129,7 +131,9 @@ int		main(int ac, char **av)
 
 
 //	Liberation memoire
+	ft_printf("Liberaion memoire...");
 	ftls_free_all(&e);
+	ft_printf(" done.\n");
 
 //	while (42);
 	return (0);

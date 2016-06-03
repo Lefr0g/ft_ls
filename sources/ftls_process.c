@@ -73,9 +73,9 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	if (e->isdir)
 	{
 		if (!e->cli_notopt[0]) // Valide si ./ftls donne sans argument
-			buf = (prefix) ? ft_strjoin(prefix, name) : ".";
+			buf = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(".");
 		else
-			buf = (prefix) ? ft_strjoin(prefix, name) : name;
+			buf = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
 		path = ft_strjoin(buf, "/");
 //		ft_printf("path = %s\n", path);
 		dir = opendir(path);
@@ -143,7 +143,11 @@ int		ftls_process_argnames(t_env *e)
 	i = -1;
 	while (e->cli_notopt[++i])
 	{
-		ftls_add_entry_v2(&e->lst, e, e->cli_notopt[i], NULL);
+		if (e->cli_notopt[i][0])
+		{
+			ft_printf("e->cli_notopt[%d] = %s\n", i, e->cli_notopt[i]);
+			ftls_add_entry_v2(&e->lst, e, e->cli_notopt[i], NULL);
+		}
 	}
 //	Trier ici
 
@@ -156,6 +160,7 @@ int		ftls_process_argnames(t_env *e)
 		{
 			e->isdir = 1;
 //			prefix = ft_strjoin("./", prefix);
+			ft_printf("entptr->name = %s\n", entptr->name);
 			ftls_process_entry(e, entptr->name, NULL);
 //		ft_strdel(&prefix);
 		}

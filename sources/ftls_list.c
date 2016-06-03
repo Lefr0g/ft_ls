@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/01 21:13:43 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 14:28:52 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		ftls_add_entry_v2(t_list **alst, t_env *e, char *name, char *prefix)
 	t_entry		entry;
 	t_list		*lst_ptr;
 
-	path = (prefix) ? ft_strjoin(prefix, name) : name;
+	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
 	if (lstat(path, &statbuf))
 	{
 		ft_print_error(e->progname, path, errno);
@@ -182,6 +182,7 @@ void	ftls_elemdel(void *ptr, size_t size)
 	d = (t_entry*)ptr;
 //	if (d->subdir)
 //		ft_lstdel(&(d->subdir), &ftls_elemdel);
+	ft_printf("Deleting entry %s, %s\n", d->prefix, d->name);
 	if (d->name)
 		ft_strdel(&d->name);
 	if (d->prefix)
