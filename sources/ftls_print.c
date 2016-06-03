@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 15:39:22 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 17:58:21 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	ftls_quick_ll(t_env *e, t_de *d)
 	ft_strdel(&path);
 	out[11] = '\0';
 
+int					ft_getmax(int a, int b);
 # if LEAKY_STDLIB_ENABLE
 	// Valgrind doesn't like these function calls at all..
 	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
@@ -127,4 +128,42 @@ void	ftls_quick_ll_v2(t_env *e, t_entry *d)
 	ft_printf("%s\n", d->name);
 
 	e->print_initiated = 1;
+}
+
+/*
+ *	Bidouille rapide pour affichage en colonnes propre
+*/
+void	ftls_print_name(t_env *e, char *name)
+{
+	int	spaces;
+	int	i;
+	
+
+	if (e->oneperline)
+	{
+		ft_putstr(name);
+		ft_putchar('\n');
+	}
+	else
+	{
+		i = -1;
+		if (e->line_len + (int)ft_strlen(name) < e->termwidth)
+		{
+			ft_putstr(name);
+			e->line_len += ft_strlen(name);
+		}
+		else
+		{
+			ft_putchar('\n');
+			ft_putstr(name);
+			e->line_len = ft_strlen(name);
+		}
+		spaces = e->col_len - ft_strlen(name) + 1;
+		while (++i < spaces && e->line_len < e->termwidth)
+		{
+			ft_putchar(' ');
+			e->line_len++;
+		}
+	}
+//	ft_printf("e->linelen = %d\n", e->line_len);
 }

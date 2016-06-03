@@ -87,13 +87,19 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 			ft_printf("%s:\n", buf);
 		if (!(dir = opendir(path)))
 		{	
-
 			ft_print_error(e->progname, name, errno);
 			return (1);
 		}
 //		ft_printf("Opendir OK, dir = %p\n", dir);
+		e->col_len = 0;
 		while ((my_dirent = readdir(dir)))
+		{
 			ftls_add_entry_v2(&subdir, e, my_dirent->d_name, path);
+			e->col_len = ft_getmax(e->col_len, 
+					ft_getmin(ft_strlen(my_dirent->d_name), e->termwidth));
+			
+//			ft_printf("e->col_len = %d\n", e->col_len);
+		}
 		if (closedir(dir))
 		{
 			ft_print_error(e->progname, "closedir()", errno);
@@ -120,11 +126,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 				ftls_quick_ll_v2(e, entptr);
 			else
 			{
-				ft_putstr(entptr->name);
-				if (e->oneperline)
-					ft_putchar('\n');
-				else
-					ft_putchar('\t');
+				ftls_print_name(e, entptr->name);
 				e->print_initiated = 1;
 			}
 		}

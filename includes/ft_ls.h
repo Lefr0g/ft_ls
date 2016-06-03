@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 15:27:04 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 17:44:14 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ typedef struct	s_env
 	int				termwidth;
 	int				maxcol[LIST_MODE_COLUMNS]; // longest string for each column (-l)
 	int				col_len; // longest string for normal output
+	int				line_len; // position of the last char printed on current line
 	int				totalblocks; // for -l
 	int				print_initiated;
 
@@ -194,6 +195,7 @@ int				ftls_is_entry_eligible(t_env *e, t_entry *entptr);
 */
 void			ftls_quick_ll(t_env *e, t_de *d); 	// OLD
 void			ftls_quick_ll_v2(t_env *e, t_entry *d);
+void			ftls_print_name(t_env *e, char *name);
 
 /*
 ** ftls_error.c
