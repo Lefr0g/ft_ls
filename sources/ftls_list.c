@@ -71,7 +71,7 @@ int		ftls_add_entry_v2(t_list **alst, t_env *e, char *name, char *prefix)
 	t_entry		entry;
 	t_list		*lst_ptr;
 
-	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup("./");
+	path = (prefix) ? ft_strjoin(prefix, name) : name;
 	if (lstat(path, &statbuf))
 	{
 		ft_print_error(e->progname, path, errno);
@@ -85,6 +85,8 @@ int		ftls_add_entry_v2(t_list **alst, t_env *e, char *name, char *prefix)
 		ft_lstappend(alst, lst_ptr);
 	else
 		*alst = lst_ptr;
+//	ft_printf("Added entry \033[33m%15s\033[34m %-15s\033[0m\n",
+//		prefix, name);
 	return (0);
 }
 
