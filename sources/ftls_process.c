@@ -81,22 +81,28 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		else
 			path = ft_strdup(buf);
 //		ft_printf("path = %s\n", path);
-		dir = opendir(path);
+		if (e->print_initiated)
+				ft_putchar('\n');
+		if (e->cli_notopt[1] || (e->recursive && prefix))
+			ft_printf("%s:\n", buf);
+		if (!(dir = opendir(path)))
+		{	
+
+			ft_print_error(e->progname, name, errno);
+			return (1);
+		}
 //		ft_printf("Opendir OK, dir = %p\n", dir);
 		while ((my_dirent = readdir(dir)))
-		{
-//			ft_printf("Adding entry...\n");
 			ftls_add_entry_v2(&subdir, e, my_dirent->d_name, path);
-//			ft_printf("New entry added\n");
-		}
 		if (closedir(dir))
 		{
 			ft_print_error(e->progname, "closedir()", errno);
 			return (1);
 		}
-		if (e->print_initiated)
-			ft_putchar('\n');
-		ft_printf("%s:\n", buf);
+//		if (e->print_initiated)
+//			ft_putchar('\n');
+//		if (e->cli_notopt[1] || (e->recursive && prefix))
+//			ft_printf("%s:\n", buf);
 		ft_strdel(&buf);
 		ft_strdel(&path);
 	}
