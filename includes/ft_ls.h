@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 17:44:14 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 19:23:17 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ typedef struct	s_entry
 {
 	char					*name;
 	char					*prefix;
-
 	mode_t					st_mode;
 	nlink_t					st_nlink;
 	uid_t					st_uid;

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 17:58:21 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/03 19:39:50 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	ftls_quick_ll_v2(t_env *e, t_entry *d)
 
 /*
  *	Bidouille rapide pour affichage en colonnes propre
+ *	TODO: modifier l'ordre d'affichage ! Zigzag vertical, pas horizontal !
 */
 void	ftls_print_name(t_env *e, char *name)
 {

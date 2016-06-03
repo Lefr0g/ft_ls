@@ -105,15 +105,13 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 			ft_print_error(e->progname, "closedir()", errno);
 			return (1);
 		}
-//		if (e->print_initiated)
-//			ft_putchar('\n');
-//		if (e->cli_notopt[1] || (e->recursive && prefix))
-//			ft_printf("%s:\n", buf);
 		ft_strdel(&buf);
 		ft_strdel(&path);
 	}
 
-//	Trier ici
+//	Trier ici TODO bugfix
+	entptr = subdir->content;
+	ft_lstsort_str(&subdir, (void*)entptr->name - (void*)entptr);
 	
 	ptr = subdir;
 
@@ -185,6 +183,8 @@ int		ftls_process_argnames(t_env *e)
 		}
 	}
 //	Trier ici
+	entptr = e->lst->content;
+	ft_lstsort_str(&e->lst, (void*)entptr->name - (void*)entptr);
 
 	ptr = e->lst;
 	while (ptr)
