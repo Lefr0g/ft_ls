@@ -196,7 +196,7 @@ int		ftls_process_argnames(t_env *e)
 			e->isdir = 1;
 //			ft_printf("entptr->name = %s\n", entptr->name);
 			ftls_process_entry(e, entptr->name, NULL);
-//		ft_strdel(&prefix);
+//			ft_strdel(&prefix);
 		}
 		ptr = ptr->next;
 	}
