@@ -113,6 +113,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		ft_strdel(&path);
 	}
 
+	ftls_debug_show_list(subdir);
 //	Trier ici TODO bugfix
 	entptr = subdir->content;
 	ft_printf("Check before sort\n");
@@ -120,8 +121,13 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	ft_printf("Name* address is %p and = %s\n", *(entptr->name), *(entptr->name));
 	tbd = entptr->name;
 	ft_printf("Name at %p is %s\n", *tbd, *tbd);
-	ft_lstsort_str(&subdir, (void*)entptr->name - (void*)entptr);
+	
+	ft_lstsort_str(&subdir, (void*)&(entptr->name) - (void*)entptr);
+	
 	ft_printf("Check after sort\n");
+	
+	ftls_debug_show_list(subdir);
+	
 	
 	ptr = subdir;
 
@@ -195,6 +201,7 @@ int		ftls_process_argnames(t_env *e)
 //	Trier ici
 	entptr = e->lst->content;
 	ft_lstsort_str(&e->lst, (void*)entptr->name - (void*)entptr);
+	
 
 	ptr = e->lst;
 	while (ptr)

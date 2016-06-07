@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 15:08:04 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/07 17:09:02 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,20 @@ void	ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name, char *pref
 	char	**testptr;
 
 	ftls_init_entry(dst);
-	estptr = ft_memalloc(sizeof(char**));
+	testptr = ft_memalloc(sizeof(char**));
+	if (!testptr)
+	{
+		ft_printf("\033[31mft_memalloc ERROR\033[0m\n");
+		exit(1);
+	}
 	*testptr = ft_strdup(name);
+	if (!*(testptr))
+	{
+		ft_printf("\033[31mft_strdup ERROR\033[0m\n");
+		exit(1);
+	}
 	dst->name = testptr;
-	testptr = dst->name;
-	ft_printf("Adding name = %s at %p\n", *testptr, *testptr);
+	ft_printf("Adding name = %s at \033[33m%p\033[0m\n", *testptr, testptr);
 	dst->st_mode = src->st_mode;
 	dst->st_nlink = src->st_nlink;
 	dst->st_uid = src->st_uid;

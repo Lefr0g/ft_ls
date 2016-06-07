@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 14:52:36 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/07 16:51:39 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ftls_debug_show_args(t_env *e)
 void	ftls_debug_show_list(t_list *lst)
 {
 	int		i;
-	t_de	*content;
+	t_entry	*content;
 
 	ft_putendl("************************************************************");
 	ft_printf("Printing list content. List address = %p :\n", lst);
@@ -45,11 +45,11 @@ void	ftls_debug_show_list(t_list *lst)
 	while (lst)
 	{
 		content = lst->content;
-		ft_printf("List elem %d, inode = %d\n", i, content->d_ino);
-		ft_printf("Name = \033[32m%s\033[0m, namelen = %d\n",
-				content->d_name, content->d_namelen);
+//		ft_printf("List elem %d, inode = %d\n", i, content->d_ino);
+		ft_printf("Name = \033[32m%s\033[0m\n",
+				*(content->name));
 		ft_printf("Size = %d\n", content->st_size);
-		ft_printf("Prefix = \033[34m%s\033[0m\n", content->prefix);
+		ft_printf("Prefix = \033[34m%s\033[0m\n", *(content->prefix));
 		ft_printf("Mode = %b\n", content->st_mode);
 		ft_printf("nlink = %d\n", content->st_nlink);
 		ft_printf("uid = %d\n", content->st_uid);
@@ -57,9 +57,6 @@ void	ftls_debug_show_list(t_list *lst)
 		ft_printf("atimespec = %d\n", content->st_atimespec);
 		ft_printf("mtimespec = %d\n", content->st_mtimespec);
 		ft_printf("ctimespec = %d\n", content->st_ctimespec);
-		ft_printf("Subdir address is %p\n", content->subdir);
-		if (content->subdir)
-			ftls_debug_show_list(content->subdir);
 		ft_putendl("*********************************************************");
 		lst = lst->next;
 		i++;
