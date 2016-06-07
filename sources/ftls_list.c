@@ -82,7 +82,7 @@ int		ftls_add_entry_v2(t_list **alst, t_env *e, char *name, char *prefix)
 	ftls_copy_details_v2(&entry, &statbuf, name, prefix);
 	lst_ptr = ft_lstnew(&entry, sizeof(t_entry));
 	if (*alst)
-		ft_lstappend(alst, lst_ptr);
+		ft_lstadd(alst, lst_ptr);
 	else
 		*alst = lst_ptr;
 //	ft_printf("Added entry \033[33m%15s\033[34m %-15s\033[0m\n",
@@ -158,8 +158,14 @@ void	ftls_copy_details(t_de *dst, struct stat *src, char *name, char *prefix)
 
 void	ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name, char *prefix)
 {
+	char	**testptr;
+
 	ftls_init_entry(dst);
-	dst->name = ft_strdup(name);
+	estptr = ft_memalloc(sizeof(char**));
+	*testptr = ft_strdup(name);
+	dst->name = testptr;
+	testptr = dst->name;
+	ft_printf("Adding name = %s at %p\n", *testptr, *testptr);
 	dst->st_mode = src->st_mode;
 	dst->st_nlink = src->st_nlink;
 	dst->st_uid = src->st_uid;
@@ -169,7 +175,11 @@ void	ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name, char *pref
 	dst->st_ctimespec = src->CTIME;
 	dst->st_size = src->st_size;
 	if (prefix)
-		dst->prefix = ft_strdup(prefix);
+	{
+		testptr = ft_memalloc(sizeof(char**));
+		*testptr = ft_strdup(prefix);
+		dst->prefix = testptr;
+	}
 }
 
 /*
@@ -182,9 +192,9 @@ void	ftls_elemdel(void *ptr, size_t size)
 	d = (t_entry*)ptr;
 //	ft_printf("Deleting entry %s, %s\n", d->prefix, d->name);
 	if (d->name)
-		ft_strdel(&d->name);
+		ft_strdel(d->name);
 	if (d->prefix)
-		ft_strdel(&d->prefix);
+		ft_strdel(d->prefix);
 	ft_bzero(ptr, size);
 	ft_memdel(&ptr);
 }

@@ -88,10 +88,13 @@ int		ftls_isnavdot(char *name)
 */
 int		ftls_is_entry_eligible(t_env *e, t_entry *entptr)
 {
+	char	*ptr;
+
+	ptr = *(entptr->name);
 	// Test conditions de prise en compte des fichiers caches
-	if (entptr->name[0] != '.' || (entptr->name[0] == '.' &&
+	if (ptr[0] != '.' || (ptr[0] == '.' &&
 				(e->show_all_nodot || e->show_all)))
-		if (entptr->name[0] != '.' || !(ftls_isnavdot(entptr->name)
+		if (ptr[0] != '.' || !(ftls_isnavdot(ptr)
 					&& (e->show_all_nodot)))
 			return (1);
 	return (0);

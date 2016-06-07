@@ -90,8 +90,8 @@ typedef struct	s_de
 */
 typedef struct	s_entry
 {
-	char					*name;
-	char					*prefix;
+	char					**name;
+	char					**prefix;
 	mode_t					st_mode;
 	nlink_t					st_nlink;
 	uid_t					st_uid;

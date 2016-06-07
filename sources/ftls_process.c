@@ -68,6 +68,8 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	char			*path;
 	char			*buf;
 
+	char			**tbd;
+
 //	ft_printf("Processing entry \033[33m%s\033[34m%s\033[0m\n", prefix, name);
 	subdir = NULL;
 	if (e->isdir)
@@ -80,7 +82,9 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 			path = ft_strjoin(buf, "/");
 		else
 			path = ft_strdup(buf);
-//		ft_printf("path = %s\n", path);
+		
+		ft_printf("path = %s\n", path);
+		
 		if (e->print_initiated)
 				ft_putchar('\n');
 		if (e->cli_notopt[1] || (e->recursive && prefix))
@@ -97,7 +101,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 			ftls_add_entry_v2(&subdir, e, my_dirent->d_name, path);
 			e->col_len = ft_getmax(e->col_len, 
 					ft_getmin(ft_strlen(my_dirent->d_name), e->termwidth));
-			
+			ft_print_memory(subdir->content, sizeof(t_entry));
 //			ft_printf("e->col_len = %d\n", e->col_len);
 		}
 		if (closedir(dir))
@@ -111,7 +115,13 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 
 //	Trier ici TODO bugfix
 	entptr = subdir->content;
+	ft_printf("Check before sort\n");
+	ft_printf("Name** address is %p\n", (entptr->name));
+	ft_printf("Name* address is %p and = %s\n", *(entptr->name), *(entptr->name));
+	tbd = entptr->name;
+	ft_printf("Name at %p is %s\n", *tbd, *tbd);
 	ft_lstsort_str(&subdir, (void*)entptr->name - (void*)entptr);
+	ft_printf("Check after sort\n");
 	
 	ptr = subdir;
 
@@ -124,7 +134,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 				ftls_quick_ll_v2(e, entptr);
 			else
 			{
-				ftls_print_name(e, entptr->name);
+				ftls_print_name(e, *(entptr->name));
 				e->print_initiated = 1;
 			}
 		}
@@ -144,13 +154,13 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 				e->isdir = 1;
 			else
 				e->isdir = 0;
-			if (e->isdir && !ftls_isnavdot(entptr->name)
+			if (e->isdir && !ftls_isnavdot(*(entptr->name))
 					&& ftls_is_entry_eligible(e, entptr))
 			{
 //				ft_printf("ftls_process_entry | entptr->prefix = %s\n",
 //						entptr->prefix);
 //				ft_printf("\t\tname = %s\n", entptr->name);
-				ftls_process_entry(e, entptr->name, entptr->prefix);
+				ftls_process_entry(e, *(entptr->name), *(entptr->prefix));
 //				ft_printf("PROCESS OK\n");
 			}
 		}
@@ -194,8 +204,8 @@ int		ftls_process_argnames(t_env *e)
 		if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
 		{
 			e->isdir = 1;
-//			ft_printf("entptr->name = %s\n", entptr->name);
-			ftls_process_entry(e, entptr->name, NULL);
+			ft_printf("entptr->name = %s\n", *(entptr->name));
+			ftls_process_entry(e, *(entptr->name), NULL);
 //			ft_strdel(&prefix);
 		}
 		ptr = ptr->next;

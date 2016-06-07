@@ -89,7 +89,8 @@ void	ftls_quick_ll_v2(t_env *e, t_entry *d)
 
 	(void)e;
 
-	path = (d->prefix) ? ft_strjoin(d->prefix, d->name) : ft_strdup(d->name);
+	path = (*(d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
+		ft_strdup(*(d->name));
 	ft_bzero(out, 12);
 	ftls_decode_type(d->st_mode, out);
 	ftls_decode_access_rights(d->st_mode, out);
