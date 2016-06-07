@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/07 17:09:02 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/07 21:13:09 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name, char *pref
 		exit(1);
 	}
 	dst->name = testptr;
-	ft_printf("Adding name = %s at \033[33m%p\033[0m\n", *testptr, testptr);
+//	ft_printf("Adding name = %s at \033[33m%p\033[0m\n", *testptr, testptr);
 	dst->st_mode = src->st_mode;
 	dst->st_nlink = src->st_nlink;
 	dst->st_uid = src->st_uid;
@@ -201,9 +201,15 @@ void	ftls_elemdel(void *ptr, size_t size)
 	d = (t_entry*)ptr;
 //	ft_printf("Deleting entry %s, %s\n", d->prefix, d->name);
 	if (d->name)
+	{
 		ft_strdel(d->name);
+		ft_memdel((void**)&(d->name));
+	}
 	if (d->prefix)
+	{
 		ft_strdel(d->prefix);
+		ft_memdel((void**)&(d->prefix));
+	}
 	ft_bzero(ptr, size);
 	ft_memdel(&ptr);
 }

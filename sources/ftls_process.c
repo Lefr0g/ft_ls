@@ -68,7 +68,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	char			*path;
 	char			*buf;
 
-	char			**tbd;
+//	char			**tbd;
 
 //	ft_printf("Processing entry \033[33m%s\033[34m%s\033[0m\n", prefix, name);
 	subdir = NULL;
@@ -83,7 +83,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		else
 			path = ft_strdup(buf);
 		
-		ft_printf("path = %s\n", path);
+//		ft_printf("path = %s\n", path);
 		
 		if (e->print_initiated)
 				ft_putchar('\n');
@@ -101,7 +101,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 			ftls_add_entry_v2(&subdir, e, my_dirent->d_name, path);
 			e->col_len = ft_getmax(e->col_len, 
 					ft_getmin(ft_strlen(my_dirent->d_name), e->termwidth));
-			ft_print_memory(subdir->content, sizeof(t_entry));
+//			ft_print_memory(subdir->content, sizeof(t_entry));
 //			ft_printf("e->col_len = %d\n", e->col_len);
 		}
 		if (closedir(dir))
@@ -113,20 +113,21 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		ft_strdel(&path);
 	}
 
-	ftls_debug_show_list(subdir);
+//	ftls_debug_show_list(subdir);
+
 //	Trier ici TODO bugfix
 	entptr = subdir->content;
-	ft_printf("Check before sort\n");
-	ft_printf("Name** address is %p\n", (entptr->name));
-	ft_printf("Name* address is %p and = %s\n", *(entptr->name), *(entptr->name));
-	tbd = entptr->name;
-	ft_printf("Name at %p is %s\n", *tbd, *tbd);
+//	ft_printf("Check before sort\n");
+//	ft_printf("Name** address is %p\n", (entptr->name));
+//	ft_printf("Name* address is %p and = %s\n", *(entptr->name), *(entptr->name));
+//	tbd = entptr->name;
+//	ft_printf("Name at %p is %s\n", *tbd, *tbd);
 	
 	ft_lstsort_str(&subdir, (void*)&(entptr->name) - (void*)entptr);
 	
-	ft_printf("Check after sort\n");
+//	ft_printf("Check after sort\n");
 	
-	ftls_debug_show_list(subdir);
+//	ftls_debug_show_list(subdir);
 	
 	
 	ptr = subdir;
@@ -200,7 +201,7 @@ int		ftls_process_argnames(t_env *e)
 	}
 //	Trier ici
 	entptr = e->lst->content;
-	ft_lstsort_str(&e->lst, (void*)entptr->name - (void*)entptr);
+	ft_lstsort_str(&e->lst, (void*)&entptr->name - (void*)entptr);
 	
 
 	ptr = e->lst;
@@ -211,7 +212,7 @@ int		ftls_process_argnames(t_env *e)
 		if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
 		{
 			e->isdir = 1;
-			ft_printf("entptr->name = %s\n", *(entptr->name));
+//			ft_printf("entptr->name = %s\n", *(entptr->name));
 			ftls_process_entry(e, *(entptr->name), NULL);
 //			ft_strdel(&prefix);
 		}
