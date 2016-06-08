@@ -82,7 +82,7 @@ int		ftls_add_entry_v2(t_list **alst, t_env *e, char *name, char *prefix)
 	ftls_copy_details_v2(&entry, &statbuf, name, prefix);
 	lst_ptr = ft_lstnew(&entry, sizeof(t_entry));
 	if (*alst)
-		ft_lstadd(alst, lst_ptr);
+		ft_lstappend(alst, lst_ptr);
 	else
 		*alst = lst_ptr;
 //	ft_printf("Added entry \033[33m%15s\033[34m %-15s\033[0m\n",

@@ -112,6 +112,8 @@ int	ftls_init_options(t_env *e)
 		e->showlist = (c == 'l') ? 1 : e->showlist;
 		e->oneperline = (c == '1') ? 1 : e->oneperline;
 	}
+	if (e->sort_none)
+		e->show_all = 1;
 	return (0);
 }
 

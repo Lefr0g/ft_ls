@@ -178,6 +178,8 @@ void			ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name,
 */
 int				ftls_process_entry(t_env *e, char *name, char *prefix);
 int				ftls_process_argnames(t_env *e);
+char			*ftls_process_path(t_env *e, char *name, char *prefix);
+void			ftls_print_entry(t_env *e, t_list *subdir);
 
 /*
 ** ftls_misc.c
