@@ -6,13 +6,13 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/03 14:46:35 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 19:21:24 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		ftls_parse_cli_args(t_env *e, int ac, char **av)
+int	ftls_parse_cli_args(t_env *e, int ac, char **av)
 {
 	int		i;
 	int		j;
@@ -21,18 +21,12 @@ int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 
 	if (!(buf = ft_strarray_dup(av)))
 		return (1);
-
 	if ((c = ft_parse_options(buf, e->supported_option, &(e->cli_option))))
-	{
-		ftls_print_error_illegal_option(av[0], c);
-		ftls_print_usage_stderr(e);
-		return (1);
-	}
+		return (ftls_print_error_illegal_option(e, av[0], c));
 	if (!(e->cli_notopt = (char**)ft_memalloc(sizeof(char*) * (ac + 1))))
 		return (1);
 	i = 0;
 	j = -1;
-
 	while (++i < ac)
 		if (buf[i][0])
 		{
@@ -69,20 +63,7 @@ int	ftls_init_env(t_env *e, char **av)
 	e->supported_option[8][0] = 't';
 	e->supported_option[9][0] = 'l';
 	e->supported_option[10][0] = '1';
-//	ft_strcpy(e->supported_option[5], "long");
-//	e->supported_option[x][0] = 'G';
 	e->termwidth = ftls_get_terminal_width(e);
-	return (0);
-}
-
-int	ftls_init_details(t_de *d)
-{
-//	d->isdir = 0;
-//	d->path = NULL;
-//	d->drnt = NULL;
-//	d->stt = NULL;
-	d->prefix = NULL;
-	d->subdir = NULL;
 	return (0);
 }
 
@@ -125,16 +106,9 @@ int	ftls_free_all(t_env *e)
 	ft_strdel(&(e->progname));
 	while (++i < OPT_ARRAY_SIZE)
 		ft_strdel(&(e->supported_option[i]));
-//	ft_printf("Deleting e->cli_option\n");
 	ft_strarray_del(&(e->cli_option));
-//	ft_printf("Deleting e->cli_notopt\n");
 	ft_strarray_del(&(e->cli_notopt));
-
-//	ft_printf("Launching list deletion process...\n");
 	if (e->lst)
 		ft_lstdel(&(e->lst), &ftls_elemdel);
-//	ft_printf("ftls_free_all completed\n");
-
-
 	return (0);
 }

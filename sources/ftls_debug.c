@@ -6,13 +6,16 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/07 16:51:39 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 19:43:02 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-///	Verification du classement des arguments par le parseur
+/*
+**	Verification du classement des arguments par le parseur
+*/
+
 void	ftls_debug_show_args(t_env *e)
 {
 	int	i;

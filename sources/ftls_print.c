@@ -6,89 +6,27 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/07 21:28:02 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 19:47:21 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
 /*
- * TODO : leaks fix
- * 			- listxattr			->		0 leak,		0 error					OK
- * 			- acl_get_file		->		1 leak,		1 error		(./ft_ls /) OK
- * 			- ctime				-> >10,000 leaks,	3 errors				WIP
- * 			- getpwuid
- * 			- getgrgid
- *
+ *	Temporary
 */
-void	ftls_quick_ll(t_env *e, t_de *d)
+void	ftls_quick_ll(t_env *e, t_entry *d)
 {
 	char			out[12];
-# if LEAKY_STDLIB_ENABLE
+#if LEAKY_STDLIB_ENABLE
 	char			*timebuf;
 	struct passwd	*passbuf;
 	struct group	*groupbuf;
-# endif
+#endif
 	char			*path;
 	acl_t			aclbuf;
 
 	(void)e;
-
-	path = (d->prefix) ? ft_strjoin(d->prefix, d->d_name) : ft_strdup(d->d_name);
-	ft_bzero(out, 12);
-	ftls_decode_type(d->st_mode, out);
-	ftls_decode_access_rights(d->st_mode, out);
-	if ((d->st_mode & S_ISVTX) == S_ISVTX)
-		out[9] = 't';
-	if (listxattr(path, NULL, 0, XATTR_NOFOLLOW) > 0)
-		out[10] = '@';
-	else if ((aclbuf = acl_get_file(path, ACL_TYPE_EXTENDED)))
-	{
-		out[10] = ('+');
-		acl_free(aclbuf);
-	}
-	else
-		out[10] = ' ';
-	ft_strdel(&path);
-	out[11] = '\0';
-
-int					ft_getmax(int a, int b);
-# if LEAKY_STDLIB_ENABLE
-	// Valgrind doesn't like these function calls at all..
-	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
-	passbuf = getpwuid(d->st_uid);
-	groupbuf = getgrgid(d->st_gid);
-# endif
-
-	ft_putstr(out);
-	ft_printf("%3d ", d->st_nlink);
-# if LEAKY_STDLIB_ENABLE
-	ft_printf("%s\t%s\t", passbuf->pw_name, groupbuf->gr_name);
-# endif
-	ft_printf("%5d ", d->st_size);
-
-# if LEAKY_STDLIB_ENABLE
-	ft_printf("%s ", timebuf);
-	ft_strdel(&timebuf);
-# endif
-	ft_printf("%s\n", d->d_name);
-}
-
-/*
- *
-*/
-void	ftls_quick_ll_v2(t_env *e, t_entry *d)
-{
-	char			out[12];
-# if LEAKY_STDLIB_ENABLE
-	char			*timebuf;
-	struct passwd	*passbuf;
-	struct group	*groupbuf;
-# endif
-	char			*path;
-	acl_t			aclbuf;
-
-	(void)e;
-
 	path = (*(d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
 		ft_strdup(*(d->name));
 	ft_bzero(out, 12);
@@ -107,40 +45,36 @@ void	ftls_quick_ll_v2(t_env *e, t_entry *d)
 		out[10] = ' ';
 	ft_strdel(&path);
 	out[11] = '\0';
-
-# if LEAKY_STDLIB_ENABLE
+#if LEAKY_STDLIB_ENABLE
 	// Valgrind doesn't like these function calls at all..
 	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
 	passbuf = getpwuid(d->st_uid);
 	groupbuf = getgrgid(d->st_gid);
-# endif
-
+#endif 
 	ft_putstr(out);
 	ft_printf("%3d ", d->st_nlink);
-# if LEAKY_STDLIB_ENABLE
+#if LEAKY_STDLIB_ENABLE
 	ft_printf("%s\t%s\t", passbuf->pw_name, groupbuf->gr_name);
-# endif
+#endif
 	ft_printf("%5d ", d->st_size);
-
-# if LEAKY_STDLIB_ENABLE
+#if LEAKY_STDLIB_ENABLE
 	ft_printf("%s ", timebuf);
 	ft_strdel(&timebuf);
-# endif
+#endif
 	ft_printf("%s\n", *(d->name));
-
 	e->print_initiated = 1;
 }
 
 /*
- *	Bidouille rapide pour affichage en colonnes propre
- *	TODO: modifier l'ordre d'affichage ! Zigzag vertical, pas horizontal !
+**	Bidouille rapide pour affichage en colonnes propre
+**	TODO: modifier l'ordre d'affichage ! Zigzag vertical, pas horizontal !
 */
+
 void	ftls_print_name(t_env *e, char *name)
 {
 	int	spaces;
 	int	i;
 	
-
 	if (e->oneperline)
 	{
 		ft_putstr(name);
@@ -168,4 +102,58 @@ void	ftls_print_name(t_env *e, char *name)
 		}
 	}
 //	ft_printf("e->linelen = %d\n", e->line_len);
+}
+
+/*
+** Path concatenation from prefix and name
+** Gestion affichage premiere ligne (espacement et path)
+*/
+
+char	*ftls_process_path(t_env *e, char *name, char *prefix)
+{
+	char	*buf;
+	char	*path;
+
+	if (!e->cli_notopt[0])
+		buf = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(".");
+	else
+		buf = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
+	if (ft_strcmp(buf, "/"))
+		path = ft_strjoin(buf, "/");
+	else
+		path = ft_strdup(buf);
+	if (e->print_initiated)
+		ft_putchar('\n');
+
+	if (e->cli_notopt[1] || (e->recursive && prefix))
+		ft_printf("%s:\n", buf);
+	ft_strdel(&buf);
+	return (path);
+}
+
+void	ftls_print_dir(t_env *e, t_list *subdir)
+{
+	t_list	*ptr;
+	t_entry	*entptr;
+
+	ptr = subdir;
+	while (ptr)
+	{
+		entptr = ptr->content;
+		if (ftls_is_entry_eligible(e, entptr))
+		{
+			if (e->showlist)
+				ftls_quick_ll(e, entptr);
+			else
+				ftls_print_name(e, *(entptr->name));
+			e->print_initiated = 1;
+		}
+		else
+			e->print_initiated = 0;
+		ptr = ptr->next;
+	}
+	e->line_len = 0;
+	if (!e->oneperline && !e->showlist && e->print_initiated)
+		ft_putchar('\n');
+	e->print_initiated = 1;
 }

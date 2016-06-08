@@ -6,7 +6,7 @@
 #    By: amulin <amulin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/06 11:02:43 by amulin            #+#    #+#              #
-#    Updated: 2016/06/01 19:14:53 by amulin           ###   ########.fr        #
+#    Updated: 2016/06/08 19:36:02 by amulin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ UIINFO = $(UIALIGN)[\033[36m i \033[0m]
 FLAGS = -Wall -Werror -Wextra
 
 SRCS = main.c ftls_init.c ftls_list.c ftls_print.c ftls_misc.c ftls_error.c\
-	   ftls_debug.c ftls_process.c
+	   ftls_debug.c ftls_process.c ftls_decode.c
 
 SRCDIR = sources/
 

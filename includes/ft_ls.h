@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/07 17:08:41 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 19:34:32 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,6 @@ typedef struct	s_env
 	int				totalblocks; // for -l
 	int				print_initiated;
 
-	//				Context data for main browsing / processing functions
-	int				isdir;
 }				t_env;
 
 /*
@@ -144,7 +142,6 @@ typedef struct	s_env
 */
 int				ftls_parse_cli_args(t_env *e, int ac, char **av);
 int				ftls_init_env(t_env *e, char **av);
-int				ftls_init_details(t_de *d); //OLD
 int				ftls_init_entry(t_entry *d);
 int				ftls_init_options(t_env *e);
 int				ftls_free_all(t_env *e);
@@ -160,16 +157,12 @@ int				ft_isfile(char *path, char *progname, int verbose);
 /*
 ** ftls_list.c
 */
-int				ftls_add_entry(t_list **alst, t_env *e, char *name,
-		char *prefix);												// OLD
-void			ftls_copy_details(t_de *dst, struct stat *src, char *name,
-		char *prefix);												// OLD
 int				ftls_manage_subdir(t_list *current, t_list **subdir, t_env *e);
 void			ftls_elemdel(void *ptr, size_t size);
 
-int				ftls_add_entry_v2(t_list **alst, t_env *e, char *name,
+int				ftls_add_entry(t_list **alst, t_env *e, char *name,
 		char *prefix);
-void			ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name,
+void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		char *prefix);
 
 
@@ -178,31 +171,33 @@ void			ftls_copy_details_v2(t_entry *dst, struct stat *src, char *name,
 */
 int				ftls_process_entry(t_env *e, char *name, char *prefix);
 int				ftls_process_argnames(t_env *e);
-char			*ftls_process_path(t_env *e, char *name, char *prefix);
-void			ftls_print_entry(t_env *e, t_list *subdir);
+
+t_list			*ftls_get_subdir(t_env *e, char *path);
+void			ftls_recursion(t_env *e, t_list *subdir);
 
 /*
 ** ftls_misc.c
 */
-void			ftls_decode_type(mode_t st_mode, char *out);
-void			ftls_decode_access_rights(mode_t st_mode, char *out);
-void			ftls_decode_mode(mode_t st_mode);
+
 int				ftls_get_terminal_width(t_env *e);
 int				ftls_isnavdot(char *name);
 int				ftls_is_entry_eligible(t_env *e, t_entry *entptr);
+int				ftls_is_entry_treatable(t_env *e, t_entry *entptr);
 
 /*
 ** flts_print.c
 */
-void			ftls_quick_ll(t_env *e, t_de *d); 	// OLD
-void			ftls_quick_ll_v2(t_env *e, t_entry *d);
+void			ftls_quick_ll(t_env *e, t_entry *d);
 void			ftls_print_name(t_env *e, char *name);
+char			*ftls_process_path(t_env *e, char *name, char *prefix);
+void			ftls_print_dir(t_env *e, t_list *subdir);
 
 /*
 ** ftls_error.c
 */
 void			ftls_print_usage_stderr(t_env *e);
-void			ftls_print_error_illegal_option(char *progname, char option);
+int				ftls_print_error_illegal_option(t_env *e, char *progname,
+		char option);
 
 /*
 ** ftls_debug.c
@@ -211,4 +206,10 @@ void			ftls_debug_show_args(t_env *e);
 void			ftls_debug_show_list(t_list *lst);
 void			ftls_debug_show_options(t_env *e);
 
+/*
+**	ftls_decode.c
+*/
+void			ftls_decode_type(mode_t st_mode, char *out);
+void			ftls_decode_access_rights(mode_t st_mode, char *out);
+void			ftls_decode_mode(mode_t st_mode);
 #endif
