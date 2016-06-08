@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/08 19:43:02 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 21:09:05 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,24 @@ void	ftls_debug_show_args(t_env *e)
 	}
 }
 
+void	ftls_debug_show_entry(t_entry *content)
+{
+	if (content->name)
+		ft_printf("Name = \033[32m%s\033[0m\n", *(content->name));
+	ft_printf("Size = %d\n", content->st_size);
+	if (content->prefix)
+		ft_printf("Prefix = \033[34m%s\033[0m\n", *(content->prefix));
+	ft_printf("check\n");
+	ft_printf("Mode = %b\n", content->st_mode);
+	ft_printf("nlink = %d\n", content->st_nlink);
+	ft_printf("uid = %d\n", content->st_uid);
+	ft_printf("gid = %d\n", content->st_uid);
+	ft_printf("atimespec = %d\n", content->st_atimespec);
+	ft_printf("mtimespec = %d\n", content->st_mtimespec);
+	ft_printf("ctimespec = %d\n", content->st_ctimespec);
+	ft_putendl("*********************************************************");
+}
+
 void	ftls_debug_show_list(t_list *lst)
 {
 	int		i;
@@ -48,21 +66,9 @@ void	ftls_debug_show_list(t_list *lst)
 	while (lst)
 	{
 		content = lst->content;
-//		ft_printf("List elem %d, inode = %d\n", i, content->d_ino);
-		ft_printf("Name = \033[32m%s\033[0m\n",
-				*(content->name));
-		ft_printf("Size = %d\n", content->st_size);
-		ft_printf("Prefix = \033[34m%s\033[0m\n", *(content->prefix));
-		ft_printf("Mode = %b\n", content->st_mode);
-		ft_printf("nlink = %d\n", content->st_nlink);
-		ft_printf("uid = %d\n", content->st_uid);
-		ft_printf("gid = %d\n", content->st_uid);
-		ft_printf("atimespec = %d\n", content->st_atimespec);
-		ft_printf("mtimespec = %d\n", content->st_mtimespec);
-		ft_printf("ctimespec = %d\n", content->st_ctimespec);
-		ft_putendl("*********************************************************");
-		lst = lst->next;
+		ftls_debug_show_entry(content);
 		i++;
+		lst = lst->next;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/08 19:34:32 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 21:19:34 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,42 +51,10 @@
 // Disable the following for a clean Valgrind report
 # define LEAKY_STDLIB_ENABLE 1
 
-/*
- * Cette structure, 1 par dir entry, contient toutes les datas utiles au tri
- * et a l'affichage.
- * Si l'entree est un repertoire a afficher OU l'option -R a ete donnee,
- * 'subdir' pointe vers une liste nouvelle liste contenant les entrees de
- * ce sous-repertoire.
- * Sinon, 'subdir' est NULL.
- * Le parcours des entrees contenues dans un repertoire se fait a l'aide
- * des pointeurs next ou prev de la t_list contenant cette structure.
-*/
-typedef struct	s_de
-{
-	// Below values should match return from dirent
-	ino_t					d_ino;
-	__uint8_t				d_namelen;
-	char					d_name[255 + 1];
-	// Below are copies from struct stat
-	mode_t					st_mode;
-	nlink_t					st_nlink;
-	uid_t					st_uid;
-	gid_t					st_gid;
-	TIME_TYPE				st_atimespec; // last access
-	TIME_TYPE				st_mtimespec; // last modification
-	TIME_TYPE				st_ctimespec; // last status change
-	off_t					st_size; // in bytes
-	// Below are custom variables
-	char					isdir; // bool
-	char					*prefix; // used to obtain file path
-	t_list					*carrier; // ptr to containing list element
-	t_list					*subdir; // only if this entry is a dir
-	t_list					*parent; // only if this entry is a subdir
-}				t_de;
-
 
 /*
-** Nouvelle structure pour version optimisee. Pas de parcours de liste en profondeur
+**	Nouvelle structure pour version optimisee.
+**	Pas de parcours de liste en profondeur
 */
 typedef struct	s_entry
 {
@@ -191,6 +159,7 @@ void			ftls_quick_ll(t_env *e, t_entry *d);
 void			ftls_print_name(t_env *e, char *name);
 char			*ftls_process_path(t_env *e, char *name, char *prefix);
 void			ftls_print_dir(t_env *e, t_list *subdir);
+void			ftls_print_entry(t_env *e, t_entry *entptr);
 
 /*
 ** ftls_error.c
@@ -205,6 +174,7 @@ int				ftls_print_error_illegal_option(t_env *e, char *progname,
 void			ftls_debug_show_args(t_env *e);
 void			ftls_debug_show_list(t_list *lst);
 void			ftls_debug_show_options(t_env *e);
+void			ftls_debug_show_entry(t_entry *content);
 
 /*
 **	ftls_decode.c

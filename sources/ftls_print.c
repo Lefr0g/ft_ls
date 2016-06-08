@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/08 19:47:21 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 21:16:33 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 	acl_t			aclbuf;
 
 	(void)e;
-	path = (*(d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
+	path = ((d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
 		ft_strdup(*(d->name));
 	ft_bzero(out, 12);
 	ftls_decode_type(d->st_mode, out);
@@ -141,13 +141,7 @@ void	ftls_print_dir(t_env *e, t_list *subdir)
 	{
 		entptr = ptr->content;
 		if (ftls_is_entry_eligible(e, entptr))
-		{
-			if (e->showlist)
-				ftls_quick_ll(e, entptr);
-			else
-				ftls_print_name(e, *(entptr->name));
-			e->print_initiated = 1;
-		}
+			ftls_print_entry(e, entptr);
 		else
 			e->print_initiated = 0;
 		ptr = ptr->next;
@@ -155,5 +149,14 @@ void	ftls_print_dir(t_env *e, t_list *subdir)
 	e->line_len = 0;
 	if (!e->oneperline && !e->showlist && e->print_initiated)
 		ft_putchar('\n');
+	e->print_initiated = 1;
+}
+
+void	ftls_print_entry(t_env *e, t_entry *entptr)
+{
+	if (e->showlist)
+		ftls_quick_ll(e, entptr);
+	else
+		ftls_print_name(e, *(entptr->name));
 	e->print_initiated = 1;
 }

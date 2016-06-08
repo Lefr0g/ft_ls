@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/08 19:10:00 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/08 21:18:26 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		ftls_process_argnames(t_env *e)
 	if (!e->lst)
 		return (0);
 	entptr = e->lst->content;
+//	TODO : sepatation fichiers / repertoires
 	if (!e->sort_none)
 		ft_lstsort_str(&e->lst, (void*)&entptr->name - (void*)entptr);
 	ptr = e->lst;
@@ -69,6 +70,8 @@ int		ftls_process_argnames(t_env *e)
 		entptr = ptr->content;
 		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);
+		else
+			ftls_print_entry(e, entptr);
 		ptr = ptr->next;
 	}
 	return (0);
