@@ -166,7 +166,7 @@ void			ftls_print_entry(t_env *e, t_entry *entptr);
 */
 void			ftls_print_usage_stderr(t_env *e);
 int				ftls_print_error_illegal_option(t_env *e, char *progname,
-		char option);
+				char option);
 
 /*
 ** ftls_debug.c
@@ -182,4 +182,5 @@ void			ftls_debug_show_entry(t_entry *content);
 void			ftls_decode_type(mode_t st_mode, char *out);
 void			ftls_decode_access_rights(mode_t st_mode, char *out);
 void			ftls_decode_mode(mode_t st_mode);
+
 #endif
