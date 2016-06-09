@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/08 21:16:33 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/09 19:19:59 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,7 @@ void	ftls_print_dir(t_env *e, t_list *subdir)
 		ptr = ptr->next;
 	}
 	e->line_len = 0;
-	if (!e->oneperline && !e->showlist && e->print_initiated)
-		ft_putchar('\n');
+	ftls_manage_spacing(e);
 	e->print_initiated = 1;
 }
 
@@ -159,4 +158,10 @@ void	ftls_print_entry(t_env *e, t_entry *entptr)
 	else
 		ftls_print_name(e, *(entptr->name));
 	e->print_initiated = 1;
+}
+
+void	ftls_manage_spacing(t_env *e)
+{
+	if (!e->oneperline && !e->showlist && e->print_initiated)
+		ft_putchar('\n');
 }

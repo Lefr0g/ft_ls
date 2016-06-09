@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/09 19:03:48 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/09 19:41:14 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 **	ftls_sort.c
 */
 int				ftls_compare_str(void *ref, void *run);
+int				ftls_compare_type(void *ref, void *run);
 
 
 /*
@@ -166,6 +167,7 @@ void			ftls_print_name(t_env *e, char *name);
 char			*ftls_process_path(t_env *e, char *name, char *prefix);
 void			ftls_print_dir(t_env *e, t_list *subdir);
 void			ftls_print_entry(t_env *e, t_entry *entptr);
+void			ftls_manage_spacing(t_env *e);
 
 /*
 ** ftls_error.c

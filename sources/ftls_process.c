@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/09 18:55:30 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/09 20:30:08 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,26 @@ int		ftls_process_argnames(t_env *e)
 	if (!e->lst)
 		return (0);
 	entptr = e->lst->content;
-//	TODO : sepatation fichiers / repertoires
 	if (!e->sort_none)
+	{
 		ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
 				&ftls_compare_str);
+//		TODO : sepatation fichiers / repertoires
+		ft_lstsort(&e->lst, (void*)&entptr->st_mode - (void*)entptr,
+				&ftls_compare_type);
+	}
 	ptr = e->lst;
 	while (ptr)
 	{
 		entptr = ptr->content;
+		ftls_debug_show_entry(entptr);
 		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);
 		else
+		{
 			ftls_print_entry(e, entptr);
+			ftls_manage_spacing(e);
+		}
 		ptr = ptr->next;
 	}
 	return (0);
