@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/08 21:18:26 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/09 18:55:30 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	ft_strdel(&path);
 	entptr = subdir->content;
 	if (!e->sort_none)
-		ft_lstsort_str(&subdir, (void*)&(entptr->name) - (void*)entptr);
+		ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
+				&ftls_compare_str);
 	ftls_print_dir(e, subdir);
 	if (e->recursive)
 		ftls_recursion(e, subdir);
@@ -63,7 +64,8 @@ int		ftls_process_argnames(t_env *e)
 	entptr = e->lst->content;
 //	TODO : sepatation fichiers / repertoires
 	if (!e->sort_none)
-		ft_lstsort_str(&e->lst, (void*)&entptr->name - (void*)entptr);
+		ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
+				&ftls_compare_str);
 	ptr = e->lst;
 	while (ptr)
 	{
