@@ -36,8 +36,8 @@ int		ftls_compare_type(void *ref, void *run)
 	mode_t	ref_mod;
 	mode_t	run_mod;
 
-	ref_mod = (mode_t)ref;
-	run_mod = (mode_t)run;
+	ref_mod = *(mode_t*)ref;
+	run_mod = *(mode_t*)run;
 
 	ft_printf("ref_mod = %b, run_mod = %b\n", ref_mod, run_mod);
 //	ft_printf("%b\n", S_IFREG);

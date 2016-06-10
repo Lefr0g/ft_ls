@@ -67,7 +67,7 @@ int		ftls_process_argnames(t_env *e)
 		ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
 				&ftls_compare_str);
 //		TODO : sepatation fichiers / repertoires
-		ft_lstsort(&e->lst, (void*)&entptr->st_mode - (void*)entptr,
+		ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
 				&ftls_compare_type);
 	}
 	ptr = e->lst;

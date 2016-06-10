@@ -61,6 +61,7 @@ typedef struct	s_entry
 	char					**name;
 	char					**prefix;
 	mode_t					st_mode;
+	mode_t					st_mode_ptr[1];
 	nlink_t					st_nlink;
 	uid_t					st_uid;
 	gid_t					st_gid;

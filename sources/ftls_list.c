@@ -60,6 +60,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		exit(ft_print_error(NULL, NULL, errno));
 	dst->name = testptr;
 	dst->st_mode = src->st_mode;
+	*(dst->st_mode_ptr) = dst->st_mode;
 	dst->st_nlink = src->st_nlink;
 	dst->st_uid = src->st_uid;
 	dst->st_gid = src->st_gid;
