@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 16:45:18 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 19:37:28 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 20:41:03 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,17 @@ int		ftls_is_entry_showable(t_env *e, t_entry *entptr)
 
 int		ftls_is_entry_treatable(t_env *e, t_entry *entptr)
 {
+/*
 	if (((entptr->st_mode & S_IFSOCK) != S_IFSOCK)
 			&& ((entptr->st_mode & S_IFDIR) == S_IFDIR
 				|| ((entptr->st_mode & S_IFLNK) == S_IFLNK
 					&& ft_isdir(*(entptr->name), e->progname, 0)
 					&& e->followlink)))
-		return (1);
+*/
+	if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
+	{
+		if (!((entptr->st_mode & S_IFLNK) == S_IFLNK && e->followlink))
+			return (1);
+	}
 	return (0);
 }
