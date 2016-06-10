@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/09 19:19:59 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 14:26:51 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	ftls_print_dir(t_env *e, t_list *subdir)
 	while (ptr)
 	{
 		entptr = ptr->content;
-		if (ftls_is_entry_eligible(e, entptr))
+		if (ftls_is_entry_showable(e, entptr))
 			ftls_print_entry(e, entptr);
 		else
 			e->print_initiated = 0;

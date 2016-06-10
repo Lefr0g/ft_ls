@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/09 19:41:14 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 14:27:03 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ void			ftls_recursion(t_env *e, t_list *subdir);
 
 int				ftls_get_terminal_width(t_env *e);
 int				ftls_isnavdot(char *name);
-int				ftls_is_entry_eligible(t_env *e, t_entry *entptr);
+int				ftls_is_entry_showable(t_env *e, t_entry *entptr);
 int				ftls_is_entry_treatable(t_env *e, t_entry *entptr);
 
 /*

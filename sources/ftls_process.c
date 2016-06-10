@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/09 20:30:08 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 14:45:18 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ int		ftls_process_argnames(t_env *e)
 	while (ptr)
 	{
 		entptr = ptr->content;
-		ftls_debug_show_entry(entptr);
-		if (ftls_is_entry_treatable(e, entptr))
+//		ftls_debug_show_entry(entptr);
+		if (ftls_is_entry_treatable(e, entptr)
+				&& (entptr->st_mode & S_IFLNK) != S_IFLNK)
 			ftls_process_entry(e, *(entptr->name), NULL);
 		else
 		{
@@ -127,7 +128,7 @@ void	ftls_recursion(t_env *e, t_list *subdir)
 	{
 		entptr = ptr->content;
 		if (ftls_is_entry_treatable(e, entptr)
-				&& ftls_is_entry_eligible(e, entptr))
+				&& ftls_is_entry_showable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), *(entptr->prefix));
 		ptr = ptr->next;
 	}

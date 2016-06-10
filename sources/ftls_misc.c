@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 16:45:18 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/08 19:40:09 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 14:25:43 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ftls_isnavdot(char *name)
 **	Flags managed by this funtion: -a -A
 */
 
-int		ftls_is_entry_eligible(t_env *e, t_entry *entptr)
+int		ftls_is_entry_showable(t_env *e, t_entry *entptr)
 {
 	char	*ptr;
 
