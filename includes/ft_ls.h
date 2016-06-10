@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 16:38:41 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 19:22:46 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct	s_entry
 	TIME_TYPE				st_mtimespec; // last modification
 	TIME_TYPE				st_ctimespec; // last status change
 	off_t					st_size; // in bytes
+	int						st_blocks;
 
 }				t_entry;
 
@@ -97,6 +98,7 @@ typedef struct	s_env
 	char			showinode; // (for -i)
 	char			showlist; // (for -l)
 	char			oneperline; // (for -1)
+	char			followlink; // 1 by default. Used for -L (not implemented)
 
 	//				I/O data for human readable and layout
 	int				termwidth;
@@ -104,6 +106,7 @@ typedef struct	s_env
 	int				col_len; // longest string for normal output
 	int				line_len; // position of the last char printed on current line
 	int				totalblocks; // for -l
+	int				atleastonetoshow;
 	int				print_initiated;
 
 }				t_env;

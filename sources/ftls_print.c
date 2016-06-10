@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 16:42:37 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 18:56:03 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 		ft_printf(" -> %s\n", *(d->linktarget));
 	else
 		ft_putchar('\n');
+//	ft_printf("blocks = %d\n", d->st_blocks);
 	e->print_initiated = 1;
 }
 
@@ -87,6 +88,8 @@ void	ftls_print_name(t_env *e, char *name)
 	else
 	{
 		i = -1;
+//		ft_printf("\033[35m|\033[0m");
+//		ft_printf("\033[35me->linelen = %d\033[0m", e->line_len);
 		if (e->line_len + (int)ft_strlen(name) < e->termwidth)
 		{
 			ft_putstr(name);
@@ -99,6 +102,7 @@ void	ftls_print_name(t_env *e, char *name)
 			e->line_len = ft_strlen(name);
 		}
 		spaces = e->col_len - ft_strlen(name) + 1;
+//		ft_printf("\033[35mspaces = %d\033[0m", spaces);
 		while (++i < spaces && e->line_len < e->termwidth)
 		{
 			ft_putchar(' ');
@@ -167,5 +171,9 @@ void	ftls_print_entry(t_env *e, t_entry *entptr)
 void	ftls_manage_spacing(t_env *e)
 {
 	if (!e->oneperline && !e->showlist && e->print_initiated)
+	{
 		ft_putchar('\n');
+		
+//	ft_printf("BD check");
+	}
 }

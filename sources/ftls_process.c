@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 14:45:18 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 19:24:19 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,21 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	char		*path;
 
 	path = ftls_process_path(e, name, prefix);
+	e->totalblocks = 0;
 	if (!(subdir = ftls_get_subdir(e, path)))
 		return (1);
 	ft_strdel(&path);
 	entptr = subdir->content;
 	if (!e->sort_none)
+	{
 		ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
 				&ftls_compare_str);
+		ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
+				&ftls_compare_type);
+	}
+	if (e->showlist && e->atleastonetoshow)
+		ft_printf("total %d\n", e->totalblocks);
+	e->atleastonetoshow = 0;
 	ftls_print_dir(e, subdir);
 	if (e->recursive)
 		ftls_recursion(e, subdir);
@@ -66,7 +74,6 @@ int		ftls_process_argnames(t_env *e)
 	{
 		ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
 				&ftls_compare_str);
-//		TODO : sepatation fichiers / repertoires
 		ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
 				&ftls_compare_type);
 	}
@@ -75,16 +82,13 @@ int		ftls_process_argnames(t_env *e)
 	{
 		entptr = ptr->content;
 //		ftls_debug_show_entry(entptr);
-		if (ftls_is_entry_treatable(e, entptr)
-				&& (entptr->st_mode & S_IFLNK) != S_IFLNK)
+		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);
 		else
-		{
 			ftls_print_entry(e, entptr);
-			ftls_manage_spacing(e);
-		}
 		ptr = ptr->next;
 	}
+//	ftls_manage_spacing(e);
 	return (0);
 }
 
@@ -106,8 +110,6 @@ t_list	*ftls_get_subdir(t_env *e, char *path)
 	while ((my_dirent = readdir(dir)))
 	{
 		ftls_add_entry(&subdir, e, my_dirent->d_name, path);
-		e->col_len = ft_getmax(e->col_len,
-				ft_getmin(ft_strlen(my_dirent->d_name), e->termwidth));
 	}
 	if (closedir(dir))
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 16:47:44 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 19:32:00 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,20 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	t_list		*lst_ptr;
 
 	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
-	if (lstat(path, &statbuf))
-	{
-		ft_print_error(e->progname, path, errno);
-		ft_printf("(Error from lstat)\n");
+	if (e->followlink && stat(path, &statbuf)
+			&& ft_print_error(e->progname, path, errno))
 		return (1);
-	}
+	else if (!e->followlink && lstat(path, &statbuf)
+			&& ft_print_error(e->progname, path, errno))
+		return (1);
 	ftls_copy_details(&entry, &statbuf, name, prefix);
-	
+	if (ftls_is_entry_showable(e, &entry))
+	{
+		e->totalblocks += entry.st_blocks;
+		e->atleastonetoshow = 1;
+//		ft_printf("\033[35mDEBUG : added %d blocks from %s, total %d\n\033[0m",
+//			entry.st_blocks, *(char**)(entry.name), e->totalblocks);
+	}
 	//	Gestion des liens symboliques pour affichage -l
 	if ((entry.st_mode & S_IFLNK) == S_IFLNK)
 	{
@@ -50,6 +56,8 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 		ft_lstappend(alst, lst_ptr);
 	else
 		*alst = lst_ptr;
+	e->col_len = ft_getmax(e->col_len,
+			ft_getmin(ft_strlen(name), e->termwidth));
 	return (0);
 }
 
@@ -79,6 +87,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 	dst->st_mtimespec = src->MTIME;
 	dst->st_ctimespec = src->CTIME;
 	dst->st_size = src->st_size;
+	dst->st_blocks = (int)src->st_blocks;
 	if (prefix)
 	{
 		testptr = ft_memalloc(sizeof(char**));
