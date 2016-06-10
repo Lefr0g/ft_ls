@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 19:24:19 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 20:33:13 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 
 	path = ftls_process_path(e, name, prefix);
 	e->totalblocks = 0;
-	if (!(subdir = ftls_get_subdir(e, path)))
-		return (1);
+	subdir = ftls_get_subdir(e, path);
 	ft_strdel(&path);
+	if (!subdir)
+		return (1);
 	entptr = subdir->content;
 	if (!e->sort_none)
 	{

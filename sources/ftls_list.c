@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 19:32:00 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 19:50:50 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	t_list		*lst_ptr;
 
 	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
-	if (e->followlink && stat(path, &statbuf)
-			&& ft_print_error(e->progname, path, errno))
+	if ((e->followlink && stat(path, &statbuf))
+			|| (!e->followlink && lstat(path, &statbuf)))
+	{
+		ft_print_error(e->progname, path, errno);
+		ft_strdel(&path);
 		return (1);
-	else if (!e->followlink && lstat(path, &statbuf)
-			&& ft_print_error(e->progname, path, errno))
-		return (1);
+	}
 	ftls_copy_details(&entry, &statbuf, name, prefix);
 	if (ftls_is_entry_showable(e, &entry))
 	{
