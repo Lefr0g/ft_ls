@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 14:26:51 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 16:42:37 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 	ft_printf("%s ", timebuf);
 	ft_strdel(&timebuf);
 #endif
-	ft_printf("%s\n", *(d->name));
+	ft_printf("%s", *(d->name));
+	if ((d->st_mode & S_IFLNK) == S_IFLNK)
+		ft_printf(" -> %s\n", *(d->linktarget));
+	else
+		ft_putchar('\n');
 	e->print_initiated = 1;
 }
 

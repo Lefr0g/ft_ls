@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 14:27:03 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 16:38:41 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 
 # define OPT_ARRAY_SIZE 12
 # define LIST_MODE_COLUMNS 7
+# define LINK_NAME_LEN 1025
 
 // Disable the following for a clean Valgrind report
 # define LEAKY_STDLIB_ENABLE 1
@@ -60,6 +61,7 @@ typedef struct	s_entry
 {
 	char					**name;
 	char					**prefix;
+	char					**linktarget;
 	mode_t					st_mode;
 	mode_t					st_mode_ptr[1];
 	nlink_t					st_nlink;

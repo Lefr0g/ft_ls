@@ -6,22 +6,24 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/09 19:02:28 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/10 16:47:44 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /*
-** This function creates a new element in the directory entry list pointed to
-** by 'alst', using lstat on the file or directory designated by 'name' and
-** optional 'prefix' to fill the t_de structure within the new list element.
+**	This function creates a new element in the directory entry list pointed to
+**	by 'alst', using lstat on the file or directory designated by 'name' and
+**	optional 'prefix' to fill the t_de structure within the new list element.
+**	If the entry is a symbolic link, the name of the target is copied.
 */
 
 int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 {
 	struct stat	statbuf;
 	char		*path;
+	char		**buf;
 	t_entry		entry;
 	t_list		*lst_ptr;
 
@@ -32,8 +34,17 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 		ft_printf("(Error from lstat)\n");
 		return (1);
 	}
-	ft_strdel(&path);
 	ftls_copy_details(&entry, &statbuf, name, prefix);
+	
+	//	Gestion des liens symboliques pour affichage -l
+	if ((entry.st_mode & S_IFLNK) == S_IFLNK)
+	{
+		buf = ft_memalloc(sizeof(char**));
+		*buf = ft_strnew(LINK_NAME_LEN);
+		readlink(path, *buf, LINK_NAME_LEN);
+		entry.linktarget = buf;
+	}
+	ft_strdel(&path);
 	lst_ptr = ft_lstnew(&entry, sizeof(t_entry));
 	if (*alst)
 		ft_lstappend(alst, lst_ptr);
@@ -43,7 +54,7 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 }
 
 /*
-** Subfunction for ftls_add_entry
+**	Subfunction for ftls_add_entry
 */
 
 void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
@@ -94,6 +105,11 @@ void	ftls_elemdel(void *ptr, size_t size)
 	{
 		ft_strdel(d->prefix);
 		ft_memdel((void**)&(d->prefix));
+	}
+	if (d->linktarget)
+	{
+		ft_strdel(d->linktarget);
+		ft_memdel((void**)&(d->linktarget));	
 	}
 	ft_bzero(ptr, size);
 	ft_memdel(&ptr);
