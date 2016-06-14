@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/14 18:06:06 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/14 19:02:27 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,26 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	t_list		*lst_ptr;
 
 	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
-//	if ((e->followlink && stat(path, &statbuf))
-//			|| (!e->followlink && lstat(path, &statbuf)))
-	if ((((e->followlink_cli && e->iscli) || (e->followlink_sub && !e->iscli))
+/*
+	if ((((e->followlink_cli && e->iscli) || (e->followlink_sub))
 				&& stat(path, &statbuf))
 			|| lstat(path, &statbuf))
+	{
+		ft_print_error(e->progname, path, errno);
+		ft_strdel(&path);
+		return (1);
+	}
+*/
+	if ((e->followlink_cli && e->iscli) || e->followlink_sub)
+	{
+		if (stat(path, &statbuf))
+		{
+			ft_print_error(e->progname, path, errno);
+			ft_strdel(&path);
+			return (1);
+		}
+	}
+	else if (lstat(path, &statbuf))
 	{
 		ft_print_error(e->progname, path, errno);
 		ft_strdel(&path);
