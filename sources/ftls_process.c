@@ -32,9 +32,12 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	path = ftls_process_path(e, name, prefix);
 	e->totalblocks = 0;
 	subdir = ftls_get_subdir(e, path);
-	ft_strdel(&path);
 	if (!subdir)
+	{
+//		ft_print_error(e->progname, path, errno);
 		return (1);
+	}
+	ft_strdel(&path);
 	entptr = subdir->content;
 	if (!e->sort_none)
 	{
@@ -106,7 +109,10 @@ t_list	*ftls_get_subdir(t_env *e, char *path)
 
 	subdir = NULL;
 	if (!(dir = opendir(path)))
+	{
+		ft_print_error(e->progname, path, errno);
 		return (NULL);
+	}
 	e->col_len = 0;
 	while ((my_dirent = readdir(dir)))
 	{
