@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 19:22:46 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/14 18:14:14 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # include <sys/types.h>
 # include <uuid/uuid.h>
 
-# define OPT_ARRAY_SIZE 12
+# define OPT_ARRAY_SIZE 13
 # define LIST_MODE_COLUMNS 7
 # define LINK_NAME_LEN 1025
 
@@ -62,6 +62,7 @@ typedef struct	s_entry
 	char					**name;
 	char					**prefix;
 	char					**linktarget;
+//	char					iscli; // 1 if this entry is a cli argument
 	mode_t					st_mode;
 	mode_t					st_mode_ptr[1];
 	nlink_t					st_nlink;
@@ -98,7 +99,9 @@ typedef struct	s_env
 	char			showinode; // (for -i)
 	char			showlist; // (for -l)
 	char			oneperline; // (for -1)
-	char			followlink; // 1 by default. Used for -L (not implemented)
+	char			followlink_cli; // If a link is given as argument, follow it
+//									unless -l given without -L
+	char			followlink_sub; // In case of -R, follow links entries. (for -L)
 
 	//				I/O data for human readable and layout
 	int				termwidth;
@@ -108,6 +111,7 @@ typedef struct	s_env
 	int				totalblocks; // for -l
 	int				atleastonetoshow;
 	int				print_initiated;
+	char			iscli;
 
 }				t_env;
 

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 16:45:18 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 20:41:03 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/14 18:40:08 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int		ftls_is_entry_showable(t_env *e, t_entry *entptr)
 **	This entry can also be a symbolic link.
 **	Invalid entries : sockets.
 **
-**	A REFAIRE
+**	A REFAIRE >> WIP
+**
 */
 
 int		ftls_is_entry_treatable(t_env *e, t_entry *entptr)
@@ -67,9 +68,13 @@ int		ftls_is_entry_treatable(t_env *e, t_entry *entptr)
 					&& e->followlink)))
 */
 	if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
-	{
-		if (!((entptr->st_mode & S_IFLNK) == S_IFLNK && e->followlink))
-			return (1);
-	}
+		return (1);
+//		if (!((entptr->st_mode & S_IFLNK) == S_IFLNK && e->followlink))
+//			return (1);
+		
+	if (e->followlink_cli && e->iscli && (entptr->st_mode & S_IFLNK) == S_IFLNK)
+		return (1);
+	if (e->followlink_sub && (entptr->st_mode & S_IFLNK) == S_IFLNK)
+		return (1);
 	return (0);
 }

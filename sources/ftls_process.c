@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 20:33:13 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/14 18:08:59 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	}
 	ft_strdel(&path);
 	entptr = subdir->content;
+//	entptr->iscli = 0; // this entry is not a cli argument
 	if (!e->sort_none)
 	{
 		ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
@@ -50,6 +51,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		ft_printf("total %d\n", e->totalblocks);
 	e->atleastonetoshow = 0;
 	ftls_print_dir(e, subdir);
+	e->iscli = 0;
 	if (e->recursive)
 		ftls_recursion(e, subdir);
 	ft_lstdel(&(subdir), &ftls_elemdel);
@@ -67,6 +69,7 @@ int		ftls_process_argnames(t_env *e)
 	int		i;
 	t_entry	*entptr;
 
+	e->iscli = 1;
 	i = -1;
 	while (e->cli_notopt[++i])
 		if (e->cli_notopt[i][0])
@@ -85,6 +88,8 @@ int		ftls_process_argnames(t_env *e)
 	while (ptr)
 	{
 		entptr = ptr->content;
+//		entptr->iscli = 1;
+		e->iscli = 1;
 //		ftls_debug_show_entry(entptr);
 		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 18:05:28 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/14 18:26:13 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,15 @@ int		main(int ac, char **av)
 //	ftls_debug_show_options(&e);
 
 	if (!e.cli_notopt[0])
+	{
+		e.iscli = 0;
 		ftls_process_entry(&e, ".", NULL);
+	}
 	else
+	{
+		e.iscli = 1;
 		ftls_process_argnames(&e);
+	}
 
 //	ftls_debug_show_list(e.lst);
 
