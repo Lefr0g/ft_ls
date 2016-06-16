@@ -148,6 +148,7 @@ void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 **	ftls_sort.c
 */
 int				ftls_compare_str(void *ref, void *run);
+int				ftls_compare_str_rev(void *ref, void *run);
 int				ftls_compare_type(void *ref, void *run);
 
 

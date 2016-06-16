@@ -29,6 +29,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	t_entry		*entptr;
 	char		*path;
 
+	e->iscli = 0;
 	path = ftls_process_path(e, name, prefix);
 	e->totalblocks = 0;
 	subdir = ftls_get_subdir(e, path);
@@ -42,8 +43,13 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 //	entptr->iscli = 0; // this entry is not a cli argument
 	if (!e->sort_none)
 	{
-		ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
-				&ftls_compare_str);
+		if (e->reverse)
+			ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
+					&ftls_compare_str_rev);
+		else
+			ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
+					&ftls_compare_str);
+
 		ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
 				&ftls_compare_type);
 	}
@@ -79,8 +85,12 @@ int		ftls_process_argnames(t_env *e)
 	entptr = e->lst->content;
 	if (!e->sort_none)
 	{
-		ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
-				&ftls_compare_str);
+		if (e->reverse)
+			ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
+					&ftls_compare_str_rev);
+		else
+			ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
+					&ftls_compare_str);
 		ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
 				&ftls_compare_type);
 	}
@@ -89,7 +99,7 @@ int		ftls_process_argnames(t_env *e)
 	{
 		entptr = ptr->content;
 //		entptr->iscli = 1;
-		e->iscli = 1;
+//		e->iscli = 1;
 //		ftls_debug_show_entry(entptr);
 		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);

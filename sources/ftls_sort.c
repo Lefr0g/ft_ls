@@ -27,6 +27,19 @@ int		ftls_compare_str(void *ref, void *run)
 }
 
 /*
+ *	Same, but reversed
+*/
+int		ftls_compare_str_rev(void *ref, void *run)
+{
+	char	***ref_str;
+	char	***run_str;
+
+	ref_str = (char***)ref;
+	run_str = (char***)run;
+	return (ft_strcmp(**run_str, **ref_str));
+}
+
+/*
 **	A pointer to this function is used to seprate regular files from the
 **	others, and displace them to the beginning of the entry list
 */
