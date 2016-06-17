@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/17 15:40:41 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 18:18:13 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 int		ftls_process_entry(t_env *e, char *name, char *prefix)
 {
 	t_list		*subdir;
-	t_entry		*entptr;
 	char		*path;
 
 	e->iscli = 0;
@@ -39,20 +38,9 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		return (1);
 	}
 	ft_strdel(&path);
-	entptr = subdir->content;
-//	entptr->iscli = 0; // this entry is not a cli argument
-	if (!e->sort_none)
-	{
-		if (e->reverse)
-			ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
-					&ftls_compare_str_rev);
-		else
-			ft_lstsort(&subdir, (void*)&(entptr->name) - (void*)entptr,
-					&ftls_compare_str);
 
-		ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
-				&ftls_compare_type);
-	}
+	ftls_manage_sorting(e, &subdir);
+
 	if (e->showlist && e->atleastonetoshow)
 		ft_printf("total %d\n", e->totalblocks);
 	e->atleastonetoshow = 0;
@@ -82,24 +70,13 @@ int		ftls_process_argnames(t_env *e)
 			ftls_add_entry(&e->lst, e, e->cli_notopt[i], NULL);
 	if (!e->lst)
 		return (0);
-	entptr = e->lst->content;
-	if (!e->sort_none)
-	{
-		if (e->reverse)
-			ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
-					&ftls_compare_str_rev);
-		else
-			ft_lstsort(&e->lst, (void*)&entptr->name - (void*)entptr,
-					&ftls_compare_str);
-		ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
-				&ftls_compare_type);
-	}
+	
+	ftls_manage_sorting(e, &e->lst);
+
 	ptr = e->lst;
 	while (ptr)
 	{
 		entptr = ptr->content;
-//		entptr->iscli = 1;
-//		e->iscli = 1;
 //		ftls_debug_show_entry(entptr);
 		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);
@@ -107,7 +84,6 @@ int		ftls_process_argnames(t_env *e)
 			ftls_print_entry(e, entptr);
 		ptr = ptr->next;
 	}
-//	ftls_manage_spacing(e);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/14 18:14:14 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 18:11:06 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 #  define TIME_TYPE struct timespec
 #  define ATIME	st_atimespec
 #  define MTIME	st_mtimespec
-#  define CTIME	st_atimespec
+#  define CTIME	st_ctimespec
+#  define FT_DATE_COMPARE ftls_compare_date_osx
 # elif __linux__
 #  define TIME_TYPE time_t
 #  define ATIME	st_atime
 #  define MTIME	st_mtime
-#  define CTIME	st_atime
+#  define CTIME	st_ctime
+#  define FT_DATE_COMPARE ftls_compare_date_linux
 # endif
 
 
@@ -150,6 +152,9 @@ void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 int				ftls_compare_str(void *ref, void *run);
 int				ftls_compare_str_rev(void *ref, void *run);
 int				ftls_compare_type(void *ref, void *run);
+int				ftls_compare_date_osx(void *ref, void *run);
+int				ftls_compare_date_linux(void *ref, void *run);
+void			ftls_manage_sorting(t_env *e, t_list **list);
 
 
 /*

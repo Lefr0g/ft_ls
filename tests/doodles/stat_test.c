@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 17:25:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/03/30 13:58:44 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 16:12:23 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	main(int argc, char **argv)
 	struct stat		buf;
 	struct passwd	*pass;
 	struct group	*grp;
+	struct timespec s_ts;
 
 #ifndef _DARWIN_FEATURE_64_BIT_INODE
 	ft_printf("_DARWIN_FEATURE_64_BIT_INODE is not defined\n");
@@ -73,10 +74,17 @@ int	main(int argc, char **argv)
 				ft_putstr("ERROR: could not resolve group name\n");
 			ft_printf("File group: \033[33m%s\033[0m\n", grp->gr_name);
 
-			ft_printf("Time of last access: \033[33m%d\033[0m\n", buf.st_atimespec);
-			ft_printf("Time of last access (formatted): \033[33m%s\033[0m\n",
-					ctime(&(buf.st_atime)));
+//			Time stuff
+			s_ts = buf.st_atimespec;
+			ft_printf("Time of last access: \033[33m%d\033[0m\n", s_ts);
+			ft_printf("tv_sec = %d, tv_nsec = %ld\n", s_ts.tv_sec, s_ts.tv_nsec);
+			ft_printf("tv_sec (as long long) = %lld\n", (long long)s_ts.tv_sec);
+			ft_printf("Time of last access (via ctime): \033[33m%s\033[0m\n",
+					ctime(&(s_ts.tv_sec)));
+
 			ft_printf("Time of last modif: \033[33m%d\033[0m\n", buf.st_mtimespec);
+
+
 			ft_printf("Time of last status change: \033[33m%d\033[0m\n", buf.st_ctimespec);
 			ft_printf("File size: \033[33m%d\033[0m bytes\n", buf.st_size);
 		}
