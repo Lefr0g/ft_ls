@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/10 18:56:03 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 19:08:58 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,8 @@ void	ftls_print_dir(t_env *e, t_list *subdir)
 		if (ftls_is_entry_showable(e, entptr))
 			ftls_print_entry(e, entptr);
 		else
-			e->print_initiated = 0;
+			if (!ptr->prev)
+				e->print_initiated = 0;
 		ptr = ptr->next;
 	}
 	e->line_len = 0;
@@ -174,6 +175,6 @@ void	ftls_manage_spacing(t_env *e)
 	{
 		ft_putchar('\n');
 		
-//	ft_printf("BD check");
+	//	ft_printf("\nBD check\n");
 	}
 }
