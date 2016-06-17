@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/17 18:11:06 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 20:11:02 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct	s_entry
 	gid_t					st_gid;
 	TIME_TYPE				st_atimespec; // last access
 	TIME_TYPE				st_mtimespec; // last modification
+	TIME_TYPE				st_mtimespec_ptr[1];
 	TIME_TYPE				st_ctimespec; // last status change
 	off_t					st_size; // in bytes
 	int						st_blocks;

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/14 19:02:27 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 20:10:32 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 	dst->st_gid = src->st_gid;
 	dst->st_atimespec = src->ATIME;
 	dst->st_mtimespec = src->MTIME;
+	*(dst->st_mtimespec_ptr) = dst->st_mtimespec;
 	dst->st_ctimespec = src->CTIME;
 	dst->st_size = src->st_size;
 	dst->st_blocks = (int)src->st_blocks;

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/09 19:01:35 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/17 18:10:51 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 20:18:13 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ int		ftls_compare_date_osx(void *ref, void *run)
 	TIME_TYPE	ref_time;
 	TIME_TYPE	run_time;
 
-	ref_time = *(TIME_TYPE*)ref;
-	run_time = *(TIME_TYPE*)run;
-	if (ref_time.tv_sec > run_time.tv_sec)
-		return (1);
+	ref_time = *(struct timespec*)ref;
+	run_time = *(struct timespec*)run;
 	if (ref_time.tv_sec < run_time.tv_sec)
+		return (1);
+	if (ref_time.tv_sec > run_time.tv_sec)
 		return (-1);
 	else
 		return (ref_time.tv_nsec - run_time.tv_nsec);
@@ -102,13 +102,16 @@ void	ftls_manage_sorting(t_env *e, t_list **list)
 	entptr = (*list)->content;
 	if (!e->sort_none)
 	{
+
 		if (e->reverse)
 			ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
 					&ftls_compare_str_rev);
 		else
 			ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
 					&ftls_compare_str);
-
+		if (e->sort_timemod)
+			ft_lstsort(list, (void*)&(entptr->st_mtimespec_ptr) - (void*)entptr,
+					&ftls_compare_date_osx);
 		if (e->iscli)
 			ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
 					&ftls_compare_type);
