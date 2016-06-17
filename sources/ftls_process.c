@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/14 18:08:59 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/17 15:40:41 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,8 @@ void	ftls_recursion(t_env *e, t_list *subdir)
 	{
 		entptr = ptr->content;
 		if (ftls_is_entry_treatable(e, entptr)
-				&& ftls_is_entry_showable(e, entptr))
+				&& ftls_is_entry_showable(e, entptr)
+				&& !ftls_isnavdot(*(entptr->name)))
 			ftls_process_entry(e, *(entptr->name), *(entptr->prefix));
 		ptr = ptr->next;
 	}
