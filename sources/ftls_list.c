@@ -107,6 +107,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 	*(dst->st_mtimespec_ptr) = dst->st_mtimespec;
 	dst->st_ctimespec = src->CTIME;
 	dst->st_size = src->st_size;
+	*(dst->st_size_ptr) = dst->st_size;
 	dst->st_blocks = (int)src->st_blocks;
 	if (prefix)
 	{

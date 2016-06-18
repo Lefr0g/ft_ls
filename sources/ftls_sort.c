@@ -27,20 +27,6 @@ int		ftls_compare_str(void *ref, void *run)
 }
 
 /*
-**	Same, but reversed
-*/
-
-int		ftls_compare_str_rev(void *ref, void *run)
-{
-	char	***ref_str;
-	char	***run_str;
-
-	ref_str = (char***)ref;
-	run_str = (char***)run;
-	return (ft_strcmp(**run_str, **ref_str));
-}
-
-/*
 **	A pointer to this function is used to seprate regular files from the
 **	others, and displace them to the beginning of the entry list
 */
@@ -92,6 +78,19 @@ int		ftls_compare_date_linux(void *ref, void *run)
 }
 
 /*
+**	Size comparison
+*/
+int		ftls_compare_size(void *ref, void *run)
+{
+	off_t	ref_size;
+	off_t	run_size;
+
+	ref_size = *(off_t*)ref;
+	run_size = *(off_t*)run;
+	return (run_size - ref_size);
+}
+
+/*
 **	Generic list sorting function, used in ftls_process.c
 */
 
@@ -102,19 +101,19 @@ void	ftls_manage_sorting(t_env *e, t_list **list)
 	entptr = (*list)->content;
 	if (!e->sort_none)
 	{
-
-//		if (e->reverse)
-//			ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
-//					&ftls_compare_str_rev);
-//		else
 		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
 				&ftls_compare_str);
-		if (e->reverse)
-			ft_lstflip(list);
-		entptr = (*list)->content;
+
 		if (e->sort_timemod)
 			ft_lstsort(list, (void*)&(entptr->st_mtimespec_ptr) - (void*)entptr,
 					&ftls_compare_date_osx);
+		if (e->sort_size)
+			ft_lstsort(list, (void*)&(entptr->st_size_ptr) - (void*)entptr,
+					&ftls_compare_size);
+
+		if (e->reverse)
+			ft_lstflip(list);
+//		entptr = (*list)->content;
 		if (e->iscli)
 			ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
 					&ftls_compare_type);

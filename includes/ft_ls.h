@@ -75,6 +75,7 @@ typedef struct	s_entry
 	TIME_TYPE				st_mtimespec_ptr[1];
 	TIME_TYPE				st_ctimespec; // last status change
 	off_t					st_size; // in bytes
+	off_t					st_size_ptr[1];
 	int						st_blocks;
 
 }				t_entry;
@@ -151,10 +152,10 @@ void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 **	ftls_sort.c
 */
 int				ftls_compare_str(void *ref, void *run);
-int				ftls_compare_str_rev(void *ref, void *run);
 int				ftls_compare_type(void *ref, void *run);
 int				ftls_compare_date_osx(void *ref, void *run);
 int				ftls_compare_date_linux(void *ref, void *run);
+int				ftls_compare_size(void *ref, void *run);
 void			ftls_manage_sorting(t_env *e, t_list **list);
 
 
