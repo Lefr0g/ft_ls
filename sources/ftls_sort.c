@@ -113,7 +113,6 @@ void	ftls_manage_sorting(t_env *e, t_list **list)
 
 		if (e->reverse)
 			ft_lstflip(list);
-//		entptr = (*list)->content;
 		if (e->iscli)
 			ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
 					&ftls_compare_type);

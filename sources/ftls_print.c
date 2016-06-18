@@ -13,6 +13,29 @@
 #include "ft_ls.h"
 
 /*
+**	Subfunction for ls -l, used to generate a date string from ctime
+*/
+//char	*ftls_gen_timestr(time_t *date)
+char	*ftls_gen_timestr(time_t *date)
+{
+	char	*str;
+	time_t	now;
+
+//	ft_printf("%s", ctime(date));
+//	ft_printf("%s\n", str);
+	now = time(NULL);
+	if (now - *date > 15811200 || *date - now > 15811200)
+	{
+		str = ft_strdup(&ctime(date)[4]);
+		ft_strncpy(&str[7], &str[15], 5);
+		ft_bzero(&str[12], 10);
+	}
+	else
+		str = ft_strsub(ctime(date), 4, 12);
+	return (str);
+}
+
+/*
  *	Temporary
 */
 void	ftls_quick_ll(t_env *e, t_entry *d)
@@ -47,7 +70,10 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 	out[11] = '\0';
 #if LEAKY_STDLIB_ENABLE
 	// Valgrind doesn't like these function calls at all..
-	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
+
+	timebuf = ftls_gen_timestr(&(d->MTIME.tv_sec));
+
+//	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
 	passbuf = getpwuid(d->st_uid);
 	groupbuf = getgrgid(d->st_gid);
 #endif 
