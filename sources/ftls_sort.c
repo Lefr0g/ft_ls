@@ -103,12 +103,15 @@ void	ftls_manage_sorting(t_env *e, t_list **list)
 	if (!e->sort_none)
 	{
 
+//		if (e->reverse)
+//			ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
+//					&ftls_compare_str_rev);
+//		else
+		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
+				&ftls_compare_str);
 		if (e->reverse)
-			ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
-					&ftls_compare_str_rev);
-		else
-			ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
-					&ftls_compare_str);
+			ft_lstflip(list);
+		entptr = (*list)->content;
 		if (e->sort_timemod)
 			ft_lstsort(list, (void*)&(entptr->st_mtimespec_ptr) - (void*)entptr,
 					&ftls_compare_date_osx);
