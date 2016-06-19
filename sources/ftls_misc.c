@@ -67,6 +67,9 @@ int		ftls_is_entry_treatable(t_env *e, t_entry *entptr)
 					&& ft_isdir(*(entptr->name), e->progname, 0)
 					&& e->followlink)))
 */
+	if ((entptr->st_mode & S_IFSOCK) == S_IFSOCK
+			|| (entptr->st_mode & S_IFBLK) == S_IFBLK)
+		return (0);
 	if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
 		return (1);
 //		if (!((entptr->st_mode & S_IFLNK) == S_IFLNK && e->followlink))
