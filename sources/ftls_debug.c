@@ -48,7 +48,7 @@ void	ftls_debug_show_entry(t_entry *content)
 	ft_printf("Mode = %b\n", content->st_mode);
 	ft_printf("nlink = %d\n", content->st_nlink);
 	ft_printf("uid = %d\n", content->st_uid);
-	ft_printf("gid = %d\n", content->st_uid);
+	ft_printf("gid = %d\n", content->st_gid);
 	ft_printf("atimespec = %d\n", content->st_atimespec);
 	ft_printf("mtimespec = %d\n", content->st_mtimespec);
 	ft_printf("ctimespec = %d\n", content->st_ctimespec);

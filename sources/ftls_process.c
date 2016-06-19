@@ -38,8 +38,10 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		return (1);
 	}
 	ft_strdel(&path);
-
 	ftls_manage_sorting(e, &subdir);
+
+
+//	ftls_debug_show_list(subdir);
 
 	if (e->showlist && e->atleastonetoshow)
 		ft_printf("total %d\n", e->totalblocks);

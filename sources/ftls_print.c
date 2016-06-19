@@ -68,25 +68,33 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 		out[10] = ' ';
 	ft_strdel(&path);
 	out[11] = '\0';
-#if LEAKY_STDLIB_ENABLE
 	// Valgrind doesn't like these function calls at all..
 
 	timebuf = ftls_gen_timestr(&(d->MTIME.tv_sec));
 
 //	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
+//
+	errno = 0;
 	passbuf = getpwuid(d->st_uid);
 	groupbuf = getgrgid(d->st_gid);
-#endif 
+
 	ft_putstr(out);
 	ft_printf("%3d ", d->st_nlink);
-#if LEAKY_STDLIB_ENABLE
-	ft_printf("%s\t%s\t", passbuf->pw_name, groupbuf->gr_name);
-#endif
+	
+	if (passbuf)
+		ft_printf("%s\t", passbuf->pw_name);
+	else
+		ft_printf("%d\t", (int)d->st_uid);
+
+	if (groupbuf)
+		ft_printf("%s\t", groupbuf->gr_name);
+	else
+		ft_printf("%d\t", (int)d->st_gid);
+
+	
 	ft_printf("%5d ", d->st_size);
-#if LEAKY_STDLIB_ENABLE
 	ft_printf("%s ", timebuf);
 	ft_strdel(&timebuf);
-#endif
 	ft_printf("%s", *(d->name));
 	if ((d->st_mode & S_IFLNK) == S_IFLNK)
 		ft_printf(" -> %s\n", *(d->linktarget));
