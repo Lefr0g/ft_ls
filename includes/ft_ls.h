@@ -165,7 +165,7 @@ void			ftls_manage_sorting(t_env *e, t_list **list);
 int				ftls_process_entry(t_env *e, char *name, char *prefix);
 int				ftls_process_argnames(t_env *e);
 
-t_list			*ftls_get_subdir(t_env *e, char *path);
+t_list			*ftls_get_subdir(t_env *e, char *name, char *path);
 void			ftls_recursion(t_env *e, t_list *subdir);
 
 /*

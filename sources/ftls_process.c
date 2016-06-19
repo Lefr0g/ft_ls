@@ -31,10 +31,11 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	e->iscli = 0;
 	path = ftls_process_path(e, name, prefix);
 	e->totalblocks = 0;
-	subdir = ftls_get_subdir(e, path);
+	subdir = ftls_get_subdir(e, name, path);
 	if (!subdir)
 	{
 //		ft_print_error(e->progname, path, errno);
+		ft_strdel(&path);
 		return (1);
 	}
 	ft_strdel(&path);
@@ -94,7 +95,7 @@ int		ftls_process_argnames(t_env *e)
 **	Also generates some metadata used for column layout (default output)
 */
 
-t_list	*ftls_get_subdir(t_env *e, char *path)
+t_list	*ftls_get_subdir(t_env *e, char *name, char *path)
 {
 	t_list			*subdir;
 	DIR				*dir;
@@ -103,7 +104,7 @@ t_list	*ftls_get_subdir(t_env *e, char *path)
 	subdir = NULL;
 	if (!(dir = opendir(path)))
 	{
-		ft_print_error(e->progname, path, errno);
+		ft_print_error(e->progname, name, errno);
 		return (NULL);
 	}
 	e->col_len = 0;
