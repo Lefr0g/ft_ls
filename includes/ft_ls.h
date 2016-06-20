@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/17 20:11:02 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/20 19:23:20 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # include <sys/types.h>
 # include <uuid/uuid.h>
 
-# define OPT_ARRAY_SIZE 13
+# define OPT_ARRAY_SIZE 14
 # define LIST_MODE_COLUMNS 7
 # define LINK_NAME_LEN 1025
 
@@ -93,6 +93,7 @@ typedef struct	s_env
 	//				Option flags:
 	char			show_all_nodot; // starting with . except "." and .. (for -A)
 	char			show_all; // All including "." and .. (for -a)
+	char			show_num_id; // (for -n)
 	char			recursive; // (for -R)
 	char			reverse; // (for -r)
 	char			sort_none; // (for -f)

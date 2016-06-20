@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/17 19:08:58 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/20 19:26:42 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 	ft_putstr(out);
 	ft_printf("%3d ", d->st_nlink);
 	
-	if (passbuf)
+	if (passbuf && !e->show_num_id)
 		ft_printf("%s\t", passbuf->pw_name);
 	else
 		ft_printf("%d\t", (int)d->st_uid);
 
-	if (groupbuf)
+	if (groupbuf && !e->show_num_id)
 		ft_printf("%s\t", groupbuf->gr_name);
 	else
 		ft_printf("%d\t", (int)d->st_gid);

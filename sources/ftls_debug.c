@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/14 18:13:20 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/20 19:25:52 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ftls_debug_show_options(t_env *e)
 	ft_printf("OPTION FLAGS________________________________________________\n");
 	ft_printf("Show_all_nodot %hhd\tShow_all %4hhd\n", e->show_all_nodot,
 			e->show_all);
+	ft_printf("Show_num_id %hhd\n", e->show_num_id);
 	ft_printf("Recursive %6hhd\tReverse %5hhd\n", e->recursive, e->reverse);
 	ft_printf("Sort_none %6hhd\tSort_size %3hhd\t\n",
 			e->sort_none, e->sort_size);

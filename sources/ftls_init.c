@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/14 18:24:58 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/20 19:28:16 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ int	ftls_init_env(t_env *e, char **av)
 	e->supported_option[5][0] = 'f';
 	e->supported_option[6][0] = 'h';
 	e->supported_option[7][0] = 'i';
-	e->supported_option[8][0] = 'r';
-	e->supported_option[9][0] = 't';
-	e->supported_option[10][0] = 'l';
-	e->supported_option[11][0] = '1';
+	e->supported_option[8][0] = 'n';
+	e->supported_option[9][0] = 'r';
+	e->supported_option[10][0] = 't';
+	e->supported_option[11][0] = 'l';
+	e->supported_option[12][0] = '1';
 	e->termwidth = ftls_get_terminal_width(e);
 	return (0);
 }
@@ -86,6 +87,7 @@ int	ftls_init_options(t_env *e)
 		e->recursive = (c == 'R') ? 1 : e->recursive;
 		e->sort_size = (c == 'S') ? 1 : e->sort_size;
 		e->show_all = (c == 'a') ? 1 : e->show_all;
+		e->show_num_id = (c == 'n') ? 1 : e->show_num_id;
 		e->sort_none = (c == 'f') ? 1 : e->sort_none;
 		e->human = (c == 'h') ? 1 : e->human;
 		e->showinode = (c == 'i') ? 1 : e->showinode;
@@ -95,6 +97,8 @@ int	ftls_init_options(t_env *e)
 		e->followlink_sub = (c == 'L') ? 1 : e->followlink_sub;
 		e->oneperline = (c == '1') ? 1 : e->oneperline;
 	}
+	if (e->show_num_id)
+		e->showlist = 1;
 	if (e->sort_none)
 		e->show_all = 1;
 	e->followlink_cli = 1;
