@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/21 14:27:33 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/21 14:31:19 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ftls_init_env(t_env *e, char **av)
 	e->supported_option[0][0] = 'A'; // Done
 	e->supported_option[1][0] = 'L'; // Done
 	e->supported_option[2][0] = 'R'; // Done
-	e->supported_option[3][0] = 'S'; // TODO
+	e->supported_option[3][0] = 'S'; // Done
 	e->supported_option[4][0] = 'a'; // Done
 	e->supported_option[5][0] = 'f'; // Done
 	e->supported_option[6][0] = 'h'; // TODO
