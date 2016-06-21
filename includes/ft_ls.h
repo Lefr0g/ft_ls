@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/20 19:23:20 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/21 14:21:59 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct	s_entry
 	char					**prefix;
 	char					**linktarget;
 //	char					iscli; // 1 if this entry is a cli argument
+	ino_t					st_inode;
 	mode_t					st_mode;
 	mode_t					st_mode_ptr[1];
 	nlink_t					st_nlink;

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/17 20:10:32 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/21 14:22:40 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 	if (!*(testptr))
 		exit(ft_print_error(NULL, NULL, errno));
 	dst->name = testptr;
+	dst->st_inode = src->st_ino;
 	dst->st_mode = src->st_mode;
 	*(dst->st_mode_ptr) = dst->st_mode;
 	dst->st_nlink = src->st_nlink;

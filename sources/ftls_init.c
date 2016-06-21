@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/21 14:16:11 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/21 14:27:33 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int	ftls_init_env(t_env *e, char **av)
 	e->supported_option[4][0] = 'a'; // Done
 	e->supported_option[5][0] = 'f'; // Done
 	e->supported_option[6][0] = 'h'; // TODO
-	e->supported_option[7][0] = 'i'; // TODO
+	e->supported_option[7][0] = 'i'; // Almost done (TODO fix layout)
 	e->supported_option[8][0] = 'n'; // Done
 	e->supported_option[9][0] = 'r'; // Done
 	e->supported_option[10][0] = 't'; // Done
-	e->supported_option[11][0] = 'l'; // Almost done
+	e->supported_option[11][0] = 'l'; // Almost done (TODO fix layout)
 	e->supported_option[12][0] = '1'; // Done
 	e->termwidth = ftls_get_terminal_width(e);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/20 19:26:42 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/21 14:24:40 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,8 @@ void	ftls_print_dir(t_env *e, t_list *subdir)
 
 void	ftls_print_entry(t_env *e, t_entry *entptr)
 {
+	if (e->showinode)
+		ft_printf("%9d ", entptr->st_inode);
 	if (e->showlist)
 		ftls_quick_ll(e, entptr);
 	else
