@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/20 19:28:16 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/21 14:16:11 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,19 @@ int	ftls_init_env(t_env *e, char **av)
 	i = -1;
 	while (++i < OPT_ARRAY_SIZE)
 		e->supported_option[i] = ft_strnew(2);
-	e->supported_option[0][0] = 'A';
-	e->supported_option[1][0] = 'L';
-	e->supported_option[2][0] = 'R';
-	e->supported_option[3][0] = 'S';
-	e->supported_option[4][0] = 'a';
-	e->supported_option[5][0] = 'f';
-	e->supported_option[6][0] = 'h';
-	e->supported_option[7][0] = 'i';
-	e->supported_option[8][0] = 'n';
-	e->supported_option[9][0] = 'r';
-	e->supported_option[10][0] = 't';
-	e->supported_option[11][0] = 'l';
-	e->supported_option[12][0] = '1';
+	e->supported_option[0][0] = 'A'; // Done
+	e->supported_option[1][0] = 'L'; // Done
+	e->supported_option[2][0] = 'R'; // Done
+	e->supported_option[3][0] = 'S'; // TODO
+	e->supported_option[4][0] = 'a'; // Done
+	e->supported_option[5][0] = 'f'; // Done
+	e->supported_option[6][0] = 'h'; // TODO
+	e->supported_option[7][0] = 'i'; // TODO
+	e->supported_option[8][0] = 'n'; // Done
+	e->supported_option[9][0] = 'r'; // Done
+	e->supported_option[10][0] = 't'; // Done
+	e->supported_option[11][0] = 'l'; // Almost done
+	e->supported_option[12][0] = '1'; // Done
 	e->termwidth = ftls_get_terminal_width(e);
 	return (0);
 }
