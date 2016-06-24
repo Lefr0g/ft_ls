@@ -83,6 +83,8 @@ void	ftls_debug_show_options(t_env *e)
 	ft_printf("Sort_none %6hhd\tSort_size %3hhd\t\n",
 			e->sort_none, e->sort_size);
 	ft_printf("Sort_timemod %3hhd\tHuman %7hhd\n", e->sort_timemod, e->human);
+	ft_printf("Sort_timeacc %3hhd\tSort_timech %5hhd\n",
+			e->sort_timeacc, e->sort_timech);
 	ft_printf("Showinode %6hhd\tShowlist %4hhd\t\n", e->showinode, e->showlist);
 	ft_printf("Oneperline %5hhd\n", e->oneperline);
 	ft_printf("Followlink_cli %1hhd\tFollowlink_sub %4hhd\t\n",

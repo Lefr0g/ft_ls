@@ -107,6 +107,16 @@ void	ftls_manage_sorting(t_env *e, t_list **list)
 		if (e->sort_timemod)
 			ft_lstsort(list, (void*)&(entptr->st_mtimespec_ptr) - (void*)entptr,
 					&ftls_compare_date_osx);
+
+		if (e->sort_timech)
+			ft_lstsort(list, (void*)&(entptr->st_ctimespec_ptr) - (void*)entptr,
+					&ftls_compare_date_osx);
+
+		if (e->sort_timeacc)
+			ft_lstsort(list, (void*)&(entptr->st_atimespec_ptr) - (void*)entptr,
+					&ftls_compare_date_osx);
+
+
 		if (e->sort_size)
 			ft_lstsort(list, (void*)&(entptr->st_size_ptr) - (void*)entptr,
 					&ftls_compare_size);

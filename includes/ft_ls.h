@@ -47,7 +47,7 @@
 # include <sys/types.h>
 # include <uuid/uuid.h>
 
-# define OPT_ARRAY_SIZE 14
+# define OPT_ARRAY_SIZE 16
 # define LIST_MODE_COLUMNS 7
 # define LINK_NAME_LEN 1025
 
@@ -72,9 +72,11 @@ typedef struct	s_entry
 	uid_t					st_uid;
 	gid_t					st_gid;
 	TIME_TYPE				st_atimespec; // last access
+	TIME_TYPE				st_atimespec_ptr[1];
 	TIME_TYPE				st_mtimespec; // last modification
 	TIME_TYPE				st_mtimespec_ptr[1];
 	TIME_TYPE				st_ctimespec; // last status change
+	TIME_TYPE				st_ctimespec_ptr[1];
 	off_t					st_size; // in bytes
 	off_t					st_size_ptr[1];
 	int						st_blocks;
@@ -100,6 +102,8 @@ typedef struct	s_env
 	char			sort_none; // (for -f)
 	char			sort_size; // (for -S)
 	char			sort_timemod; // (for -t)
+	char			sort_timech; // (for -c)
+	char			sort_timeacc; // (for -u)
 	char			human; // (for -h)
 //	char			color; // (for -G) (pas sur, semble trop time-consuming)
 	char			showinode; // (for -i)
