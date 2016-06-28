@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/28 16:31:10 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 18:08:18 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,8 @@ typedef struct	s_entry
 	uid_t					st_uid;
 	gid_t					st_gid;
 	TIME_TYPE				st_atimespec; // last access
-	TIME_TYPE				st_atimespec_ptr[1];
 	TIME_TYPE				st_mtimespec; // last modification
-	TIME_TYPE				st_mtimespec_ptr[1];
 	TIME_TYPE				st_ctimespec; // last status change
-	TIME_TYPE				st_ctimespec_ptr[1];
-
 	TIME_TYPE				st_time_ptr[1];
 
 	off_t					st_size; // in bytes
@@ -142,6 +138,7 @@ int				ftls_init_env(t_env *e, char **av);
 int				ftls_init_entry(t_entry *d);
 int				ftls_init_options(t_env *e);
 int				ftls_free_all(t_env *e);
+void			ftls_manage_options_priorities(t_env *e);
 
 /*
 ** main.c
@@ -162,6 +159,7 @@ int				ftls_add_entry(t_list **alst, t_env *e, char *name,
 void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		char *prefix);
 void			ftls_manage_time_ptr(t_env *e, t_entry *dst);
+void			ftls_get_linktarget(t_entry *dst, char *path);
 
 
 /*

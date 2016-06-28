@@ -6,13 +6,13 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/28 16:57:17 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 17:57:17 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int	ftls_parse_cli_args(t_env *e, int ac, char **av)
+int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 {
 	int		i;
 	int		j;
@@ -40,20 +40,8 @@ int	ftls_parse_cli_args(t_env *e, int ac, char **av)
 	return (0);
 }
 
-int	ftls_init_env(t_env *e, char **av)
+void	ftls_define_options(t_env *e)
 {
-	int		i;
-
-	ft_bzero(e, sizeof(*e));
-	e->sort_time_val = 't';
-	if (!(e->progname = ft_strdup(av[0])))
-	{
-		ft_print_error(av[0], NULL, errno);
-		return (1);
-	}
-	i = -1;
-	while (++i < OPT_ARRAY_SIZE)
-		e->supported_option[i] = ft_strnew(2);
 	e->supported_option[0][0] = 'A'; // Done
 	e->supported_option[1][0] = 'L'; // Done
 	e->supported_option[2][0] = 'R'; // Done
@@ -69,17 +57,34 @@ int	ftls_init_env(t_env *e, char **av)
 	e->supported_option[12][0] = 'u'; // WIP
 	e->supported_option[13][0] = 'l'; // Almost done (TODO fix layout)
 	e->supported_option[14][0] = '1'; // Done
+}
+
+int		ftls_init_env(t_env *e, char **av)
+{
+	int		i;
+
+	ft_bzero(e, sizeof(*e));
+	e->sort_time_val = 't';
+	if (!(e->progname = ft_strdup(av[0])))
+	{
+		ft_print_error(av[0], NULL, errno);
+		return (1);
+	}
+	i = -1;
+	while (++i < OPT_ARRAY_SIZE)
+		e->supported_option[i] = ft_strnew(2);
+	ftls_define_options(e);
 	e->termwidth = ftls_get_terminal_width(e);
 	return (0);
 }
 
-int	ftls_init_entry(t_entry *ptr)
+int		ftls_init_entry(t_entry *ptr)
 {
 	ft_bzero(ptr, sizeof(t_entry));
 	return (0);
 }
 
-int	ftls_init_options(t_env *e)
+int		ftls_init_options(t_env *e)
 {
 	int		i;
 	char	c;
@@ -96,22 +101,18 @@ int	ftls_init_options(t_env *e)
 		e->human = (c == 'h') ? 1 : e->human;
 		e->showinode = (c == 'i') ? 1 : e->showinode;
 		e->reverse = (c == 'r') ? 1 : e->reverse;
-
-		// Remplacer les flags de tri temporelles par une variable d'activation
-		// et une variable de critere de tri (valeur ascii de l'option) afin que
-		// seul le dernier critere de tri soit actif
-//		e->sort_timeacc = (c == 'u') ? 1 : e->sort_timeacc;
-//		e->sort_timemod = (c == 't') ? 1 : e->sort_timemod;
-//		e->sort_timech = (c == 'c') ? 1 : e->sort_timech;
-
 		e->sort_time = (c == 't') ? 1 : e->sort_time;
 		e->sort_time_val = (c == 'c' || c == 'u') ? c : e->sort_time_val;
-		ft_printf("sort_time_val = %c\n", e->sort_time_val);
-
 		e->showlist = (c == 'l') ? 1 : e->showlist;
 		e->followlink_sub = (c == 'L') ? 1 : e->followlink_sub;
 		e->oneperline = (c == '1') ? 1 : e->oneperline;
 	}
+	ftls_manage_options_priorities(e);
+	return (0);
+}
+
+void	ftls_manage_options_priorities(t_env *e)
+{
 	if (e->sort_time && !e->sort_time_val)
 		e->sort_time_val = 't';
 	if (e->show_num_id)
@@ -123,15 +124,12 @@ int	ftls_init_options(t_env *e)
 		e->sort_timeacc = 0;
 		e->sort_timech = 0;
 	}
-//	if (e->sort_timeacc || e->sort_timech)
-//		e->sort_timemod = 0;
 	e->followlink_cli = 1;
 	if (e->showlist && !e->followlink_sub)
 		e->followlink_cli = 0;
-	return (0);
 }
 
-int	ftls_free_all(t_env *e)
+int		ftls_free_all(t_env *e)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/28 17:10:07 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 18:15:17 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,10 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 {
 	struct stat	statbuf;
 	char		*path;
-	char		**buf;
 	t_entry		entry;
 	t_list		*lst_ptr;
 
 	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
-/*
-	if ((((e->followlink_cli && e->iscli) || (e->followlink_sub))
-				&& stat(path, &statbuf))
-			|| lstat(path, &statbuf))
-	{
-		ft_print_error(e->progname, path, errno);
-		ft_strdel(&path);
-		return (1);
-	}
-*/
 	if ((e->followlink_cli && e->iscli) || e->followlink_sub)
 	{
 		if (stat(path, &statbuf))
@@ -54,24 +43,12 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 		return (1);
 	}
 	ftls_copy_details(&entry, &statbuf, name, prefix);
-
 	ftls_manage_time_ptr(e, &entry);
-	
-	if (ftls_is_entry_showable(e, &entry))
-	{
+	if (ftls_is_entry_showable(e, &entry) && (e->atleastonetoshow = 1))
 		e->totalblocks += entry.st_blocks;
-		e->atleastonetoshow = 1;
-//		ft_printf("\033[35mDEBUG : added %d blocks from %s, total %d\n\033[0m",
-//			entry.st_blocks, *(char**)(entry.name), e->totalblocks);
-	}
 	//	Gestion des liens symboliques pour affichage -l
 	if ((entry.st_mode & S_IFLNK) == S_IFLNK)
-	{
-		buf = ft_memalloc(sizeof(char**));
-		*buf = ft_strnew(LINK_NAME_LEN);
-		readlink(path, *buf, LINK_NAME_LEN);
-		entry.linktarget = buf;
-	}
+		ftls_get_linktarget(&entry, path);
 	ft_strdel(&path);
 	lst_ptr = ft_lstnew(&entry, sizeof(t_entry));
 	if (*alst)
@@ -82,6 +59,17 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 			ft_getmin(ft_strlen(name), e->termwidth));
 	return (0);
 }
+
+void	ftls_get_linktarget(t_entry *dst, char *path)
+{
+	char	**buf;
+
+	buf = ft_memalloc(sizeof(char**));
+	*buf = ft_strnew(LINK_NAME_LEN);
+	readlink(path, *buf, LINK_NAME_LEN);
+	dst->linktarget = buf;
+}
+
 
 /*
 **	Subfunction for ftls_add_entry
@@ -106,15 +94,9 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 	dst->st_nlink = src->st_nlink;
 	dst->st_uid = src->st_uid;
 	dst->st_gid = src->st_gid;
-
 	dst->st_atimespec = src->ATIME;
-	*(dst->st_atimespec_ptr) = dst->st_atimespec;
 	dst->st_mtimespec = src->MTIME;
-	*(dst->st_mtimespec_ptr) = dst->st_mtimespec;
 	dst->st_ctimespec = src->CTIME;
-	*(dst->st_ctimespec_ptr) = dst->st_ctimespec;
-	
-
 	dst->st_size = src->st_size;
 	*(dst->st_size_ptr) = dst->st_size;
 	dst->st_blocks = (int)src->st_blocks;
