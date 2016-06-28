@@ -44,6 +44,7 @@ int	ftls_init_env(t_env *e, char **av)
 	int		i;
 
 	ft_bzero(e, sizeof(*e));
+	e->sort_time_val = 't';
 	if (!(e->progname = ft_strdup(av[0])))
 	{
 		ft_print_error(av[0], NULL, errno);
@@ -94,9 +95,16 @@ int	ftls_init_options(t_env *e)
 		e->human = (c == 'h') ? 1 : e->human;
 		e->showinode = (c == 'i') ? 1 : e->showinode;
 		e->reverse = (c == 'r') ? 1 : e->reverse;
+		// Remplacer les flags de tri temporelles par une variable d'activation
+		// et une variable de critere de tri (valeur ascii de l'option) afin que
+		// seul le dernier critere de tri soit actif
 		e->sort_timeacc = (c == 'u') ? 1 : e->sort_timeacc;
 		e->sort_timemod = (c == 't') ? 1 : e->sort_timemod;
 		e->sort_timech = (c == 'c') ? 1 : e->sort_timech;
+
+		e->sort_time_val = (e->sort_timemod && (c == 'c' || c == 'u'))
+			? c : e->sort_time_val;
+
 		e->showlist = (c == 'l') ? 1 : e->showlist;
 		e->followlink_sub = (c == 'L') ? 1 : e->followlink_sub;
 		e->oneperline = (c == '1') ? 1 : e->oneperline;

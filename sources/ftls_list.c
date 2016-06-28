@@ -54,6 +54,9 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 		return (1);
 	}
 	ftls_copy_details(&entry, &statbuf, name, prefix);
+
+	ftls_manage_time_ptr(e, &entry);
+	
 	if (ftls_is_entry_showable(e, &entry))
 	{
 		e->totalblocks += entry.st_blocks;
@@ -103,12 +106,15 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 	dst->st_nlink = src->st_nlink;
 	dst->st_uid = src->st_uid;
 	dst->st_gid = src->st_gid;
+
 	dst->st_atimespec = src->ATIME;
 	*(dst->st_atimespec_ptr) = dst->st_atimespec;
 	dst->st_mtimespec = src->MTIME;
 	*(dst->st_mtimespec_ptr) = dst->st_mtimespec;
 	dst->st_ctimespec = src->CTIME;
 	*(dst->st_ctimespec_ptr) = dst->st_ctimespec;
+	
+
 	dst->st_size = src->st_size;
 	*(dst->st_size_ptr) = dst->st_size;
 	dst->st_blocks = (int)src->st_blocks;
@@ -117,6 +123,22 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		testptr = ft_memalloc(sizeof(char**));
 		*testptr = ft_strdup(prefix);
 		dst->prefix = testptr;
+	}
+}
+
+/*
+ *	Manage time sort ptr
+*/
+void	ftls_manage_time_ptr(t_env *e, t_entry *dst)
+{
+	if (e->sort_timemod)
+	{
+		if (e->sort_time_val == 'c')
+			*(dst->st_time_ptr) = dst->st_ctimespec;
+		else if (e->sort_time_val == 'u')
+			*(dst->st_time_ptr) = dst->st_atimespec;
+		else	
+			*(dst->st_time_ptr) = dst->st_mtimespec;
 	}
 }
 

@@ -77,6 +77,9 @@ typedef struct	s_entry
 	TIME_TYPE				st_mtimespec_ptr[1];
 	TIME_TYPE				st_ctimespec; // last status change
 	TIME_TYPE				st_ctimespec_ptr[1];
+
+	TIME_TYPE				st_time_ptr[1];
+
 	off_t					st_size; // in bytes
 	off_t					st_size_ptr[1];
 	int						st_blocks;
@@ -104,6 +107,9 @@ typedef struct	s_env
 	char			sort_timemod; // (for -t)
 	char			sort_timech; // (for -c)
 	char			sort_timeacc; // (for -u)
+
+	char			sort_time_val; // Experimental
+
 	char			human; // (for -h)
 //	char			color; // (for -G) (pas sur, semble trop time-consuming)
 	char			showinode; // (for -i)
