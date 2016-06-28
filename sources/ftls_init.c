@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/21 14:31:19 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 16:57:17 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	ftls_parse_cli_args(t_env *e, int ac, char **av)
 
 	if (!(buf = ft_strarray_dup(av)))
 		return (1);
-	if ((c = ft_parse_options(buf, e->supported_option, &(e->cli_option))))
+	if ((c = ft_parse_options_keep_doubles(buf, e->supported_option,
+					&(e->cli_option))))
 		return (ftls_print_error_illegal_option(e, av[0], c));
 	if (!(e->cli_notopt = (char**)ft_memalloc(sizeof(char*) * (ac + 1))))
 		return (1);
@@ -95,20 +96,24 @@ int	ftls_init_options(t_env *e)
 		e->human = (c == 'h') ? 1 : e->human;
 		e->showinode = (c == 'i') ? 1 : e->showinode;
 		e->reverse = (c == 'r') ? 1 : e->reverse;
+
 		// Remplacer les flags de tri temporelles par une variable d'activation
 		// et une variable de critere de tri (valeur ascii de l'option) afin que
 		// seul le dernier critere de tri soit actif
-		e->sort_timeacc = (c == 'u') ? 1 : e->sort_timeacc;
-		e->sort_timemod = (c == 't') ? 1 : e->sort_timemod;
-		e->sort_timech = (c == 'c') ? 1 : e->sort_timech;
+//		e->sort_timeacc = (c == 'u') ? 1 : e->sort_timeacc;
+//		e->sort_timemod = (c == 't') ? 1 : e->sort_timemod;
+//		e->sort_timech = (c == 'c') ? 1 : e->sort_timech;
 
-		e->sort_time_val = (e->sort_timemod && (c == 'c' || c == 'u'))
-			? c : e->sort_time_val;
+		e->sort_time = (c == 't') ? 1 : e->sort_time;
+		e->sort_time_val = (c == 'c' || c == 'u') ? c : e->sort_time_val;
+		ft_printf("sort_time_val = %c\n", e->sort_time_val);
 
 		e->showlist = (c == 'l') ? 1 : e->showlist;
 		e->followlink_sub = (c == 'L') ? 1 : e->followlink_sub;
 		e->oneperline = (c == '1') ? 1 : e->oneperline;
 	}
+	if (e->sort_time && !e->sort_time_val)
+		e->sort_time_val = 't';
 	if (e->show_num_id)
 		e->showlist = 1;
 	if (e->sort_none)
@@ -118,8 +123,8 @@ int	ftls_init_options(t_env *e)
 		e->sort_timeacc = 0;
 		e->sort_timech = 0;
 	}
-	if (e->sort_timeacc || e->sort_timech)
-		e->sort_timemod = 0;
+//	if (e->sort_timeacc || e->sort_timech)
+//		e->sort_timemod = 0;
 	e->followlink_cli = 1;
 	if (e->showlist && !e->followlink_sub)
 		e->followlink_cli = 0;

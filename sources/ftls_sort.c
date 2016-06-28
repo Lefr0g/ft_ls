@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/09 19:01:35 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/21 14:14:39 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 17:11:02 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,24 +103,12 @@ void	ftls_manage_sorting(t_env *e, t_list **list)
 	{
 		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
 				&ftls_compare_str);
-
-		if (e->sort_timemod)
-			ft_lstsort(list, (void*)&(entptr->st_mtimespec_ptr) - (void*)entptr,
+		if (e->sort_time)
+			ft_lstsort(list, (void*)&(entptr->st_time_ptr) - (void*)entptr,
 					&ftls_compare_date_osx);
-
-		if (e->sort_timech)
-			ft_lstsort(list, (void*)&(entptr->st_ctimespec_ptr) - (void*)entptr,
-					&ftls_compare_date_osx);
-
-		if (e->sort_timeacc)
-			ft_lstsort(list, (void*)&(entptr->st_atimespec_ptr) - (void*)entptr,
-					&ftls_compare_date_osx);
-
-
 		if (e->sort_size)
 			ft_lstsort(list, (void*)&(entptr->st_size_ptr) - (void*)entptr,
 					&ftls_compare_size);
-
 		if (e->reverse)
 			ft_lstflip(list);
 		if (e->iscli)

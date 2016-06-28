@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/21 14:22:40 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 17:10:07 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 */
 void	ftls_manage_time_ptr(t_env *e, t_entry *dst)
 {
-	if (e->sort_timemod)
+	if (e->sort_time)
 	{
 		if (e->sort_time_val == 'c')
 			*(dst->st_time_ptr) = dst->st_ctimespec;

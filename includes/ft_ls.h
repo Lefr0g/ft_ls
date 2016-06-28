@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/21 14:21:59 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 16:31:10 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,13 @@ typedef struct	s_env
 	char			reverse; // (for -r)
 	char			sort_none; // (for -f)
 	char			sort_size; // (for -S)
+
+	/////////////////////////// TBD
 	char			sort_timemod; // (for -t)
 	char			sort_timech; // (for -c)
 	char			sort_timeacc; // (for -u)
 
+	char			sort_time; // Replacement (for -t)
 	char			sort_time_val; // Experimental
 
 	char			human; // (for -h)
@@ -158,6 +161,7 @@ int				ftls_add_entry(t_list **alst, t_env *e, char *name,
 		char *prefix);
 void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		char *prefix);
+void			ftls_manage_time_ptr(t_env *e, t_entry *dst);
 
 
 /*

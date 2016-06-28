@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/20 19:25:52 by amulin           ###   ########.fr       */
+/*   Updated: 2016/06/28 16:58:45 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ void	ftls_debug_show_options(t_env *e)
 	ft_printf("Sort_timemod %3hhd\tHuman %7hhd\n", e->sort_timemod, e->human);
 	ft_printf("Sort_timeacc %3hhd\tSort_timech %5hhd\n",
 			e->sort_timeacc, e->sort_timech);
-	ft_printf("Sort_time_val = %c\n", e->sort_time_val);
+	ft_printf("Sort_time = %hhd,\t\tSort_time_val = %c\n", e->sort_time,
+			e->sort_time_val);
 	ft_printf("Showinode %6hhd\tShowlist %4hhd\t\n", e->showinode, e->showlist);
 	ft_printf("Oneperline %5hhd\n", e->oneperline);
 	ft_printf("Followlink_cli %1hhd\tFollowlink_sub %4hhd\t\n",
