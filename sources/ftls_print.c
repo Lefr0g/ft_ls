@@ -90,9 +90,13 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 		ft_printf("%s\t", groupbuf->gr_name);
 	else
 		ft_printf("%d\t", (int)d->st_gid);
-
 	
-	ft_printf("%5d ", d->st_size);
+//	if ((d->st_mode & S_IFLNK) != S_IFLNK && ((d->st_mode & S_IFCHR) == S_IFCHR
+//			|| (d->st_mode & S_IFBLK) == S_IFBLK))
+	if (ftls_is_entry_device(d))
+		ft_printf("%d, %d ", major(d->st_rdev), minor(d->st_rdev));
+	else
+		ft_printf("%5d ", d->st_size);
 	ft_printf("%s ", timebuf);
 	ft_strdel(&timebuf);
 	ft_printf("%s", *(d->name));

@@ -78,6 +78,7 @@ int		ftls_init_env(t_env *e, char **av)
 	return (0);
 }
 
+// TBD
 int		ftls_init_entry(t_entry *ptr)
 {
 	ft_bzero(ptr, sizeof(t_entry));

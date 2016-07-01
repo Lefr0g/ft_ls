@@ -27,6 +27,7 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	t_list		*lst_ptr;
 
 	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
+	/*
 	if ((e->followlink_cli && e->iscli) || e->followlink_sub)
 	{
 		if (stat(path, &statbuf))
@@ -42,6 +43,9 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 		ft_strdel(&path);
 		return (1);
 	}
+	*/
+	if (ftls_get_file_status(e, &statbuf, &path))
+		return (1);
 	ftls_copy_details(&entry, &statbuf, name, prefix);
 	ftls_manage_time_ptr(e, &entry);
 	if (ftls_is_entry_showable(e, &entry) && (e->atleastonetoshow = 1))
@@ -70,6 +74,25 @@ void	ftls_get_linktarget(t_entry *dst, char *path)
 	dst->linktarget = buf;
 }
 
+int		ftls_get_file_status(t_env *e, struct stat *statbuf, char **path)
+{
+	if ((e->followlink_cli && e->iscli) || e->followlink_sub)
+	{
+		if (stat(*path, statbuf))
+		{
+			ft_print_error(e->progname, *path, errno);
+			ft_strdel(path);
+			return (1);
+		}
+	}
+	else if (lstat(*path, statbuf))
+	{
+		ft_print_error(e->progname, *path, errno);
+		ft_strdel(path);
+		return (1);
+	}
+	return (0);
+}
 
 /*
 **	Subfunction for ftls_add_entry
@@ -78,34 +101,43 @@ void	ftls_get_linktarget(t_entry *dst, char *path)
 void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		char *prefix)
 {
-	char	**testptr;
+	char	**buf;
 
-	ftls_init_entry(dst);
-	testptr = ft_memalloc(sizeof(char**));
-	if (!testptr)
+	ft_bzero(dst, sizeof(t_entry));
+	buf = ft_memalloc(sizeof(char**));
+	if (!buf)
 		exit(ft_print_error(NULL, NULL, errno));
-	*testptr = ft_strdup(name);
-	if (!*(testptr))
+	*buf = ft_strdup(name);
+	if (!*(buf))
 		exit(ft_print_error(NULL, NULL, errno));
-	dst->name = testptr;
+	dst->name = buf;
+	ftls_copy_details_sub(dst, src);
+	if (prefix)
+	{
+		buf = ft_memalloc(sizeof(char**));
+		*buf = ft_strdup(prefix);
+		dst->prefix = buf;
+	}
+}
+
+/*
+**	Subfunction, for norme compliance
+*/
+void	ftls_copy_details_sub(t_entry *dst, struct stat *src)
+{
 	dst->st_inode = src->st_ino;
 	dst->st_mode = src->st_mode;
 	*(dst->st_mode_ptr) = dst->st_mode;
 	dst->st_nlink = src->st_nlink;
 	dst->st_uid = src->st_uid;
 	dst->st_gid = src->st_gid;
+	dst->st_rdev = src->st_rdev;
 	dst->st_atimespec = src->ATIME;
 	dst->st_mtimespec = src->MTIME;
 	dst->st_ctimespec = src->CTIME;
 	dst->st_size = src->st_size;
 	*(dst->st_size_ptr) = dst->st_size;
 	dst->st_blocks = (int)src->st_blocks;
-	if (prefix)
-	{
-		testptr = ft_memalloc(sizeof(char**));
-		*testptr = ft_strdup(prefix);
-		dst->prefix = testptr;
-	}
 }
 
 /*

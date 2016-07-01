@@ -49,32 +49,30 @@ int		ftls_is_entry_showable(t_env *e, t_entry *entptr)
 	return (0);
 }
 
+int		ftls_is_entry_device(t_entry *d)
+{
+	if ((d->st_mode & S_IFREG) == S_IFREG)
+		return (0);
+	if ((d->st_mode & S_IFLNK) != S_IFLNK &&
+			((d->st_mode & S_IFCHR) == S_IFCHR
+			 || (d->st_mode & S_IFBLK) == S_IFBLK))
+		return (1);
+	return (0);
+}
+
 /*
 **	Checks if the entry is a dir that must be treated.
 **	This entry can also be a symbolic link.
 **	Invalid entries : sockets.
-**
-**	A REFAIRE >> WIP
-**
 */
 
 int		ftls_is_entry_treatable(t_env *e, t_entry *entptr)
 {
-/*
-	if (((entptr->st_mode & S_IFSOCK) != S_IFSOCK)
-			&& ((entptr->st_mode & S_IFDIR) == S_IFDIR
-				|| ((entptr->st_mode & S_IFLNK) == S_IFLNK
-					&& ft_isdir(*(entptr->name), e->progname, 0)
-					&& e->followlink)))
-*/
 	if ((entptr->st_mode & S_IFSOCK) == S_IFSOCK
 			|| (entptr->st_mode & S_IFBLK) == S_IFBLK)
 		return (0);
 	if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
 		return (1);
-//		if (!((entptr->st_mode & S_IFLNK) == S_IFLNK && e->followlink))
-//			return (1);
-		
 	if (e->followlink_cli && e->iscli && (entptr->st_mode & S_IFLNK) == S_IFLNK)
 		return (1);
 	if (e->followlink_sub && (entptr->st_mode & S_IFLNK) == S_IFLNK)

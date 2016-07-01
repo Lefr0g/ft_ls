@@ -71,6 +71,7 @@ typedef struct	s_entry
 	nlink_t					st_nlink;
 	uid_t					st_uid;
 	gid_t					st_gid;
+	dev_t					st_rdev;
 	TIME_TYPE				st_atimespec; // last access
 	TIME_TYPE				st_mtimespec; // last modification
 	TIME_TYPE				st_ctimespec; // last status change
@@ -158,8 +159,10 @@ int				ftls_add_entry(t_list **alst, t_env *e, char *name,
 		char *prefix);
 void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		char *prefix);
+void			ftls_copy_details_sub(t_entry *dst, struct stat *src);
 void			ftls_manage_time_ptr(t_env *e, t_entry *dst);
 void			ftls_get_linktarget(t_entry *dst, char *path);
+int				ftls_get_file_status(t_env *e, struct stat *statbuf, char **path);
 
 
 /*
@@ -190,6 +193,7 @@ int				ftls_get_terminal_width(t_env *e);
 int				ftls_isnavdot(char *name);
 int				ftls_is_entry_showable(t_env *e, t_entry *entptr);
 int				ftls_is_entry_treatable(t_env *e, t_entry *entptr);
+int				ftls_is_entry_device(t_entry *d);
 
 /*
 ** flts_print.c
