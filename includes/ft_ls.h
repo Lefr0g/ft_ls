@@ -19,23 +19,28 @@
 
 # ifdef __APPLE__
 #  define TIME_TYPE struct timespec
-#  define ATIME	st_atimespec
-#  define MTIME	st_mtimespec
-#  define CTIME	st_ctimespec
-#  define FT_DATE_COMPARE ftls_compare_date_osx
+#  define FTLS_ATIME	st_atimespec
+#  define FTLS_MTIME	st_mtimespec
+#  define FTLS_CTIME	st_ctimespec
+#  define FTLS_COMPARE_DATE ftls_compare_date_osx
+#  define FTLS_PRINT_LISTED ftls_quick_ll_osx
+#  include <sys/acl.h>
+#  include <uuid/uuid.h>
 # elif __linux__
-#  define TIME_TYPE time_t
-#  define ATIME	st_atime
-#  define MTIME	st_mtime
-#  define CTIME	st_ctime
-#  define FT_DATE_COMPARE ftls_compare_date_linux
+//#  define TIME_TYPE time_t
+#  define TIME_TYPE struct timespec
+#  define FTLS_ATIME	st_atim
+#  define FTLS_MTIME	st_mtim
+#  define FTLS_CTIME	st_ctim
+#  define FTLS_COMPARE_DATE ftls_compare_date_linux
+#  define FTLS_PRINT_LISTED ftls_quick_ll_linux
+#  include <linux/nfsacl.h>
 # endif
 
 
 # include <sys/stat.h>
 
 # include <sys/xattr.h>
-# include <sys/acl.h>
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
@@ -45,7 +50,6 @@
 
 // Optional ?
 # include <sys/types.h>
-# include <uuid/uuid.h>
 
 # define OPT_ARRAY_SIZE 16
 # define LIST_MODE_COLUMNS 7
@@ -198,7 +202,8 @@ int				ftls_is_entry_device(t_entry *d);
 /*
 ** flts_print.c
 */
-void			ftls_quick_ll(t_env *e, t_entry *d);
+void			ftls_quick_ll_osx(t_env *e, t_entry *d);
+void			ftls_quick_ll_linux(t_env *e, t_entry *d);
 void			ftls_print_name(t_env *e, char *name);
 char			*ftls_process_path(t_env *e, char *name, char *prefix);
 void			ftls_print_dir(t_env *e, t_list *subdir);

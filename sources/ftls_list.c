@@ -132,9 +132,9 @@ void	ftls_copy_details_sub(t_entry *dst, struct stat *src)
 	dst->st_uid = src->st_uid;
 	dst->st_gid = src->st_gid;
 	dst->st_rdev = src->st_rdev;
-	dst->st_atimespec = src->ATIME;
-	dst->st_mtimespec = src->MTIME;
-	dst->st_ctimespec = src->CTIME;
+	dst->st_atimespec = src->FTLS_ATIME;
+	dst->st_mtimespec = src->FTLS_MTIME;
+	dst->st_ctimespec = src->FTLS_CTIME;
 	dst->st_size = src->st_size;
 	*(dst->st_size_ptr) = dst->st_size;
 	dst->st_blocks = (int)src->st_blocks;

@@ -9,5 +9,5 @@ fi
 echo -e "\033[33m>>> updating main project (master)...\033[0m"
 git pull
 echo -e "\033[33m>>> updating libft submodule (master)...\033[0m"
-cd libft && git pull && git checkout master
+cd libft && git checkout master && git pull origin master
 echo -e "\033[33m>>> git checklist completed\033[0m"

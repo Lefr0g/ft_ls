@@ -35,17 +35,16 @@ char	*ftls_gen_timestr(time_t *date)
 	return (str);
 }
 
+#ifdef __APPLE__
 /*
  *	Temporary
 */
-void	ftls_quick_ll(t_env *e, t_entry *d)
+void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 {
 	char			out[12];
-#if LEAKY_STDLIB_ENABLE
 	char			*timebuf;
 	struct passwd	*passbuf;
 	struct group	*groupbuf;
-#endif
 	char			*path;
 	acl_t			aclbuf;
 
@@ -107,6 +106,79 @@ void	ftls_quick_ll(t_env *e, t_entry *d)
 //	ft_printf("blocks = %d\n", d->st_blocks);
 	e->print_initiated = 1;
 }
+#elif __linux__
+/*
+ *	Temporary
+*/
+void	ftls_quick_ll_linux(t_env *e, t_entry *d)
+{
+	char			out[12];
+	char			*timebuf;
+	struct passwd	*passbuf;
+	struct group	*groupbuf;
+	char			*path;
+
+	(void)e;
+	path = ((d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
+		ft_strdup(*(d->name));
+	ft_bzero(out, 12);
+	ftls_decode_type(d->st_mode, out);
+	ftls_decode_access_rights(d->st_mode, out);
+	if ((d->st_mode & S_ISVTX) == S_ISVTX)
+		out[9] = 't';
+/*
+	if (listxattr(path, NULL, 0, XATTR_NOFOLLOW) > 0)
+		out[10] = '@';i
+	else if ((aclbuf = acl_get_file(path, ACL_TYPE_EXTENDED)))
+	{
+		out[10] = ('+');
+		acl_free(aclbuf);
+	}
+	else
+		out[10] = ' ';
+*/
+	ft_strdel(&path);
+	out[11] = '\0';
+	// Valgrind doesn't like these function calls at all..
+
+	timebuf = ftls_gen_timestr(&(d->st_mtimespec.tv_sec));
+
+//	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
+//
+	errno = 0;
+	passbuf = getpwuid(d->st_uid);
+	groupbuf = getgrgid(d->st_gid);
+
+	ft_putstr(out);
+	ft_printf("%3d ", d->st_nlink);
+	
+	if (passbuf && !e->show_num_id)
+		ft_printf("%s\t", passbuf->pw_name);
+	else
+		ft_printf("%d\t", (int)d->st_uid);
+
+	if (groupbuf && !e->show_num_id)
+		ft_printf("%s\t", groupbuf->gr_name);
+	else
+		ft_printf("%d\t", (int)d->st_gid);
+	
+//	if ((d->st_mode & S_IFLNK) != S_IFLNK && ((d->st_mode & S_IFCHR) == S_IFCHR
+//			|| (d->st_mode & S_IFBLK) == S_IFBLK))
+	if (ftls_is_entry_device(d))
+		ft_printf("%d, %d ", major(d->st_rdev), minor(d->st_rdev));
+	else
+		ft_printf("%5d ", d->st_size);
+	ft_printf("%s ", timebuf);
+	ft_strdel(&timebuf);
+	ft_printf("%s", *(d->name));
+	if ((d->st_mode & S_IFLNK) == S_IFLNK)
+		ft_printf(" -> %s\n", *(d->linktarget));
+	else
+		ft_putchar('\n');
+//	ft_printf("blocks = %d\n", d->st_blocks);
+	e->print_initiated = 1;
+}
+#endif
 
 /*
 **	Bidouille rapide pour affichage en colonnes propre
@@ -203,7 +275,7 @@ void	ftls_print_entry(t_env *e, t_entry *entptr)
 	if (e->showinode)
 		ft_printf("%9d ", entptr->st_inode);
 	if (e->showlist)
-		ftls_quick_ll(e, entptr);
+		FTLS_PRINT_LISTED(e, entptr);
 	else
 		ftls_print_name(e, *(entptr->name));
 	e->print_initiated = 1;
