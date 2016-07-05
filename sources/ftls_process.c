@@ -81,6 +81,7 @@ int		ftls_process_argnames(t_env *e)
 	{
 		entptr = ptr->content;
 //		ftls_debug_show_entry(entptr);
+
 		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);
 		else

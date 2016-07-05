@@ -16,22 +16,30 @@
 **	Subfunction for ls -l, used to generate a date string from ctime
 */
 //char	*ftls_gen_timestr(time_t *date)
-char	*ftls_gen_timestr(time_t *date)
+	
+// timebuf = ftls_gen_timestr(&(d->FTLS_MTIME.tv_sec));
+
+char	*ftls_gen_timestr(t_env *e, t_entry *d)
 {
 	char	*str;
 	time_t	now;
+	time_t	date;
 
-//	ft_printf("%s", ctime(date));
-//	ft_printf("%s\n", str);
+	if (e->sort_time && e->sort_time_val == 'u')
+		date = d->st_atimespec.tv_sec;
+	else if (e->sort_time && e->sort_time_val == 'c')
+		date = d->st_ctimespec.tv_sec;
+	else
+		date = d->st_mtimespec.tv_sec;
 	now = time(NULL);
-	if (now - *date > 15811200 || *date - now > 15811200)
+	if (now - date > 15811200 || date - now > 15811200)
 	{
-		str = ft_strdup(&ctime(date)[4]);
+		str = ft_strdup(&ctime(&date)[4]);
 		ft_strncpy(&str[7], &str[15], 5);
 		ft_bzero(&str[12], 10);
 	}
 	else
-		str = ft_strsub(ctime(date), 4, 12);
+		str = ft_strsub(ctime(&date), 4, 12);
 	return (str);
 }
 
@@ -68,11 +76,8 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 	ft_strdel(&path);
 	out[11] = '\0';
 	// Valgrind doesn't like these function calls at all..
-
-	timebuf = ftls_gen_timestr(&(d->MTIME.tv_sec));
-
-//	timebuf = ft_strsub(ctime(&(d->MTIME.tv_sec)), 4, 12);
-//
+	
+	timebuf = ftls_gen_timestr(e, d);
 	errno = 0;
 	passbuf = getpwuid(d->st_uid);
 	groupbuf = getgrgid(d->st_gid);
@@ -182,7 +187,8 @@ void	ftls_quick_ll_linux(t_env *e, t_entry *d)
 
 /*
 **	Bidouille rapide pour affichage en colonnes propre
-**	TODO: modifier l'ordre d'affichage ! Zigzag vertical, pas horizontal !
+**	TODO: modifier l'ordre d'affichage : Zigzag vertical, pas horizontal
+**		-> Abandon : investissement en temps necessaire trop important.
 */
 
 void	ftls_print_name(t_env *e, char *name)

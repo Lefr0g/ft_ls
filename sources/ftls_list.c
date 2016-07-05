@@ -17,6 +17,7 @@
 **	by 'alst', using lstat on the file or directory designated by 'name' and
 **	optional 'prefix' to fill the t_de structure within the new list element.
 **	If the entry is a symbolic link, the name of the target is copied.
+**	Metadata for column layout are generated here
 */
 
 int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
@@ -27,23 +28,6 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	t_list		*lst_ptr;
 
 	path = (prefix) ? ft_strjoin(prefix, name) : ft_strdup(name);
-	/*
-	if ((e->followlink_cli && e->iscli) || e->followlink_sub)
-	{
-		if (stat(path, &statbuf))
-		{
-			ft_print_error(e->progname, path, errno);
-			ft_strdel(&path);
-			return (1);
-		}
-	}
-	else if (lstat(path, &statbuf))
-	{
-		ft_print_error(e->progname, path, errno);
-		ft_strdel(&path);
-		return (1);
-	}
-	*/
 	if (ftls_get_file_status(e, &statbuf, &path))
 		return (1);
 	ftls_copy_details(&entry, &statbuf, name, prefix);

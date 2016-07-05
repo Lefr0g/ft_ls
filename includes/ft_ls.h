@@ -209,7 +209,7 @@ char			*ftls_process_path(t_env *e, char *name, char *prefix);
 void			ftls_print_dir(t_env *e, t_list *subdir);
 void			ftls_print_entry(t_env *e, t_entry *entptr);
 void			ftls_manage_spacing(t_env *e);
-char			*ftls_gen_timestr(time_t *date);
+char			*ftls_gen_timestr(t_env *e, t_entry *d);
 
 /*
 ** ftls_error.c

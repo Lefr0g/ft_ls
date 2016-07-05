@@ -120,11 +120,11 @@ void	ftls_manage_options_priorities(t_env *e)
 		e->showlist = 1;
 	if (e->sort_none)
 		e->show_all = 1;
-	if (!e->sort_timemod && !e->show_all)
-	{
-		e->sort_timeacc = 0;
-		e->sort_timech = 0;
-	}
+//	if (!e->sort_timemod && !e->show_all)
+//	{
+//		e->sort_timeacc = 0;
+//		e->sort_timech = 0;
+//	}
 	e->followlink_cli = 1;
 	if (e->showlist && !e->followlink_sub)
 		e->followlink_cli = 0;
