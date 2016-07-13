@@ -31,10 +31,14 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	if (ftls_get_file_status(e, &statbuf, &path))
 		return (1);
 	ftls_copy_details(&entry, &statbuf, name, prefix);
+	ftls_copy_details_sub2(e, &entry, &statbuf);
 	ftls_manage_time_ptr(e, &entry);
+	//	Gestion des liens symboliques pour affichage -l
 	if (ftls_is_entry_showable(e, &entry) && (e->atleastonetoshow = 1))
 		e->totalblocks += entry.st_blocks;
-	//	Gestion des liens symboliques pour affichage -l
+	//	Gestion des metadatas de largeur de colonne
+//	if (e->showlist)
+//		ftls_get_column_metadata(e, &entry);
 	if ((entry.st_mode & S_IFLNK) == S_IFLNK)
 		ftls_get_linktarget(&entry, path);
 	ft_strdel(&path);
@@ -45,6 +49,50 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 		*alst = lst_ptr;
 	e->col_len = ft_getmax(e->col_len,
 			ft_getmin(ft_strlen(name), e->termwidth));
+	return (0);
+}
+
+void	ftls_get_column_metadata(t_env *e, t_entry *d)
+{
+	int	i;
+
+	if (e->showinode)
+		if ((i = ft_nbrlen(d->st_inode)) > e->maxcol[0])
+			e->maxcol[0] = i;
+	e->maxcol[1] = 11;
+	if ((i = ft_nbrlen(d->st_nlink)) > e->maxcol[2])
+		e->maxcol[2] = i;
+	if ((i = ft_strlen(*(d->pw_name))) > e->maxcol[3])
+		e->maxcol[3] = i;
+
+}
+
+/*
+ *	This function is designed to act like the combination of ft_strlen on
+ *	ft_itoa, but without all the memory allocation and processing involved.
+ *	Its primary goal is to be fast and efficient.
+ * 	To be added to libft
+*/
+int		ft_nbrlen(int nbr)
+{
+	int	div;
+	int res;
+	int	minus;
+
+	if (nbr < 0)
+		minus = 1;
+	else
+		minus = 0;
+
+	div = 1000000000;
+	res = 10;
+	while (div)
+	{
+		if (nbr / div)
+			return (res + minus);
+		div /= 10;
+		res--;
+	}
 	return (0);
 }
 
@@ -95,7 +143,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 	if (!*(buf))
 		exit(ft_print_error(NULL, NULL, errno));
 	dst->name = buf;
-	ftls_copy_details_sub(dst, src);
+	ftls_copy_details_sub1(dst, src);
 	if (prefix)
 	{
 		buf = ft_memalloc(sizeof(char**));
@@ -107,14 +155,12 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 /*
 **	Subfunction, for norme compliance
 */
-void	ftls_copy_details_sub(t_entry *dst, struct stat *src)
+void	ftls_copy_details_sub1(t_entry *dst, struct stat *src)
 {
 	dst->st_inode = src->st_ino;
 	dst->st_mode = src->st_mode;
 	*(dst->st_mode_ptr) = dst->st_mode;
 	dst->st_nlink = src->st_nlink;
-	dst->st_uid = src->st_uid;
-	dst->st_gid = src->st_gid;
 	dst->st_rdev = src->st_rdev;
 	dst->st_atimespec = src->FTLS_ATIME;
 	dst->st_mtimespec = src->FTLS_MTIME;
@@ -122,6 +168,40 @@ void	ftls_copy_details_sub(t_entry *dst, struct stat *src)
 	dst->st_size = src->st_size;
 	*(dst->st_size_ptr) = dst->st_size;
 	dst->st_blocks = (int)src->st_blocks;
+}
+
+/*
+ *	This subfunction for ftls_add_entry manages user and group names copying,
+ *	and falls back to the respective uid or gid in case of error with
+ *	getpwuid or getgrgid function calls.
+*/
+void	ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src)
+{
+	struct passwd	*passbuf;
+	struct group	*groupbuf;
+	char			**strbuf;
+
+	dst->st_uid = src->st_uid;
+	dst->st_gid = src->st_gid;
+	passbuf = getpwuid(dst->st_uid);
+	groupbuf = getgrgid(dst->st_gid);
+
+	strbuf = (char**)malloc(sizeof(char*) * 2);
+	if (e->showlist)
+	{
+		strbuf[0] = NULL;
+		if (passbuf && !e->show_num_id)
+			strbuf[0] = ft_strdup(passbuf->pw_name);
+		else
+			strbuf[0] = ft_itoa(dst->st_uid);
+		dst->pw_name = &strbuf[0];
+		strbuf[1] = NULL;
+		if (groupbuf && !e->show_num_id)
+			strbuf[1] = ft_strdup(groupbuf->gr_name);
+		else
+			strbuf[1] = ft_itoa(dst->st_gid);
+		dst->gr_name = &strbuf[1];
+	}
 }
 
 /*

@@ -74,6 +74,8 @@ typedef struct	s_entry
 	mode_t					st_mode_ptr[1];
 	nlink_t					st_nlink;
 	uid_t					st_uid;
+	char					**pw_name;
+	char					**gr_name;
 	gid_t					st_gid;
 	dev_t					st_rdev;
 	TIME_TYPE				st_atimespec; // last access
@@ -136,6 +138,11 @@ typedef struct	s_env
 }				t_env;
 
 /*
+ *	To be added to libft
+*/
+int				ft_nbrlen(int nbr);
+
+/*
 ** ftls_init.c
 */
 int				ftls_parse_cli_args(t_env *e, int ac, char **av);
@@ -163,11 +170,13 @@ int				ftls_add_entry(t_list **alst, t_env *e, char *name,
 		char *prefix);
 void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		char *prefix);
-void			ftls_copy_details_sub(t_entry *dst, struct stat *src);
+void			ftls_copy_details_sub1(t_entry *dst, struct stat *src);
+void			ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src);
 void			ftls_manage_time_ptr(t_env *e, t_entry *dst);
 void			ftls_get_linktarget(t_entry *dst, char *path);
 int				ftls_get_file_status(t_env *e, struct stat *statbuf, char **path);
 
+void			ftls_get_column_metadata(t_env *e, t_entry *d);
 
 /*
 **	ftls_sort.c

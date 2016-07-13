@@ -84,7 +84,10 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 
 	ft_putstr(out);
 	ft_printf("%3d ", d->st_nlink);
-	
+
+/*
+///////////////////// TO BE REPLACED (copy strings at the metadata analysis
+///////////////////// step, or even sooner)	
 	if (passbuf && !e->show_num_id)
 		ft_printf("%s\t", passbuf->pw_name);
 	else
@@ -94,6 +97,9 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 		ft_printf("%s\t", groupbuf->gr_name);
 	else
 		ft_printf("%d\t", (int)d->st_gid);
+*/
+	ft_printf("%s\t", *(d->pw_name));
+	ft_printf("%s\t", *(d->gr_name));
 	
 //	if ((d->st_mode & S_IFLNK) != S_IFLNK && ((d->st_mode & S_IFCHR) == S_IFCHR
 //			|| (d->st_mode & S_IFBLK) == S_IFBLK))
