@@ -75,7 +75,6 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 		out[10] = ' ';
 	ft_strdel(&path);
 	out[11] = '\0';
-	// Valgrind doesn't like these function calls at all..
 	
 	timebuf = ftls_gen_timestr(e, d);
 	errno = 0;
@@ -83,30 +82,15 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 	groupbuf = getgrgid(d->st_gid);
 
 	ft_putstr(out);
-	ft_printf("%3d ", d->st_nlink);
+	ft_printf("%*d", e->maxcol[2] + 1, d->st_nlink);
 
-/*
-///////////////////// TO BE REPLACED (copy strings at the metadata analysis
-///////////////////// step, or even sooner)	
-	if (passbuf && !e->show_num_id)
-		ft_printf("%s\t", passbuf->pw_name);
-	else
-		ft_printf("%d\t", (int)d->st_uid);
-
-	if (groupbuf && !e->show_num_id)
-		ft_printf("%s\t", groupbuf->gr_name);
-	else
-		ft_printf("%d\t", (int)d->st_gid);
-*/
-	ft_printf("%s\t", *(d->pw_name));
-	ft_printf("%s\t", *(d->gr_name));
+	ft_printf(" %*s", -(e->maxcol[3] + 1), *(d->pw_name));
+	ft_printf(" %*s", -(e->maxcol[4] + 1), *(d->gr_name));
 	
-//	if ((d->st_mode & S_IFLNK) != S_IFLNK && ((d->st_mode & S_IFCHR) == S_IFCHR
-//			|| (d->st_mode & S_IFBLK) == S_IFBLK))
 	if (ftls_is_entry_device(d))
 		ft_printf("%d, %d ", major(d->st_rdev), minor(d->st_rdev));
 	else
-		ft_printf("%5d ", d->st_size);
+		ft_printf("%*d ", e->maxcol[5] + 1, d->st_size);
 	ft_printf("%s ", timebuf);
 	ft_strdel(&timebuf);
 	ft_printf("%s", *(d->name));
@@ -285,9 +269,15 @@ void	ftls_print_dir(t_env *e, t_list *subdir)
 void	ftls_print_entry(t_env *e, t_entry *entptr)
 {
 	if (e->showinode)
-		ft_printf("%9d ", entptr->st_inode);
+		ft_printf("%*d ", e->maxcol[0], entptr->st_inode);
 	if (e->showlist)
+	{
 		FTLS_PRINT_LISTED(e, entptr);
+		// TEMPORARY
+	//	ft_printf("\033[32mmax col %d %d %d %d %d %d\n\033[0m", e->maxcol[0],
+	//			e->maxcol[1], e->maxcol[2], e->maxcol[3], e->maxcol[4],
+	//			e->maxcol[5]);
+	}
 	else
 		ftls_print_name(e, *(entptr->name));
 	e->print_initiated = 1;

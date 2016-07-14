@@ -31,14 +31,15 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	if (ftls_get_file_status(e, &statbuf, &path))
 		return (1);
 	ftls_copy_details(&entry, &statbuf, name, prefix);
-	ftls_copy_details_sub2(e, &entry, &statbuf);
+	if (e->showlist)
+		ftls_copy_details_sub2(e, &entry, &statbuf);
 	ftls_manage_time_ptr(e, &entry);
 	//	Gestion des liens symboliques pour affichage -l
 	if (ftls_is_entry_showable(e, &entry) && (e->atleastonetoshow = 1))
 		e->totalblocks += entry.st_blocks;
 	//	Gestion des metadatas de largeur de colonne
-//	if (e->showlist)
-//		ftls_get_column_metadata(e, &entry);
+	if (e->showlist && ftls_is_entry_showable(e, &entry))
+		ftls_get_column_metadata(e, &entry);
 	if ((entry.st_mode & S_IFLNK) == S_IFLNK)
 		ftls_get_linktarget(&entry, path);
 	ft_strdel(&path);
@@ -64,6 +65,12 @@ void	ftls_get_column_metadata(t_env *e, t_entry *d)
 		e->maxcol[2] = i;
 	if ((i = ft_strlen(*(d->pw_name))) > e->maxcol[3])
 		e->maxcol[3] = i;
+	if ((i = ft_strlen(*(d->gr_name))) > e->maxcol[4])
+		e->maxcol[4] = i;
+	if ((i = ft_nbrlen(d->st_size)) > e->maxcol[5])
+		e->maxcol[5] = i;
+
+
 
 }
 
@@ -244,6 +251,11 @@ void	ftls_elemdel(void *ptr, size_t size)
 		ft_strdel(d->linktarget);
 		ft_memdel((void**)&(d->linktarget));	
 	}
+	if (d->pw_name)
+		ft_strdel(d->pw_name);
+	if (d->gr_name)
+		ft_strdel(d->gr_name);
+	ft_memdel((void**)&(d->pw_name));
 	ft_bzero(ptr, size);
 	ft_memdel(&ptr);
 }

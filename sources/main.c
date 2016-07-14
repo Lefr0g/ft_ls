@@ -54,7 +54,7 @@ int		main(int ac, char **av)
 	ftls_init_options(&e);
 
 //	ftls_debug_show_args(&e);
-	ftls_debug_show_options(&e);
+//	ftls_debug_show_options(&e);
 	
 	if (!e.cli_notopt[0])
 	{

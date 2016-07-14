@@ -109,6 +109,7 @@ t_list	*ftls_get_subdir(t_env *e, char *name, char *path)
 		return (NULL);
 	}
 	e->col_len = 0;
+	ft_bzero(e->maxcol, LIST_MODE_COLUMNS * sizeof(int));
 	while ((my_dirent = readdir(dir)))
 	{
 		ftls_add_entry(&subdir, e, my_dirent->d_name, path);
