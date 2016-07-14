@@ -88,9 +88,15 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 	ft_printf(" %*s", -(e->maxcol[4] + 1), *(d->gr_name));
 	
 	if (ftls_is_entry_device(d))
-		ft_printf("%d, %d ", major(d->st_rdev), minor(d->st_rdev));
+		ft_printf("%*d, %*d ", e->maxcol[6] + 2, major(d->st_rdev),
+				e->maxcol[7], minor(d->st_rdev));
 	else
-		ft_printf("%*d ", e->maxcol[5] + 1, d->st_size);
+	{
+		if (!e->maxcol[8])
+			ft_printf("%*d ", e->maxcol[5] + 1, d->st_size);
+		else
+			ft_printf("%*d ", e->maxcol[6] + e->maxcol[7] + 4, d->st_size);
+	}
 	ft_printf("%s ", timebuf);
 	ft_strdel(&timebuf);
 	ft_printf("%s", *(d->name));

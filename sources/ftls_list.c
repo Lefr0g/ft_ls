@@ -67,11 +67,17 @@ void	ftls_get_column_metadata(t_env *e, t_entry *d)
 		e->maxcol[3] = i;
 	if ((i = ft_strlen(*(d->gr_name))) > e->maxcol[4])
 		e->maxcol[4] = i;
-	if ((i = ft_nbrlen(d->st_size)) > e->maxcol[5])
-		e->maxcol[5] = i;
-
-
-
+	if (ftls_is_entry_device(d))
+	{
+		if ((i = ft_nbrlen((int)major(d->st_rdev))) > e->maxcol[6])
+			e->maxcol[6] = i;
+		if ((i = ft_nbrlen((int)minor(d->st_rdev))) > e->maxcol[7])
+			e->maxcol[7] = i;
+		e->maxcol[8] = 1;
+	}
+	else
+		if ((i = ft_nbrlen(d->st_size)) > e->maxcol[5])
+			e->maxcol[5] = i;
 }
 
 /*

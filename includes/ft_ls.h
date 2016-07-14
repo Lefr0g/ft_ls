@@ -52,7 +52,7 @@
 # include <sys/types.h>
 
 # define OPT_ARRAY_SIZE 16
-# define LIST_MODE_COLUMNS 7
+# define LIST_MODE_COLUMNS 9
 # define LINK_NAME_LEN 1025
 
 // Disable the following for a clean Valgrind report
