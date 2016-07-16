@@ -214,9 +214,22 @@ void	ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src)
 		else
 			strbuf[1] = ft_itoa(dst->st_gid);
 		dst->gr_name = &strbuf[1];
+		ftls_gen_size_str(e, dst);
 	}
 }
 
+void	ftls_gen_size_str(t_env *e, t_entry *d)
+{
+	char	**ptr;
+
+	if (e->human)
+	{
+		ptr = (char**)malloc(sizeof(char*));
+		*ptr = ft_humanize_size(d->st_size);
+		d->size_str = ptr;
+	}
+}
+	
 /*
  *	Manage time sort ptr
 */
@@ -262,6 +275,11 @@ void	ftls_elemdel(void *ptr, size_t size)
 	if (d->gr_name)
 		ft_strdel(d->gr_name);
 	ft_memdel((void**)&(d->pw_name));
+	if (d->size_str)
+	{
+		ft_strdel(d->size_str);
+		ft_memdel((void**)&(d->size_str));
+	}
 	ft_bzero(ptr, size);
 	ft_memdel(&ptr);
 }

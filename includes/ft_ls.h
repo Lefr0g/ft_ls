@@ -85,6 +85,7 @@ typedef struct	s_entry
 
 	off_t					st_size; // in bytes
 	off_t					st_size_ptr[1];
+	char					**size_str;
 	int						st_blocks;
 
 }				t_entry;
@@ -141,6 +142,8 @@ typedef struct	s_env
  *	To be added to libft
 */
 int				ft_nbrlen(int nbr);
+char			*ft_humanize_size(off_t size);
+int				ft_get_first_rounded_digit(double nbr, int divider);
 
 /*
 ** ftls_init.c
@@ -172,6 +175,7 @@ void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 		char *prefix);
 void			ftls_copy_details_sub1(t_entry *dst, struct stat *src);
 void			ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src);
+void			ftls_gen_size_str(t_env *e, t_entry *d);
 void			ftls_manage_time_ptr(t_env *e, t_entry *dst);
 void			ftls_get_linktarget(t_entry *dst, char *path);
 int				ftls_get_file_status(t_env *e, struct stat *statbuf, char **path);

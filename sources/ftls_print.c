@@ -92,10 +92,17 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 				e->maxcol[7], minor(d->st_rdev));
 	else
 	{
-		if (!e->maxcol[8])
-			ft_printf("%*d ", e->maxcol[5] + 1, d->st_size);
+		if (!e->human)
+		{
+			if (!e->maxcol[8])
+				ft_printf("%*d ", e->maxcol[5] + 1, d->st_size);
+			else
+				ft_printf("%*d ", e->maxcol[6] + e->maxcol[7] + 4, d->st_size);
+		}
 		else
-			ft_printf("%*d ", e->maxcol[6] + e->maxcol[7] + 4, d->st_size);
+		{
+			ft_printf("%6s ", *(d->size_str));
+		}
 	}
 	ft_printf("%s ", timebuf);
 	ft_strdel(&timebuf);
