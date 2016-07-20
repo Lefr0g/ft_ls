@@ -14,14 +14,14 @@
 
 int		ftls_get_terminal_width(t_env *e)
 {
-	struct ttysize	s_ttsz;
+	struct winsize	s_winsz;
 
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &s_ttsz) == -1)
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &s_winsz) == -1)
 	{
 		ft_print_error(e->progname, "ioctl()", errno);
 		return (-1);
 	}
-	return (s_ttsz.ts_cols);
+	return (s_winsz.ws_col);
 }
 
 int		ftls_isnavdot(char *name)
