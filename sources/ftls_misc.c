@@ -89,6 +89,8 @@ int		ftls_is_entry_treatable(t_env *e, t_entry *entptr)
 	1073741024 (G)
 	1099511627776 (T)
 	The maximum size unit managed is Terabyte
+
+	TODO : A nettoyer et peaufiner
 */
 char	*ft_humanize_size(off_t size)
 {
@@ -124,35 +126,7 @@ char	*ft_humanize_size(off_t size)
 
 				rounded = ft_get_first_rounded_digit(size, divider);
 				buf = ft_itoa(rounded);
-
-/*
-				buf = ft_itoa(size % divider);
-				if ((int)ft_strlen(buf) < sizelen - 1)
-				{
-//					if (buf[0] > 5 && (int)ft_strlen == sizelen - 1)
-						ft_strncat(str, "1", 1);
-//					else
-//						ft_strncat(str, "0", 1);
-				}
-				else
-				{
-					if (ft_strlen(buf) >= 2)
-						buf[2] = '\0';
-					{
-						if (ft_atoi(&buf[1]) > 5)
-						{
-							if (buf[0] < 9)
-								buf[0] = buf[0] + 1;
-							else
-							{
-								str[0] = str[0] + 1;
-								buf[0] = '0';
-							}
-						}
-					}
-*/
-					ft_strncat(str, buf, 1);
-		//		}
+				ft_strncat(str, buf, 1);
 				ft_strdel(&buf);
 			}
 			ft_strncat(str, &unit[i], 1);
@@ -198,7 +172,7 @@ int	ft_get_first_rounded_digit(double nbr, int divider)
 	else if (ft_strlen(reststr) == ft_strlen(nbrstr) - 2)
 	{
 		rest %= 10;
-		if (rest / 10 > 5)
+		if (rest / 10 >= 5)
 			result = 1;
 		else
 			result = 0;
