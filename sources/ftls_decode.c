@@ -12,11 +12,29 @@
 
 #include "ft_ls.h"
 
-void	ftls_decode_type(mode_t st_mode, char *out)
+void	ftls_decode_type_osx(mode_t st_mode, char *out)
 {
 	if ((st_mode & S_IFWHT) == S_IFWHT)
 		out[0] = 'w';
 	else if ((st_mode & S_IFSOCK) == S_IFSOCK)
+		out[0] = 's';
+	else if ((st_mode & S_IFLNK) == S_IFLNK)
+		out[0] = 'l';
+	else if ((st_mode & S_IFREG) == S_IFREG)
+		out[0] = '-';
+	else if ((st_mode & S_IFBLK) == S_IFBLK)
+		out[0] = 'b';
+	else if ((st_mode & S_IFDIR) == S_IFDIR)
+		out[0] = 'd';
+	else if ((st_mode & S_IFCHR) == S_IFCHR)
+		out[0] = 'c';
+	else if ((st_mode & S_IFIFO) == S_IFIFO)
+		out[0] = 'p';
+}
+
+void	ftls_decode_type_linux(mode_t st_mode, char *out)
+{
+	if ((st_mode & S_IFSOCK) == S_IFSOCK)
 		out[0] = 's';
 	else if ((st_mode & S_IFLNK) == S_IFLNK)
 		out[0] = 'l';
@@ -55,7 +73,7 @@ void	ftls_decode_mode(mode_t st_mode)
 
 	ft_bzero(out, 12);
 	ft_putstr("\033[34m");
-	ftls_decode_type(st_mode, out);
+	FTLS_DECODE_TYPE(st_mode, out);
 	ftls_decode_access_rights(st_mode, out);
 	if ((st_mode & S_ISVTX) == S_ISVTX)
 		out[9] = 't';
