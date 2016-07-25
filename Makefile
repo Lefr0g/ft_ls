@@ -12,11 +12,12 @@
 
 OS_NAME = $(shell uname -s)
 ifeq ($(OS_NAME),Linux)
-	CC = clang
+	CC = gcc
 endif
 ifeq ($(OS_NAME),Darwin)
 	CC = clang
 endif
+
 
 NAME = ft_ls
 
@@ -31,6 +32,10 @@ UIOK = $(UIALIGN)[\033[32m \xE2\x9C\x94 \033[0m]
 UIINFO = $(UIALIGN)[\033[36m i \033[0m]
 
 FLAGS = -Wall -Werror -Wextra
+
+ifeq ($(CC),gcc)
+	FLAGS += -std=c99
+endif
 
 SRCS = main.c ftls_init.c ftls_list.c ftls_print.c ftls_misc.c ftls_error.c\
 	   ftls_debug.c ftls_process.c ftls_decode.c ftls_sort.c

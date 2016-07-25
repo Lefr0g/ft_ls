@@ -51,8 +51,6 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 {
 	char			out[12];
 	char			*timebuf;
-	struct passwd	*passbuf;
-	struct group	*groupbuf;
 	char			*path;
 	acl_t			aclbuf;
 
@@ -78,8 +76,6 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 	
 	timebuf = ftls_gen_timestr(e, d);
 	errno = 0;
-	passbuf = getpwuid(d->st_uid);
-	groupbuf = getgrgid(d->st_gid);
 
 	ft_putstr(out);
 	ft_printf("%*d", e->maxcol[2] + 1, d->st_nlink);
@@ -122,8 +118,6 @@ void	ftls_quick_ll_linux(t_env *e, t_entry *d)
 {
 	char			out[12];
 	char			*timebuf;
-	struct passwd	*passbuf;
-	struct group	*groupbuf;
 	char			*path;
 
 	(void)e;
@@ -140,8 +134,6 @@ void	ftls_quick_ll_linux(t_env *e, t_entry *d)
 	
 	timebuf = ftls_gen_timestr(e, d);
 	errno = 0;
-	passbuf = getpwuid(d->st_uid);
-	groupbuf = getgrgid(d->st_gid);
 
 	ft_putstr(out);
 	ft_printf("%*d", e->maxcol[2] + 1, d->st_nlink);
