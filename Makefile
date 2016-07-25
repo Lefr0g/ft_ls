@@ -34,7 +34,7 @@ UIINFO = $(UIALIGN)[\033[36m i \033[0m]
 FLAGS = -Wall -Werror -Wextra
 
 ifeq ($(CC),gcc)
-	FLAGS += -std=c99
+	FLAGS += -std=gnu99
 endif
 
 SRCS = main.c ftls_init.c ftls_list.c ftls_print.c ftls_misc.c ftls_error.c\
