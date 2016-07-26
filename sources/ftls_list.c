@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/28 18:15:17 by amulin           ###   ########.fr       */
+/*   Updated: 2016/07/26 19:06:45 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,108 +34,17 @@ int		ftls_add_entry(t_list **alst, t_env *e, char *name, char *prefix)
 	if (e->showlist)
 		ftls_copy_details_sub2(e, &entry, &statbuf);
 	ftls_manage_time_ptr(e, &entry);
-	//	Gestion des liens symboliques pour affichage -l
 	if (ftls_is_entry_showable(e, &entry) && (e->atleastonetoshow = 1))
 		e->totalblocks += entry.st_blocks;
-	//	Gestion des metadatas de largeur de colonne
 	if (e->showlist && ftls_is_entry_showable(e, &entry))
 		ftls_get_column_metadata(e, &entry);
 	if ((entry.st_mode & S_IFLNK) == S_IFLNK)
 		ftls_get_linktarget(&entry, path);
 	ft_strdel(&path);
 	lst_ptr = ft_lstnew(&entry, sizeof(t_entry));
-	if (*alst)
-		ft_lstappend(alst, lst_ptr);
-	else
-		*alst = lst_ptr;
+	*alst ? ft_lstappend(alst, lst_ptr) : (*alst = lst_ptr);
 	e->col_len = ft_getmax(e->col_len,
 			ft_getmin(ft_strlen(name), e->termwidth));
-	return (0);
-}
-
-void	ftls_get_column_metadata(t_env *e, t_entry *d)
-{
-	int	i;
-
-	if (e->showinode)
-		if ((i = ft_nbrlen(d->st_inode)) > e->maxcol[0])
-			e->maxcol[0] = i;
-	e->maxcol[1] = 11;
-	if ((i = ft_nbrlen(d->st_nlink)) > e->maxcol[2])
-		e->maxcol[2] = i;
-	if ((i = ft_strlen(*(d->pw_name))) > e->maxcol[3])
-		e->maxcol[3] = i;
-	if ((i = ft_strlen(*(d->gr_name))) > e->maxcol[4])
-		e->maxcol[4] = i;
-	if (ftls_is_entry_device(d))
-	{
-		if ((i = ft_nbrlen((int)major(d->st_rdev))) > e->maxcol[6])
-			e->maxcol[6] = i;
-		if ((i = ft_nbrlen((int)minor(d->st_rdev))) > e->maxcol[7])
-			e->maxcol[7] = i;
-		e->maxcol[8] = 1;
-	}
-	else
-		if ((i = ft_nbrlen(d->st_size)) > e->maxcol[5])
-			e->maxcol[5] = i;
-}
-
-/*
- *	This function is designed to act like the combination of ft_strlen on
- *	ft_itoa, but without all the memory allocation and processing involved.
- *	Its primary goal is to be fast and efficient.
- * 	To be added to libft
-*/
-int		ft_nbrlen(int nbr)
-{
-	int	div;
-	int res;
-	int	minus;
-
-	if (nbr < 0)
-		minus = 1;
-	else
-		minus = 0;
-
-	div = 1000000000;
-	res = 10;
-	while (div)
-	{
-		if (nbr / div)
-			return (res + minus);
-		div /= 10;
-		res--;
-	}
-	return (0);
-}
-
-void	ftls_get_linktarget(t_entry *dst, char *path)
-{
-	char	**buf;
-
-	buf = ft_memalloc(sizeof(char**));
-	*buf = ft_strnew(LINK_NAME_LEN);
-	readlink(path, *buf, LINK_NAME_LEN);
-	dst->linktarget = buf;
-}
-
-int		ftls_get_file_status(t_env *e, struct stat *statbuf, char **path)
-{
-	if ((e->followlink_cli && e->iscli) || e->followlink_sub)
-	{
-		if (stat(*path, statbuf))
-		{
-			ft_print_error(e->progname, *path, errno);
-			ft_strdel(path);
-			return (1);
-		}
-	}
-	else if (lstat(*path, statbuf))
-	{
-		ft_print_error(e->progname, *path, errno);
-		ft_strdel(path);
-		return (1);
-	}
 	return (0);
 }
 
@@ -168,6 +77,7 @@ void	ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 /*
 **	Subfunction, for norme compliance
 */
+
 void	ftls_copy_details_sub1(t_entry *dst, struct stat *src)
 {
 	dst->st_inode = src->st_ino;
@@ -184,10 +94,11 @@ void	ftls_copy_details_sub1(t_entry *dst, struct stat *src)
 }
 
 /*
- *	This subfunction for ftls_add_entry manages user and group names copying,
- *	and falls back to the respective uid or gid in case of error with
- *	getpwuid or getgrgid function calls.
+**	This subfunction for ftls_add_entry manages user and group names copying,
+**	and falls back to the respective uid or gid in case of error with
+**	getpwuid or getgrgid function calls.
 */
+
 void	ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src)
 {
 	struct passwd	*passbuf;
@@ -198,7 +109,6 @@ void	ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src)
 	dst->st_gid = src->st_gid;
 	passbuf = getpwuid(dst->st_uid);
 	groupbuf = getgrgid(dst->st_gid);
-
 	strbuf = (char**)malloc(sizeof(char*) * 2);
 	if (e->showlist)
 	{
@@ -218,68 +128,29 @@ void	ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src)
 	}
 }
 
-void	ftls_gen_size_str(t_env *e, t_entry *d)
-{
-	char	**ptr;
-
-	if (e->human)
-	{
-		ptr = (char**)malloc(sizeof(char*));
-		*ptr = ft_humanize_size(d->st_size);
-		d->size_str = ptr;
-	}
-}
-	
 /*
- *	Manage time sort ptr
-*/
-void	ftls_manage_time_ptr(t_env *e, t_entry *dst)
-{
-	if (e->sort_time)
-	{
-		if (e->sort_time_val == 'c')
-			*(dst->st_time_ptr) = dst->st_ctimespec;
-		else if (e->sort_time_val == 'u')
-			*(dst->st_time_ptr) = dst->st_atimespec;
-		else	
-			*(dst->st_time_ptr) = dst->st_mtimespec;
-	}
-}
-
-/*
-** This function is designed for use as a parameter for ft_lstdel()
+**	Generic list sorting function, used in ftls_process.c
 */
 
-void	ftls_elemdel(void *ptr, size_t size)
+void	ftls_manage_sorting(t_env *e, t_list **list)
 {
-	t_entry	*d;
+	t_entry	*entptr;
 
-	d = (t_entry*)ptr;
-	if (d->name)
+	entptr = (*list)->content;
+	if (!e->sort_none)
 	{
-		ft_strdel(d->name);
-		ft_memdel((void**)&(d->name));
+		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
+				&ftls_compare_str);
+		if (e->sort_time)
+			ft_lstsort(list, (void*)&(entptr->st_time_ptr) - (void*)entptr,
+					&FTLS_COMPARE_DATE);
+		if (e->sort_size)
+			ft_lstsort(list, (void*)&(entptr->st_size_ptr) - (void*)entptr,
+					&ftls_compare_size);
+		if (e->reverse)
+			ft_lstflip(list);
+		if (e->iscli)
+			ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
+					&ftls_compare_type);
 	}
-	if (d->prefix)
-	{
-		ft_strdel(d->prefix);
-		ft_memdel((void**)&(d->prefix));
-	}
-	if (d->linktarget)
-	{
-		ft_strdel(d->linktarget);
-		ft_memdel((void**)&(d->linktarget));	
-	}
-	if (d->pw_name)
-		ft_strdel(d->pw_name);
-	if (d->gr_name)
-		ft_strdel(d->gr_name);
-	ft_memdel((void**)&(d->pw_name));
-	if (d->size_str)
-	{
-		ft_strdel(d->size_str);
-		ft_memdel((void**)&(d->size_str));
-	}
-	ft_bzero(ptr, size);
-	ft_memdel(&ptr);
 }

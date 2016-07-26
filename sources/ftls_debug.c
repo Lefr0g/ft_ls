@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 16:49:17 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/28 16:58:45 by amulin           ###   ########.fr       */
+/*   Updated: 2016/07/26 13:25:03 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ void	ftls_debug_show_options(t_env *e)
 	ft_printf("Recursive %6hhd\tReverse %5hhd\n", e->recursive, e->reverse);
 	ft_printf("Sort_none %6hhd\tSort_size %3hhd\t\n",
 			e->sort_none, e->sort_size);
-	ft_printf("Sort_timemod %3hhd\tHuman %7hhd\n", e->sort_timemod, e->human);
-	ft_printf("Sort_timeacc %3hhd\tSort_timech %5hhd\n",
-			e->sort_timeacc, e->sort_timech);
+	ft_printf("Human %7hhd\n", e->human);
 	ft_printf("Sort_time = %hhd,\t\tSort_time_val = %c\n", e->sort_time,
 			e->sort_time_val);
 	ft_printf("Showinode %6hhd\tShowlist %4hhd\t\n", e->showinode, e->showlist);

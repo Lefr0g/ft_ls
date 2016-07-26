@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/28 17:57:17 by amulin           ###   ########.fr       */
+/*   Updated: 2016/07/26 19:10:03 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 	while (++i < ac)
 		if (buf[i][0])
 		{
-			if (ft_isfile(buf[i], e->progname, 1))
+			if (ftls_isfile(buf[i], e->progname, 1))
 				e->cli_notopt[++j] = ft_strdup(buf[i]);
 			else
 				e->cli_notopt[++j] = ft_strdup("");
@@ -42,21 +42,21 @@ int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 
 void	ftls_define_options(t_env *e)
 {
-	e->supported_option[0][0] = 'A'; // Done
-	e->supported_option[1][0] = 'L'; // Done
-	e->supported_option[2][0] = 'R'; // Done
-	e->supported_option[3][0] = 'S'; // Done
-	e->supported_option[4][0] = 'a'; // Done
-	e->supported_option[5][0] = 'c'; // Done
-	e->supported_option[6][0] = 'f'; // Done
-	e->supported_option[7][0] = 'h'; // TODO
-	e->supported_option[8][0] = 'i'; // Almost done (TODO fix layout)
-	e->supported_option[9][0] = 'n'; // Done
-	e->supported_option[10][0] = 'r'; // Done
-	e->supported_option[11][0] = 't'; // Done
-	e->supported_option[12][0] = 'u'; // WIP
-	e->supported_option[13][0] = 'l'; // Almost done (TODO fix layout)
-	e->supported_option[14][0] = '1'; // Done
+	e->supported_option[0][0] = 'A';
+	e->supported_option[1][0] = 'L';
+	e->supported_option[2][0] = 'R';
+	e->supported_option[3][0] = 'S';
+	e->supported_option[4][0] = 'a';
+	e->supported_option[5][0] = 'c';
+	e->supported_option[6][0] = 'f';
+	e->supported_option[7][0] = 'h';
+	e->supported_option[8][0] = 'i';
+	e->supported_option[9][0] = 'n';
+	e->supported_option[10][0] = 'r';
+	e->supported_option[11][0] = 't';
+	e->supported_option[12][0] = 'u';
+	e->supported_option[13][0] = 'l';
+	e->supported_option[14][0] = '1';
 }
 
 int		ftls_init_env(t_env *e, char **av)
@@ -75,13 +75,6 @@ int		ftls_init_env(t_env *e, char **av)
 		e->supported_option[i] = ft_strnew(2);
 	ftls_define_options(e);
 	e->termwidth = ftls_get_terminal_width(e);
-	return (0);
-}
-
-// TBD
-int		ftls_init_entry(t_entry *ptr)
-{
-	ft_bzero(ptr, sizeof(t_entry));
 	return (0);
 }
 
@@ -120,27 +113,7 @@ void	ftls_manage_options_priorities(t_env *e)
 		e->showlist = 1;
 	if (e->sort_none)
 		e->show_all = 1;
-//	if (!e->sort_timemod && !e->show_all)
-//	{
-//		e->sort_timeacc = 0;
-//		e->sort_timech = 0;
-//	}
 	e->followlink_cli = 1;
 	if (e->showlist && !e->followlink_sub)
 		e->followlink_cli = 0;
-}
-
-int		ftls_free_all(t_env *e)
-{
-	int	i;
-
-	i = -1;
-	ft_strdel(&(e->progname));
-	while (++i < OPT_ARRAY_SIZE)
-		ft_strdel(&(e->supported_option[i]));
-	ft_strarray_del(&(e->cli_option));
-	ft_strarray_del(&(e->cli_notopt));
-	if (e->lst)
-		ft_lstdel(&(e->lst), &ftls_elemdel);
-	return (0);
 }

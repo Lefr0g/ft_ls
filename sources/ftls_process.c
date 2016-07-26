@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/06/17 18:18:13 by amulin           ###   ########.fr       */
+/*   Updated: 2016/07/26 18:06:48 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,11 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 	subdir = ftls_get_subdir(e, name, path);
 	if (!subdir)
 	{
-//		ft_print_error(e->progname, path, errno);
 		ft_strdel(&path);
 		return (1);
 	}
 	ft_strdel(&path);
 	ftls_manage_sorting(e, &subdir);
-
-
-//	ftls_debug_show_list(subdir);
-
 	if (e->showlist && e->atleastonetoshow)
 		ft_printf("total %d\n", e->totalblocks);
 	e->atleastonetoshow = 0;
@@ -73,15 +68,11 @@ int		ftls_process_argnames(t_env *e)
 			ftls_add_entry(&e->lst, e, e->cli_notopt[i], NULL);
 	if (!e->lst)
 		return (0);
-	
 	ftls_manage_sorting(e, &e->lst);
-
 	ptr = e->lst;
 	while (ptr)
 	{
 		entptr = ptr->content;
-//		ftls_debug_show_entry(entptr);
-
 		if (ftls_is_entry_treatable(e, entptr))
 			ftls_process_entry(e, *(entptr->name), NULL);
 		else
@@ -109,7 +100,7 @@ t_list	*ftls_get_subdir(t_env *e, char *name, char *path)
 		return (NULL);
 	}
 	e->col_len = 0;
-	ft_bzero(e->maxcol, LIST_MODE_COLUMNS * sizeof(int));
+	ft_bzero(e->maxcol, sizeof(int) * LIST_MODE_COLUMNS);
 	while ((my_dirent = readdir(dir)))
 	{
 		ftls_add_entry(&subdir, e, my_dirent->d_name, path);
