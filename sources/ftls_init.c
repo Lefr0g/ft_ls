@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/28 18:31:08 by amulin           ###   ########.fr       */
+/*   Updated: 2016/07/28 20:46:21 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,15 @@ int		ftls_parse_cli_args(t_env *e, int ac, char **av)
 	i = 0;
 	j = -1;
 	while (++i < ac)
-		if (buf[i][0])
-		{
+//		if (buf[i][0]) // <== Mauvais comportement avec les chaines vides
+//		{
 			if (ftls_isfile(buf[i], e->progname, 1))
 				e->cli_notopt[++j] = ft_strdup(buf[i]);
+			else if (!ft_strlen(buf[i])) // Ajout pour quitter en cas de chaine vide
+				exit(1);
 			else
 				e->cli_notopt[++j] = ft_strdup("");
-		}
+//		}
 	ft_strarray_del(&buf);
 	return (0);
 }
