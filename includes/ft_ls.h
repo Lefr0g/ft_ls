@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/26 19:11:08 by amulin           ###   ########.fr       */
+/*   Updated: 2016/07/28 21:11:24 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #  define FTLS_ATIME	st_atimespec
 #  define FTLS_MTIME	st_mtimespec
 #  define FTLS_CTIME	st_ctimespec
+#  define FTLS_PARSE_CLI_ARGS ftls_parse_cli_args_osx
 #  define FTLS_COMPARE_DATE ftls_compare_date_osx
 #  define FTLS_PRINT_LISTED ftls_quick_ll_osx
 #  define FTLS_DECODE_TYPE ftls_decode_type_osx
@@ -32,6 +33,7 @@
 #  define FTLS_ATIME	st_atim
 #  define FTLS_MTIME	st_mtim
 #  define FTLS_CTIME	st_ctim
+#  define FTLS_PARSE_CLI_ARGS ftls_parse_cli_args_linux
 #  define FTLS_COMPARE_DATE ftls_compare_date_linux
 #  define FTLS_PRINT_LISTED ftls_quick_ll_linux
 #  define FTLS_DECODE_TYPE ftls_decode_type_linux
@@ -151,7 +153,8 @@ typedef struct	s_env
 /*
 **	ftls_init.c
 */
-int				ftls_parse_cli_args(t_env *e, int ac, char **av);
+int				ftls_parse_cli_args_osx(t_env *e, int ac, char **av);
+int				ftls_parse_cli_args_linux(t_env *e, int ac, char **av);
 int				ftls_init_env(t_env *e, char **av);
 int				ftls_init_entry(t_entry *d);
 int				ftls_init_options(t_env *e);
