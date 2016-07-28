@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/26 19:10:03 by amulin           ###   ########.fr       */
+/*   Updated: 2016/07/28 18:31:08 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int		ftls_init_env(t_env *e, char **av)
 	while (++i < OPT_ARRAY_SIZE)
 		e->supported_option[i] = ft_strnew(2);
 	ftls_define_options(e);
-	e->termwidth = ftls_get_terminal_width(e);
+	if (isatty(1))
+		e->termwidth = ftls_get_terminal_width(e);
 	return (0);
 }
 
@@ -107,6 +108,8 @@ int		ftls_init_options(t_env *e)
 
 void	ftls_manage_options_priorities(t_env *e)
 {
+	if (e->termwidth == 0)
+		e->oneperline = 1;
 	if (e->sort_time && !e->sort_time_val)
 		e->sort_time_val = 't';
 	if (e->show_num_id)
