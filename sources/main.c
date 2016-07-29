@@ -51,6 +51,7 @@ int		main(int ac, char **av)
 
 	if (ftls_init_env(&e, av) || FTLS_PARSE_CLI_ARGS(&e, ac, av))
 		return (1);
+	ftls_debug_show_args(&e);
 	ftls_init_options(&e);
 	if (!e.cli_notopt[0])
 	{
