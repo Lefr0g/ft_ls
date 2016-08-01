@@ -50,24 +50,13 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 {
 	char			out[12];
 	char			*path;
-	acl_t			aclbuf;
 
 	path = ((d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
 		ft_strdup(*(d->name));
-	ft_bzero(out, 12);
-	FTLS_DECODE_TYPE(d->st_mode, out);
-	ftls_decode_access_rights(d->st_mode, out);
-	if ((d->st_mode & S_ISVTX) == S_ISVTX)
-		out[9] = 't';
-	if (listxattr(path, NULL, 0, XATTR_NOFOLLOW) > 0)
-		out[10] = '@';
-	else if ((aclbuf = acl_get_file(path, ACL_TYPE_EXTENDED)))
-	{
-		out[10] = ('+');
-		acl_free(aclbuf);
-	}
-	else
-		out[10] = ' ';
+
+	ftls_decode_mode(d->st_mode, out);
+	ftls_decode_extended_osx(out, path);
+
 	ft_strdel(&path);
 	ftls_quick_ll_sub_common(e, d, out);
 }
@@ -86,11 +75,8 @@ void	ftls_quick_ll_linux(t_env *e, t_entry *d)
 	path = ((d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
 		ft_strdup(*(d->name));
 	ft_bzero(out, 12);
-	FTLS_DECODE_TYPE(d->st_mode, out);
-	ftls_decode_access_rights(d->st_mode, out);
-	if ((d->st_mode & S_ISVTX) == S_ISVTX)
-		out[9] = 't';
-	out[10] = ' ';
+	ftls_decode_mode(d->st_mode, out);
+
 	ft_strdel(&path);
 	ftls_quick_ll_sub_common(e, d, out);
 }

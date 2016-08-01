@@ -67,16 +67,54 @@ void	ftls_decode_access_rights(mode_t st_mode, char *out)
 	}
 }
 
-void	ftls_decode_mode(mode_t st_mode)
+void	ftls_decode_mode(mode_t st_mode, char *out)
 {
-	char	out[12];
-
 	ft_bzero(out, 12);
-	ft_putstr("\033[34m");
 	FTLS_DECODE_TYPE(st_mode, out);
 	ftls_decode_access_rights(st_mode, out);
+	ftls_decode_special_bits(st_mode, out);
+}
+
+#ifdef __APPLE__
+
+void	ftls_decode_extended_osx(char *out, char *path)
+{
+	acl_t	aclbuf;
+
+	if (listxattr(path, NULL, 0, XATTR_NOFOLLOW) > 0)
+		out[10] = '@';
+	else if ((aclbuf = acl_get_file(path, ACL_TYPE_EXTENDED)))
+	{
+		out[10] = '+';
+		acl_free(aclbuf);
+	}
+	else
+		out[10] = ' ';
+}
+
+#endif
+
+void	ftls_decode_special_bits(mode_t st_mode, char *out)
+{
 	if ((st_mode & S_ISVTX) == S_ISVTX)
-		out[9] = 't';
-	ft_putstr(out);
-	ft_putstr("\033[0m");
+	{
+		if (out[9] == 'x')
+			out[9] = 't';
+		else
+			out[9] = 'T';
+	}
+	if ((st_mode & S_ISUID) == S_ISUID)
+	{
+		if (out[3] == 'x')
+			out[3] = 's';
+		else
+			out[3] = 'S';
+	}
+	if ((st_mode & S_ISGID) == S_ISGID)
+	{
+		if (out[6] == 'x')
+			out[6] = 's';
+		else
+			out[6] = 'S';
+	}
 }

@@ -261,6 +261,8 @@ void			ftls_debug_show_entry(t_entry *content);
 void			ftls_decode_type_osx(mode_t st_mode, char *out);
 void			ftls_decode_type_linux(mode_t st_mode, char *out);
 void			ftls_decode_access_rights(mode_t st_mode, char *out);
-void			ftls_decode_mode(mode_t st_mode);
+void			ftls_decode_mode(mode_t st_mode, char *out);
+void			ftls_decode_special_bits(mode_t st_mode, char *out);
+void			ftls_decode_extended_osx(char *out, char *path);
 
 #endif
