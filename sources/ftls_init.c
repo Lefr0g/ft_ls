@@ -33,7 +33,7 @@ int		ftls_parse_cli_args_linux(t_env *e, int ac, char **av)
 		if ((buf[i][0] || (!buf[i][0] && !av[i][0]))
 				&& ftls_isfile(buf[i], e->progname, 1))
 			e->cli_notopt[++j] = ft_strdup(buf[i]);
-		else
+		else if (!ft_strlen(buf[i]) && !ft_strlen(av[i]))
 			e->cli_notopt[++j] = ft_strdup("");
 	}
 	ft_strarray_del(&buf);

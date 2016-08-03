@@ -26,6 +26,7 @@
 #  define FTLS_COMPARE_DATE ftls_compare_date_osx
 #  define FTLS_PRINT_LISTED ftls_quick_ll_osx
 #  define FTLS_DECODE_TYPE ftls_decode_type_osx
+#  define FTLS_MANAGE_SORTING ftls_manage_sorting_osx
 #  include <sys/acl.h>
 #  include <uuid/uuid.h>
 # elif __linux__
@@ -37,6 +38,7 @@
 #  define FTLS_COMPARE_DATE ftls_compare_date_linux
 #  define FTLS_PRINT_LISTED ftls_quick_ll_linux
 #  define FTLS_DECODE_TYPE ftls_decode_type_linux
+#  define FTLS_MANAGE_SORTING ftls_manage_sorting_linux
 #  define S_IFWHT 0
 #  include <linux/nfsacl.h>
 # endif
@@ -183,7 +185,8 @@ void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 void			ftls_copy_details_sub1(t_entry *dst, struct stat *src);
 void			ftls_copy_details_sub2(t_env *e, t_entry *dst,
 		struct stat *src);
-void			ftls_manage_sorting(t_env *e, t_list **list);
+void			ftls_manage_sorting_osx(t_env *e, t_list **list);
+void			ftls_manage_sorting_linux(t_env *e, t_list **list);
 
 /*
 **	ftls_list_sub.c
@@ -199,6 +202,7 @@ void			ftls_manage_time_ptr(t_env *e, t_entry *dst);
 **	ftls_sort.c
 */
 int				ftls_compare_str(void *ref, void *run);
+int				ftls_compare_str_linux(void *ref, void *run);
 int				ftls_compare_type(void *ref, void *run);
 int				ftls_compare_date_osx(void *ref, void *run);
 int				ftls_compare_date_linux(void *ref, void *run);

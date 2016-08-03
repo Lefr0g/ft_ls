@@ -38,7 +38,7 @@ int		ftls_process_entry(t_env *e, char *name, char *prefix)
 		return (1);
 	}
 	ft_strdel(&path);
-	ftls_manage_sorting(e, &subdir);
+	FTLS_MANAGE_SORTING(e, &subdir);
 	if (e->showlist && e->atleastonetoshow)
 		ft_printf("total %d\n", e->totalblocks);
 	e->atleastonetoshow = 0;
@@ -68,7 +68,7 @@ int		ftls_process_argnames(t_env *e)
 			ftls_add_entry(&e->lst, e, e->cli_notopt[i], NULL);
 	if (!e->lst)
 		return (0);
-	ftls_manage_sorting(e, &e->lst);
+	FTLS_MANAGE_SORTING(e, &e->lst);
 	ptr = e->lst;
 	while (ptr)
 	{

@@ -13,7 +13,7 @@
 #include "ft_ls.h"
 
 /*
-**	A pointer to this function is used to sort the entry list by name
+**	A pointer to this function is used to sort the entry list by name under OSX
 */
 
 int		ftls_compare_str(void *ref, void *run)
@@ -25,6 +25,48 @@ int		ftls_compare_str(void *ref, void *run)
 	run_str = (char***)run;
 	return (ft_strcmp(**ref_str, **run_str));
 }
+
+/*
+**	This variant is used to sort the entry list by name under linux
+**	The difference is the absence of case-sensitivity
+*/
+
+char	*ftls_strtolower(char *str)
+{
+	char	*ret;
+	int		i;
+
+	ret = ft_strdup(str);
+	i = -1;
+	while (str[i++])
+	{
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] = str[i] + 32;
+	}
+	return (ret);
+}
+
+int		ftls_compare_str_linux(void *ref, void *run)
+{
+	char	***ref_str;
+	char	***run_str;
+	char	*ref_lowered;
+	char	*run_lowered;
+	int		result;
+
+	ref_str = (char***)ref;
+	run_str = (char***)run;
+
+	ref_lowered = ftls_strtolower(**ref_str);
+	run_lowered = ftls_strtolower(**run_str);
+
+	result = ft_strcmp(ref_lowered, run_lowered);
+	ft_strdel(&ref_lowered);
+	ft_strdel(&run_lowered);
+	return (result);
+//	return (ft_strcmp(**ref_str, **run_str));
+}
+
 
 /*
 **	A pointer to this function is used to seprate regular files from the
@@ -74,7 +116,7 @@ int		ftls_compare_date_linux(void *ref, void *run)
 
 	ref_time = *(time_t*)ref;
 	run_time = *(time_t*)run;
-	return (ref_time - run_time);
+	return (run_time - ref_time);
 }
 
 /*
