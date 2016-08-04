@@ -38,33 +38,24 @@ char	*ftls_strtolower(char *str)
 
 	ret = ft_strdup(str);
 	i = -1;
-	while (str[i++])
-	{
+	while (str[++i])
 		if (str[i] >= 'A' && str[i] <= 'Z')
-			str[i] = str[i] + 32;
-	}
+			ret[i] = str[i] + 32;
 	return (ret);
 }
 
 int		ftls_compare_str_linux(void *ref, void *run)
 {
-	char	***ref_str;
-	char	***run_str;
 	char	*ref_lowered;
 	char	*run_lowered;
 	int		result;
 
-	ref_str = (char***)ref;
-	run_str = (char***)run;
-
-	ref_lowered = ftls_strtolower(**ref_str);
-	run_lowered = ftls_strtolower(**run_str);
-
+	ref_lowered = ftls_strtolower(**(char***)ref);
+	run_lowered = ftls_strtolower(**(char***)run);
 	result = ft_strcmp(ref_lowered, run_lowered);
 	ft_strdel(&ref_lowered);
 	ft_strdel(&run_lowered);
 	return (result);
-//	return (ft_strcmp(**ref_str, **run_str));
 }
 
 

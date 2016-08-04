@@ -160,13 +160,11 @@ void	ftls_manage_sorting_linux(t_env *e, t_list **list)
 	t_entry	*entptr;
 
 	entptr = (*list)->content;
-	ft_printf("CHECK A\n");
 	if (!e->sort_none)
 	{
-		ft_printf("CHECK B\n");
 		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
 				&ftls_compare_str_linux);
-/*		if (e->sort_time)
+		if (e->sort_time)
 			ft_lstsort(list, (void*)&(entptr->st_time_ptr) - (void*)entptr,
 					&FTLS_COMPARE_DATE);
 		if (e->sort_size)
@@ -174,9 +172,5 @@ void	ftls_manage_sorting_linux(t_env *e, t_list **list)
 					&ftls_compare_size);
 		if (e->reverse)
 			ft_lstflip(list);
-			*/
-//		if (e->iscli)
-//			ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
-//					&ftls_compare_type);
 	}
 }
