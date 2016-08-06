@@ -125,9 +125,8 @@ int		ftls_init_options(t_env *e)
 		e->reverse = (c == 'r') ? 1 : e->reverse;
 		e->sort_time = (c == 't') ? 1 : e->sort_time;
 		e->sort_time_val = (c == 'c' || c == 'u') ? c : e->sort_time_val;
-		e->showlist = (c == 'l') ? 1 : e->showlist;
 		e->followlink_sub = (c == 'L') ? 1 : e->followlink_sub;
-		e->oneperline = (c == '1') ? 1 : e->oneperline;
+		e->output_val = (c == 'l' || c == '1') ? c : e->output_val;
 	}
 	ftls_manage_options_priorities(e);
 	return (0);
@@ -135,14 +134,20 @@ int		ftls_init_options(t_env *e)
 
 void	ftls_manage_options_priorities(t_env *e)
 {
+	if (e->output_val == 'l')
+		e->showlist = 1;
+	else if (e->output_val == '1')
+		e->oneperline = 1;
 	if (e->termwidth == 0)
 		e->oneperline = 1;
 	if (e->sort_time && !e->sort_time_val)
 		e->sort_time_val = 't';
-	if (e->show_num_id)
+	if (e->show_num_id && !e->oneperline)
 		e->showlist = 1;
 	if (e->sort_none)
 		e->show_all = 1;
+	if (e->show_all && e->show_all_nodot)
+		e->show_all_nodot = 0;
 	e->followlink_cli = 1;
 	if (e->showlist && !e->followlink_sub)
 		e->followlink_cli = 0;

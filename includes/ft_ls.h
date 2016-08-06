@@ -98,8 +98,11 @@ typedef struct	s_entry
 **	*
 **	human			-> flag for -h
 **	showinode		-> flag for -i
+**	*
+**	output_val		-> temporary flag for -l and -1used during option parsing
 **	showlist		-> flag for -l
 **	oneperline		-> flag for -1
+**	*
 **	followlink_cli	-> If link given as argument, follow it unless -l w/out -L
 **	followlink_sub	-> In case of -R, follow links entries. (for -L)
 **	*
@@ -133,8 +136,11 @@ typedef struct	s_env
 
 	char			human;
 	char			showinode;
+
+	char			output_val;
 	char			showlist;
 	char			oneperline;
+
 	char			followlink_cli;
 	char			followlink_sub;
 

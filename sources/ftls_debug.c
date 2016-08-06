@@ -76,18 +76,20 @@ void	ftls_debug_show_options(t_env *e)
 {
 	ft_putendl("************************************************************");
 	ft_printf("OPTION FLAGS________________________________________________\n");
-	ft_printf("Show_all_nodot %hhd\tShow_all %4hhd\n", e->show_all_nodot,
-			e->show_all);
-	ft_printf("Show_num_id %hhd\n", e->show_num_id);
-	ft_printf("Recursive %6hhd\tReverse %5hhd\n", e->recursive, e->reverse);
-	ft_printf("Sort_none %6hhd\tSort_size %3hhd\t\n",
+	ft_printf("Show_all_nodot (-A) %hhd\tShow_all (-a) %7hhd\n",
+			e->show_all_nodot, e->show_all);
+	ft_printf("Show_num_id (-n) %4hhd\n", e->show_num_id);
+	ft_printf("Recursive (-R) %6hhd\tReverse (-r) %8hhd\n", e->recursive,
+			e->reverse);
+	ft_printf("Sort_none (-f) %6hhd\tSort_size (-S) %6hhd\t\n",
 			e->sort_none, e->sort_size);
-	ft_printf("Human %7hhd\n", e->human);
-	ft_printf("Sort_time = %hhd,\t\tSort_time_val = %c\n", e->sort_time,
-			e->sort_time_val);
-	ft_printf("Showinode %6hhd\tShowlist %4hhd\t\n", e->showinode, e->showlist);
-	ft_printf("Oneperline %5hhd\n", e->oneperline);
-	ft_printf("Followlink_cli %1hhd\tFollowlink_sub %4hhd\t\n",
+	ft_printf("Human (-h) %10hhd\n", e->human);
+	ft_printf("Sort_time (-t) %6hhd\tSort_time_val\t   \'%c\'\n",
+			e->sort_time, e->sort_time_val);
+	ft_printf("Showinode (-i) %6hhd\tShowlist (-l) %7hhd\t\n", e->showinode,
+			e->showlist);
+	ft_printf("Oneperline (-1) %5hhd\n", e->oneperline);
+	ft_printf("Followlink_cli %6hhd\tFollowlink_sub (-L) %hhd\t\n",
 			e->followlink_cli, e->followlink_sub);
 	ft_putendl("************************************************************");
 }
