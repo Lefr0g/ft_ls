@@ -60,8 +60,9 @@ int		ftls_parse_cli_args_osx(t_env *e, int ac, char **av)
 	{
 		if (buf[i][0] && ftls_isfile(buf[i], e->progname, 1))
 			e->cli_notopt[++j] = ft_strdup(buf[i]);
-		else if (!ft_strlen(buf[i]) && !ft_strlen(av[i]))
-			exit(ft_printf("%s: fts_open: No such file or directory\n", av[0]));
+		else
+			if ((e->abort = 1) && !ft_strlen(buf[i]) && !ft_strlen(av[i]))
+				exit(ft_printf("%s: fts_open: No such file or directory\n", av[0]));
 	}
 	ft_strarray_del(&buf);
 	return (0);

@@ -51,10 +51,11 @@ int		main(int ac, char **av)
 
 	if (ftls_init_env(&e, av) || FTLS_PARSE_CLI_ARGS(&e, ac, av))
 		return (1);
-//	ftls_debug_show_args(&e);
+	ftls_debug_show_args(&e);
 	ftls_init_options(&e);
 	ftls_debug_show_options(&e);
-	if (!e.cli_notopt[0])
+//	ft_print_memory(e.cli_notopt, sizeof(e.cli_notopt));
+	if (!e.cli_notopt[0] && !e.abort)
 	{
 		e.iscli = 0;
 		ftls_process_entry(&e, ".", NULL);
