@@ -55,6 +55,7 @@ int		main(int ac, char **av)
 	ftls_init_options(&e);
 	ftls_debug_show_options(&e);
 //	ft_print_memory(e.cli_notopt, sizeof(e.cli_notopt));
+	ft_printf("e->abort = %d\n", e.abort);
 	if (!e.cli_notopt[0] && !e.abort)
 	{
 		e.iscli = 0;

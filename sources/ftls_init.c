@@ -54,6 +54,16 @@ int		ftls_parse_cli_args_osx(t_env *e, int ac, char **av)
 	if ((c = ft_parse_options_keep_doubles(buf, e->supported_option,
 					&(e->cli_option))))
 		return (ftls_print_error_illegal_option(e, av[0], c));
+
+	//	DEBUG
+	
+	int a = 0;
+	while (a < ac)
+	{
+		ft_printf("buf[%d] = %s\n", a, buf[a]);
+		a++;
+	}
+	
 	if (!(e->cli_notopt = (char**)ft_memalloc(sizeof(char*) * (ac + 1))))
 		return (1);
 	i = 0;
@@ -62,8 +72,7 @@ int		ftls_parse_cli_args_osx(t_env *e, int ac, char **av)
 	{
 		if (buf[i][0] && ftls_isfile(buf[i], e->progname, 1))
 			e->cli_notopt[++j] = ft_strdup(buf[i]);
-		else
-			if ((e->abort = 1) && !ft_strlen(buf[i]) && !ft_strlen(av[i]))
+		else if (!ft_strlen(buf[i]) && !ft_strlen(av[i]) && (e->abort = 1))
 				exit(ft_printf("%s: fts_open: No such file or directory\n", av[0]));
 	}
 	ft_strarray_del(&buf);
