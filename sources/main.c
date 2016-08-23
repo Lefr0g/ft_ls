@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/28 21:13:54 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/23 16:59:07 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ int		main(int ac, char **av)
 	ftls_debug_show_options(&e);
 //	ft_print_memory(e.cli_notopt, sizeof(e.cli_notopt));
 	ft_printf("e->abort = %d\n", e.abort);
-	if (!e.cli_notopt[0] && !e.abort)
+	if (!e.iscli && !e.abort)
 	{
-		e.iscli = 0;
+//		e.iscli = 0;
 		ftls_process_entry(&e, ".", NULL);
 	}
 	else
 	{
-		e.iscli = 1;
+//		e.iscli = 1;
 		ftls_process_argnames(&e);
 	}
 	ftls_free_all(&e);
