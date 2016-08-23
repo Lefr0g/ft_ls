@@ -122,7 +122,6 @@ typedef struct	s_env
 	char			*supported_option[OPT_ARRAY_SIZE];
 	char			**cli_option;
 	char			**cli_notopt;
-	char			abort;
 
 	char			show_all_nodot;
 	char			show_all;
