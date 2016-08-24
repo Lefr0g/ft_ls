@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/28 21:11:24 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/24 16:23:01 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,10 +159,14 @@ typedef struct	s_env
 */
 
 /*
-**	ftls_init.c
+**	ftls_parse.c
 */
 int				ftls_parse_cli_args_osx(t_env *e, int ac, char **av);
 int				ftls_parse_cli_args_linux(t_env *e, int ac, char **av);
+
+/*
+**	ftls_init.c
+*/
 int				ftls_init_env(t_env *e, char **av);
 int				ftls_init_entry(t_entry *d);
 int				ftls_init_options(t_env *e);
@@ -191,8 +195,6 @@ void			ftls_copy_details(t_entry *dst, struct stat *src, char *name,
 void			ftls_copy_details_sub1(t_entry *dst, struct stat *src);
 void			ftls_copy_details_sub2(t_env *e, t_entry *dst,
 		struct stat *src);
-void			ftls_manage_sorting_osx(t_env *e, t_list **list);
-void			ftls_manage_sorting_linux(t_env *e, t_list **list);
 
 /*
 **	ftls_list_sub.c
@@ -207,12 +209,24 @@ void			ftls_manage_time_ptr(t_env *e, t_entry *dst);
 /*
 **	ftls_sort.c
 */
-int				ftls_compare_str(void *ref, void *run);
-int				ftls_compare_str_linux(void *ref, void *run);
 int				ftls_compare_type(void *ref, void *run);
 int				ftls_compare_date_osx(void *ref, void *run);
 int				ftls_compare_date_linux(void *ref, void *run);
 int				ftls_compare_size(void *ref, void *run);
+
+/*
+**	ftls_sort_logic.c
+*/
+void			ftls_manage_sorting_osx(t_env *e, t_list **list);
+void			ftls_manage_sorting_linux(t_env *e, t_list **list);
+
+
+/*
+**	ftls_sort_str.c
+*/
+int				ftls_compare_str(void *ref, void *run);
+char			*ftls_strtolower(char *str);
+int				ftls_compare_str_linux(void *ref, void *run);
 
 /*
 **	ftls_process.c
@@ -268,11 +282,15 @@ void			ftls_debug_show_entry(t_entry *content);
 /*
 **	ftls_decode.c
 */
-void			ftls_decode_type_osx(mode_t st_mode, char *out);
 void			ftls_decode_type_linux(mode_t st_mode, char *out);
 void			ftls_decode_access_rights(mode_t st_mode, char *out);
 void			ftls_decode_mode(mode_t st_mode, char *out);
 void			ftls_decode_special_bits(mode_t st_mode, char *out);
+
+/*
+**	ftls_decode.c
+*/
+void			ftls_decode_type_osx(mode_t st_mode, char *out);
 void			ftls_decode_extended_osx(char *out, char *path);
 
 #endif

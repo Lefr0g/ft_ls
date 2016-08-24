@@ -6,7 +6,7 @@
 #    By: amulin <amulin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/06 11:02:43 by amulin            #+#    #+#              #
-#    Updated: 2016/07/26 19:03:41 by amulin           ###   ########.fr        #
+#    Updated: 2016/08/24 16:20:32 by amulin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,11 @@ ifeq ($(CC),gcc)
 	FLAGS += -std=gnu99
 endif
 
-SRCS = main.c ftls_init.c ftls_misc.c ftls_error.c \
+SRCS = main.c ftls_init.c ftls_parse.c ftls_misc.c ftls_error.c \
 	   ftls_list.c ftls_list_sub.c \
-	   ftls_debug.c ftls_process.c ftls_decode.c ftls_sort.c \
+	   ftls_debug.c ftls_process.c \
+	   ftls_decode.c ftls_decode_osx_spec.c \
+	   ftls_sort.c ftls_sort_logic.c ftls_sort_str.c \
 	   ftls_print_1.c ftls_print_2.c ftls_del.c
 
 SRCDIR = sources/

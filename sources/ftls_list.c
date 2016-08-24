@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/26 19:06:45 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/24 16:08:52 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,52 +125,5 @@ void	ftls_copy_details_sub2(t_env *e, t_entry *dst, struct stat *src)
 			strbuf[1] = ft_itoa(dst->st_gid);
 		dst->gr_name = &strbuf[1];
 		ftls_gen_size_str(e, dst);
-	}
-}
-
-/*
-**	Generic list sorting function, used in ftls_process.c
-*/
-
-void	ftls_manage_sorting_osx(t_env *e, t_list **list)
-{
-	t_entry	*entptr;
-
-	entptr = (*list)->content;
-	if (!e->sort_none)
-	{
-		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
-				&ftls_compare_str);
-		if (e->sort_time)
-			ft_lstsort(list, (void*)&(entptr->st_time_ptr) - (void*)entptr,
-					&FTLS_COMPARE_DATE);
-		if (e->sort_size)
-			ft_lstsort(list, (void*)&(entptr->st_size_ptr) - (void*)entptr,
-					&ftls_compare_size);
-		if (e->reverse)
-			ft_lstflip(list);
-		if (e->iscli)
-			ft_lstsort(&e->lst, (void*)&entptr->st_mode_ptr - (void*)entptr,
-					&ftls_compare_type);
-	}
-}
-
-void	ftls_manage_sorting_linux(t_env *e, t_list **list)
-{
-	t_entry	*entptr;
-
-	entptr = (*list)->content;
-	if (!e->sort_none)
-	{
-		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
-				&ftls_compare_str_linux);
-		if (e->sort_time)
-			ft_lstsort(list, (void*)&(entptr->st_time_ptr) - (void*)entptr,
-					&FTLS_COMPARE_DATE);
-		if (e->sort_size)
-			ft_lstsort(list, (void*)&(entptr->st_size_ptr) - (void*)entptr,
-					&ftls_compare_size);
-		if (e->reverse)
-			ft_lstflip(list);
 	}
 }

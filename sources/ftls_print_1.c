@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/26 18:50:55 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/24 16:13:26 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,8 @@ void	ftls_quick_ll_osx(t_env *e, t_entry *d)
 
 	path = ((d->prefix)) ? ft_strjoin(*(d->prefix), *(d->name)) :
 		ft_strdup(*(d->name));
-
 	ftls_decode_mode(d->st_mode, out);
 	ftls_decode_extended_osx(out, path);
-
 	ft_strdel(&path);
 	ftls_quick_ll_sub_common(e, d, out);
 }
@@ -76,7 +74,6 @@ void	ftls_quick_ll_linux(t_env *e, t_entry *d)
 		ft_strdup(*(d->name));
 	ft_bzero(out, 12);
 	ftls_decode_mode(d->st_mode, out);
-
 	ft_strdel(&path);
 	ftls_quick_ll_sub_common(e, d, out);
 }
