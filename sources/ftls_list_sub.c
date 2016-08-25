@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 17:49:22 by amulin            #+#    #+#             */
-/*   Updated: 2016/08/25 16:22:20 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/25 16:39:07 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int		ftls_get_file_status(t_env *e, struct stat *statbuf, char **path)
 			{
 				ft_print_error(e->progname, *path, errno);
 				ft_strdel(path);
-				ft_printf("DEBUG : stat error\n");
 				return (1);
 			}
 		}

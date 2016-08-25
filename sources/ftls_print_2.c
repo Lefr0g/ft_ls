@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:59:52 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/26 18:51:37 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/25 16:47:54 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,5 @@ void	ftls_manage_spacing(t_env *e)
 {
 	if (!e->oneperline && !e->showlist && e->print_initiated)
 		ft_putchar('\n');
+	e->print_initiated = 0;
 }
