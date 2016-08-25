@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 16:45:18 by amulin            #+#    #+#             */
-/*   Updated: 2016/07/26 16:40:01 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/25 16:34:30 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,20 @@ int		ftls_is_entry_device(t_entry *d)
 
 int		ftls_is_entry_treatable(t_env *e, t_entry *entptr)
 {
+	DIR		*dir;
+
 	if ((entptr->st_mode & S_IFSOCK) == S_IFSOCK
 			|| (entptr->st_mode & S_IFBLK) == S_IFBLK)
 		return (0);
 	if ((entptr->st_mode & S_IFDIR) == S_IFDIR)
 		return (1);
-	if (e->followlink_cli && e->iscli && (entptr->st_mode & S_IFLNK) == S_IFLNK)
+	if (e->followlink_cli && e->iscli && (entptr->st_mode & S_IFLNK) == S_IFLNK
+		&& (dir = opendir(*(entptr->name))))
+	{
+		if (dir)
+			closedir(dir);
 		return (1);
+	}
 	if (e->followlink_sub && (entptr->st_mode & S_IFLNK) == S_IFLNK)
 		return (1);
 	return (0);
