@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 18:04:49 by amulin            #+#    #+#             */
-/*   Updated: 2016/08/24 16:19:58 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/25 17:43:12 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int		ftls_init_env(t_env *e, char **av)
 	ftls_define_options(e);
 	if (isatty(1))
 		e->termwidth = ftls_get_terminal_width(e);
+	e->maxcol[5] = 1;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 11:37:15 by amulin            #+#    #+#             */
-/*   Updated: 2016/08/25 16:26:59 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/25 18:09:10 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ int		main(int ac, char **av)
 
 	if (ftls_init_env(&e, av) || FTLS_PARSE_CLI_ARGS(&e, ac, av))
 		return (1);
-//	ftls_debug_show_args(&e);
 	ftls_init_options(&e);
-//	ftls_debug_show_options(&e);
 	if (!e.iscli)
 	{
 		ftls_process_entry(&e, ".", NULL);

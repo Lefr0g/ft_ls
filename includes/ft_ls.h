@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:52:12 by amulin            #+#    #+#             */
-/*   Updated: 2016/08/24 16:23:01 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/25 18:10:19 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,6 @@ typedef struct	s_env
 }				t_env;
 
 /*
-**	To be added to libft
-*/
-
-/*
 **	ftls_parse.c
 */
 int				ftls_parse_cli_args_osx(t_env *e, int ac, char **av);
@@ -220,7 +216,6 @@ int				ftls_compare_size(void *ref, void *run);
 void			ftls_manage_sorting_osx(t_env *e, t_list **list);
 void			ftls_manage_sorting_linux(t_env *e, t_list **list);
 
-
 /*
 **	ftls_sort_str.c
 */
@@ -239,7 +234,6 @@ void			ftls_recursion(t_env *e, t_list *subdir);
 /*
 **	ftls_misc.c
 */
-
 int				ftls_get_terminal_width(t_env *e);
 int				ftls_isnavdot(char *name);
 int				ftls_is_entry_showable(t_env *e, t_entry *entptr);

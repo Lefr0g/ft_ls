@@ -6,7 +6,7 @@
 /*   By: amulin <amulin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/08 19:00:27 by amulin            #+#    #+#             */
-/*   Updated: 2016/08/25 16:47:10 by amulin           ###   ########.fr       */
+/*   Updated: 2016/08/25 17:42:25 by amulin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ t_list	*ftls_get_subdir(t_env *e, char *name, char *path)
 	}
 	e->col_len = 0;
 	ft_bzero(e->maxcol, sizeof(int) * LIST_MODE_COLUMNS);
+	e->maxcol[5] = 1;
 	while ((my_dirent = readdir(dir)))
 	{
 		ftls_add_entry(&subdir, e, my_dirent->d_name, path);
