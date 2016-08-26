@@ -1,0 +1,78 @@
+ft_ls by amulin
+usage: ./ft_ls [-ALRSacfhinrtul1] [file ...]
+
+CORE FEATURES
+
+	- R option
+		Recursively list directories encountered
+
+	- a option
+		Include directory entries whose name begin with a dot
+
+	- r option
+		Reversed sort order
+
+	- t option
+		Sort by time modified
+
+	- l option
+		Output is listed in long format
+
+	- Behavior is identical to OSX's ls when compiled on OSX
+
+	- No memory leaks
+
+BONUS FEATURES
+
+	- A option
+		Same as 'a' option, but not showing . and ..
+
+	- L option
+		Follow all symbolic links to final target
+
+	- S option
+		Sort by size
+
+	- c option
+		Sort or list entries by time of last status change
+
+	- f option
+		Unsorted output
+
+	- h option
+		Human-readable output for entry size (use with -l)
+
+	-i option
+		Show inode number
+
+	- n option
+		Print user and group ID numbers instead of names
+
+	- u option
+		Sort or list entries by time of last modification
+
+	- 1 option
+		Force output to one entry per line
+
+	- Compiles on OSX using clang
+
+	- Compiles on Linux using gcc
+
+	- There are some subtle differences in behavior when comparing ls on
+	OSX and Linux. This ft_ls takes this into account and tries to mimic
+	the Linux behavior when compiled on such system
+
+	- Perfect listed output layout. All columns are aligned, and spacing
+	is exactly the same as ls, even for device files
+
+	- Long output correctly shows if extended attributes '@' or extended
+	security information '+' is present for each entry
+
+	- When the output is redirected to a file, the program will turn on
+	the -1 option, just as ls does
+
+	- The default output considers the width of the terminal to fit and
+	align entries. However, the sorting is done horizontally, while on ls
+	the sorting is vertical
+
+	- Source code and header are extensively commented
