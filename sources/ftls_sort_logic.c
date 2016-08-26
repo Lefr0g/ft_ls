@@ -25,7 +25,7 @@ void	ftls_manage_sorting_osx(t_env *e, t_list **list)
 	{
 		ft_lstsort(list, (void*)&(entptr->name) - (void*)entptr,
 				&ftls_compare_str);
-		if (e->sort_time)
+		if (e->sort_time && !e->sort_size)
 			ft_lstsort(list, (void*)&(entptr->st_time_ptr) - (void*)entptr,
 					&FTLS_COMPARE_DATE);
 		if (e->sort_size)

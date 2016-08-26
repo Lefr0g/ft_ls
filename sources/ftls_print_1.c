@@ -23,9 +23,9 @@ char	*ftls_gen_timestr(t_env *e, t_entry *d)
 	time_t	date;
 	int		i;
 
-	if (e->sort_time && e->sort_time_val == 'u')
+	if (e->sort_time_val == 'u')
 		date = d->st_atimespec.tv_sec;
-	else if (e->sort_time && e->sort_time_val == 'c')
+	else if (e->sort_time_val == 'c')
 		date = d->st_ctimespec.tv_sec;
 	else
 		date = d->st_mtimespec.tv_sec;
