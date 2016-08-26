@@ -21,6 +21,7 @@ char	*ftls_gen_timestr(t_env *e, t_entry *d)
 	char	*str;
 	time_t	now;
 	time_t	date;
+	int		i;
 
 	if (e->sort_time && e->sort_time_val == 'u')
 		date = d->st_atimespec.tv_sec;
@@ -32,8 +33,11 @@ char	*ftls_gen_timestr(t_env *e, t_entry *d)
 	if (now - date > 15811200 || date - now > 15811200)
 	{
 		str = ft_strdup(&ctime(&date)[4]);
-		ft_strncpy(&str[7], &str[15], 5);
-		ft_bzero(&str[12], 10);
+		if (ft_strlen(str) == 26 && (i = 1))
+			ft_strncpy(&str[7], &str[19], 6);
+		else if (!(i = 0))
+			ft_strncpy(&str[7], &str[15], 5);
+		ft_bzero(&str[12 + i], 10);
 	}
 	else
 		str = ft_strsub(ctime(&date), 4, 12);
