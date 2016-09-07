@@ -42,7 +42,7 @@ BONUS FEATURES
 	- h option
 		Human-readable output for entry size (use with -l)
 
-	-i option
+	- i option
 		Show inode number
 
 	- n option
